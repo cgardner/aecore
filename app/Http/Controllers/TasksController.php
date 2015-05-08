@@ -2,8 +2,18 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Auth;
+use Redirect;
+
+//Requests
+use App\Http\Requests\CreateTaskRequest;
+use App\Http\Requests\CreateTasklistRequest;
+
+// Models
+use App\Models\Tasklist;
+
 
 class TasksController extends Controller {
 
@@ -15,79 +25,28 @@ class TasksController extends Controller {
   {
     $this->middleware('auth');
   }
-    
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
+  
 	public function index()
 	{
-		return view('tasks.list');
+    
+    $lists = Tasklist::where('user_id', Auth::User()->id)->get();
+    
+		return view('tasks.list')
+        ->with([
+            'lists' => $lists
+          ]);
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
+	public function createList(CreateTasklistRequest $request)
 	{
-		//
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
+    $listcode = Str::random(10);
+    
+		Tasklist::create([
+      'user_id'   => Auth::User()->id,
+      'listcode'  => $listcode,
+      'list'      => $request->get('list_name')
+    ]);
+    return Redirect::to('tasks/'.$listcode);
 	}
 
 }

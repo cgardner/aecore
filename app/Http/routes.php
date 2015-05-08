@@ -34,7 +34,8 @@ Route::group(['middleware'=>'userstatus'], function(){
 
   
   /* Tasks */
-  Route::resource('tasks', 'TasksController@index');
+  Route::get('tasks/{listcode?}', 'TasksController@index');
+  Route::post('tasks/list/create', 'TasksController@createList');
 
   
   /* Company Settings */

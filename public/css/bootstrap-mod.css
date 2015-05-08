@@ -12,6 +12,30 @@ body {
   text-align:center;
 }
 
+/* Buttons & Links */
+.btn-link-light {
+  font-weight: normal;
+  color: #818A91;
+  border-radius: 0;
+  text-shadow:1px 1px #FFF;
+  cursor:pointer;
+}
+.btn-link-light,
+.btn-link-light:active,
+.btn-link-light.active,
+fieldset[disabled] .btn-link-light {
+  background-color: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+.btn-link-light:hover,
+.btn-link-light:focus {
+  color: #dc4c4c;
+  border-color: transparent;
+  text-decoration: none;
+  background-color: transparent;
+}
+
 /* Nav Bar */
 .navbar-default {
   border-bottom:1px solid #d5d5d5;

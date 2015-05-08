@@ -43,6 +43,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
   public function useravatar() {
     return $this->hasOne('App\Models\Useravatar');
   }
+  public function task() {
+    return $this->hasMany('App\Models\Task');
+  }
+  public function tasklist() {
+    return $this->hasMany('App\Models\Tasklist');
+  }
   public function s3file() {
     return $this->hasMany('App\Models\S3file');
   }

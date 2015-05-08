@@ -26,7 +26,7 @@
     <li class="dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img src="{!! Auth::user()->gravatar !!}" class="avatar_navbar" />{!! Auth::user()->username !!} <span class="caret"></span></a>
       <ul class="dropdown-menu" role="menu">
-        <li><a href="/profile/{!! Auth::User()->username !!}" title="View your profile."><span class="glyphicon glyphicon-user small"></span> Profile</a></li>
+        <!--<li><a href="/profile/{!! Auth::User()->username !!}" title="View your profile."><span class="glyphicon glyphicon-user small"></span> Profile</a></li>-->
         <li><a href="/settings/profile" title="Edit your settings."><span class="glyphicon glyphicon-cog small"></span> Settings</a></li>
         <li class="divider"></li>
         <li><a href="/auth/logout" title="Log out of Aecore."><span class="glyphicon glyphicon-off small"></span> Log Out</a></li>
