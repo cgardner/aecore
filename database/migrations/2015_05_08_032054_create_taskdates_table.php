@@ -16,8 +16,8 @@ class CreateTaskdatesTable extends Migration {
 		{
       $table->increments('id');
       $table->integer('task_id');
-      $table->datetime('date_due');
-      $table->datetime('date_complete');
+      $table->datetime('date_due')->nullable();
+      $table->datetime('date_complete')->nullable();
 			$table->timestamps();
       $table->dropPrimary('taskdates_pkey');
       $table->primary('task_id');

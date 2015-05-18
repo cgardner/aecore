@@ -206,7 +206,7 @@ class UploadsController extends Controller {
         'file_id_' . $name => $file_id_insert
       );
       if($type == 'profile') {
-        Useravatar::updateOrCreate(['user_id' => Auth::User()->id], [
+        Useravatar::UpdateOrCreate(['user_id' => Auth::User()->id], [
           'user_id' => Auth::User()->id, //pkey
           'file_id_' . $name => $file_id_insert
         ]);

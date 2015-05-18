@@ -21,7 +21,7 @@ class CreateTasksTable extends Migration {
       $table->string('taskcode', 10)->unique();
       $table->string('task');
 			$table->string('status')->default('open'); //open, complete, disabled
-      $table->string('priority')->default('low'); //low, medium, high
+      $table->string('priority')->default('1'); //1=low, 2=medium, 3=high
 			$table->timestamps();
 		});
 	}

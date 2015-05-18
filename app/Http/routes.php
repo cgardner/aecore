@@ -31,12 +31,21 @@ Route::group(['middleware'=>'userstatus'], function(){
     
   /* Projects */
   Route::get('projects', 'ProjectsController@index');
-
   
   /* Tasks */
+  Route::post('tasks/create', 'TasksController@createTask');
+  Route::post('tasks/update', 'TasksController@updateTask');
+  Route::get('tasks/refresh', 'TasksController@refreshList');
+  Route::get('tasks/priority/{priority}/{taskcode}', 'TasksController@priorityChange');
   Route::get('tasks/{listcode?}', 'TasksController@index');
-  Route::post('tasks/list/create', 'TasksController@createList');
-
+  
+    /* Task details */
+    Route::get('tasks/details/{taskcode}', array('uses' => 'TasksController@showTask'));
+    Route::post('tasks/follower', 'TasksController@updateFollower');
+    
+    /* Task Lists */
+    Route::post('tasks/list/create', 'TasksController@createList');
+    Route::post('tasks/list/remove', 'TasksController@removeList');
   
   /* Company Settings */
   Route::group(['middleware'=>'admincheck'], function(){
@@ -69,5 +78,6 @@ Route::group(['middleware'=>'userstatus'], function(){
     
   /* Autocomplete */
   Route::post('autocomplete/companies', 'AutocompleteController@findCompanies');
+  Route::post('autocomplete/users', 'AutocompleteController@findUsers');
   
 });

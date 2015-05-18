@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Project management for construction.">
+    <meta name="_token" content="{!! csrf_token() !!}"/>
     <title>Aecore</title>
 
     <!-- load js dependencies -->

@@ -11,6 +11,8 @@ use Response;
 // Models
 use App\Models\Company;
 use App\Models\Companylogo;
+use App\Models\User;
+use App\Models\Useravatar;
 
 class AutocompleteController extends Controller {
 
@@ -50,6 +52,45 @@ class AutocompleteController extends Controller {
         'location'=>'<span class="small text-muted">' . $location . '</span>'
       );
     }
+    // Return array data
+    return Response::json($data);
+  }
+
+  public function findUsers() {
+
+    // Get search term
+    $term = Input::get('term');
+
+    // Run query
+    $result = User::where('users.name', 'ILIKE', '%'.trim($term).'%')
+              ->where('users.status', '=', 'active')
+              ->orderBy('users.name', 'asc')
+              ->get(array(
+                  'users.id',
+                  'users.usercode',
+                  'users.name',
+                  'users.title'
+                ));
+
+    // Build array
+    $data = array();
+    $useravatar = new Useravatar;
+
+    foreach($result as $row){
+      
+      if($row->title == "") {
+        $row->title = "No title";
+      }
+      
+      $data[] = array(
+        'value'     => $row->id,
+        'usercode'  => $row->usercode,
+        'label'     => $row->name,
+        'title'     => $row->title,
+        'avatar'    => '<img class="avatar_company" src="' . $useravatar->getUserAvatar($row->id, 'sm') . '"/>'
+      );
+    }
+    
     // Return array data
     return Response::json($data);
   }

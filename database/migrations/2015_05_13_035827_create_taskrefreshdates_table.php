@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUseravatarsTable extends Migration {
+class CreateTaskrefreshdatesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,13 @@ class CreateUseravatarsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('useravatars', function(Blueprint $table)
+		Schema::create('taskrefreshdates', function(Blueprint $table)
 		{
       $table->increments('id');
       $table->integer('user_id');
-			$table->integer('file_id_sm')->nullable();
-			$table->integer('file_id_lg')->nullable();
+      $table->datetime('date_refresh');
 			$table->timestamps();
-      $table->dropPrimary('useravatars_pkey');
+      $table->dropPrimary('taskrefreshdates_pkey');
       $table->primary('user_id');
 		});
 	}
@@ -31,7 +30,7 @@ class CreateUseravatarsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('useravatars');
+		Schema::drop('taskrefreshdates');
 	}
 
 }

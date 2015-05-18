@@ -18,5 +18,8 @@
     public function taskdate() {
       return $this->hasMany('App\Models\Taskdate');
     }
+    public function taskfollower() {
+      return $this->hasMany('App\Models\Taskfollower');
+    }
     
   }

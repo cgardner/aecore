@@ -56,20 +56,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     return $this->belongsTo('App\Models\Company');
   }
   
-  // User functions  
   public function getGravatarAttribute() {
-    // Grab user avatar
-    $image = Useravatar::where('useravatars.user_id', '=', Auth::user()->id)
-            ->leftjoin('s3files', 'useravatars.file_id_lg', '=', 's3files.id')
-            ->count();    
-    if($image > 0) {
-      $s3 = AWS::get('s3');
-      return $s3->getObjectUrl($image->file_bucket, $image->file_path . '/' . $image->file_name);
-    } else {
-      // Defaulting to gravatar
-      $hash = md5(strtolower(trim($this->attributes['email'])));
-      return 'http://www.gravatar.com/avatar/' . $hash . '?d=identicon';
-    }
+    // Defaulting to gravatar
+    $hash = md5(strtolower(trim($this->attributes['email'])));
+    return 'http://www.gravatar.com/avatar/' . $hash . '?d=identicon';
   }
-  
 }
