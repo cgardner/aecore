@@ -38,6 +38,7 @@ Route::group(['middleware'=>'userstatus'], function(){
   Route::get('tasks/refresh', 'TasksController@refreshList');
   Route::get('tasks/priority/{priority}/{taskcode}', 'TasksController@priorityChange');
   Route::get('tasks/{listcode?}', 'TasksController@index');
+  Route::get('tasks/following/{usercode}', array('uses' => 'TasksController@indexFollowing'));
   
     /* Task details */
     Route::get('tasks/details/{taskcode}', array('uses' => 'TasksController@showTask'));

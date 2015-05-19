@@ -2,7 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Auth;
 use Input;
@@ -16,7 +16,7 @@ use Carbon;
 use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Requests\CreateTasklistRequest;
-use App\Http\Requests\AddTaskFollowerRequest;
+use App\Http\Requests\UpdateTaskFollowerRequest;
 
 // Models
 use App\Models\Task;
@@ -24,6 +24,8 @@ use App\Models\Taskdate;
 use App\Models\Taskfollower;
 use App\Models\Tasklist;
 use App\Models\Taskrefresh;
+use App\Models\User;
+use App\Models\Useravatar;
 
 
 class TasksController extends Controller {
@@ -64,6 +66,12 @@ class TasksController extends Controller {
               ->groupby('tasks.user_id', 'users.usercode', 'users.name')
               ->orderby('users.name', 'asc')
               ->get(array('tasks.user_id', 'users.usercode', 'users.name'));
+    
+    // Make links
+    $useravatar = new Useravatar;
+    foreach($lists_following as $list_following) {
+      $list_following->link = '<a href="/tasks/following/' . $list_following->usercode . '"><img src="' . $useravatar->getUserAvatar($list_following->user_id, 'sm') . '" class="avatar_xs" />' . $list_following->name . '</a>';
+    }
     
     // Get active list data
     $list = Tasklist::where('user_id', Auth::User()->id)
@@ -148,10 +156,127 @@ class TasksController extends Controller {
     
 		return view('tasks.list')
         ->with([
-            'lists'     => $lists,
-            'lists_following'     => $lists_following,
-            'listname'  => $listname,
-            'mytasks'   => $mytasks,
+            'lists'           => $lists,
+            'lists_following' => $lists_following,
+            'listname'        => $listname,
+            'mytasks'         => $mytasks,
+            'completed_count' => $completed_count
+          ]);
+	}
+  
+	public function indexFollowing($usercode=NULL)
+	{
+    // Filters
+    $allowed = array('open', 'complete');
+    $filter = in_array(Input::get('filter'), $allowed) ? Input::get('filter') : 'open'; // if user type in the url a column that doesnt exist app will default to open
+    if($filter == 'open') {
+      Session::put('filter_text', 'Open Tasks');
+    } elseif($filter == 'complete') {
+      Session::put('filter_text', 'Completed Tasks');
+    } else {
+      Session::put('filter_text', 'Open Tasks');
+    }
+    
+    // Get user's lists
+    $lists = Tasklist::where('user_id', Auth::User()->id)
+            ->where('status', 'active')
+            ->orderby('list', 'asc')
+            ->get(['id', 'listcode', 'list']);
+    
+    $lists_following = Taskfollower::leftjoin('tasks', 'taskfollowers.task_id', '=', 'tasks.id')
+              ->leftjoin('users', 'tasks.user_id', '=', 'users.id')
+              ->where('taskfollowers.user_id', '=', Auth::User()->id)
+              ->where('taskfollowers.status', '=', 'active')
+              ->where('tasks.status', '=', $filter)
+              ->where('tasks.user_id', '!=', Auth::User()->id)
+              ->groupby('tasks.user_id', 'users.usercode', 'users.name')
+              ->orderby('users.name', 'asc')
+              ->get(array('tasks.user_id', 'users.usercode', 'users.name'));
+    
+    // Make links
+    $useravatar = new Useravatar;
+    foreach($lists_following as $list_following) {
+      Request::is('*following/' . $list_following->usercode ) ? $class='active' : $class='';
+      $list_following->link = '<a href="/tasks/following/' . $list_following->usercode . '" class="' . $class . '"><img src="' . $useravatar->getUserAvatar($list_following->user_id, 'sm') . '" class="avatar_xs" />' . $list_following->name . '</a>';
+    }
+    
+    // Get user's id
+    $user = User::where('users.usercode', '=', $usercode)
+          ->first(array('id','name'));
+    
+    // Set active list name
+    Request::is('*following/'.$usercode ) ? Session::put('listcode', 'following/' . $usercode) : Session::put('listcode', '');
+    
+    // Get tasks for active list
+    $tasks = Task::leftjoin('taskdates', 'tasks.id', '=', 'taskdates.task_id')
+            ->leftjoin('taskfollowers', 'taskfollowers.task_id', '=', 'tasks.id')
+            ->leftjoin('tasklists', 'tasklists.id', '=', 'tasks.tasklist_id')
+            ->leftjoin('taskrefreshdates', 'tasks.user_id', '=', 'taskrefreshdates.user_id')
+            ->where('tasks.user_id', '=', $user->id)
+            ->where('taskfollowers.user_id', '=', Auth::User()->id)
+            ->where('taskfollowers.status', '=', 'active')
+            ->where(function($query_a) use ($filter) {
+              $query_a->where('tasks.status', '=', $filter);
+              $query_a->orwhere(function($query_b) {
+                $query_b->where('tasks.status', '=', 'complete');
+                $query_b->where(\DB::raw('taskrefreshdates.date_refresh', '%Y%m%d%H%i%s'), '<', \DB::raw('taskdates.date_complete', '%Y%m%d%H%i%s'));
+              });
+              $query_a->orwhere(function($query_c) {
+                $query_c->where('tasks.status', '=', 'complete');
+                $query_c->where('taskrefreshdates.date_refresh', '=', null);
+              });
+            })
+            ->orderby('tasks.priority', 'desc')
+            ->orderBy('taskdates.date_due')
+            ->orderBy('tasks.created_at')
+            ->get([
+                'tasks.id',
+                'tasks.taskcode',
+                'tasks.task',
+                'tasks.tasklist_id',
+                'tasks.priority',
+                'tasks.status',
+                'taskdates.date_due',
+                'tasklists.list',
+                'tasklists.listcode',
+                'tasklists.status AS list_status',
+                ]);
+            
+    $completed_count = 0;
+    foreach($tasks as $task) {
+      
+      // Completed tasks
+      if($task->status == 'complete') {
+        $completed_count++;
+      }
+      
+      // Format tasklist
+      if($task->tasklist_id != "0" && $task->tasklist_id != "" && $task->list_status != "disabled") {
+        $task->list = $task->list;
+      } else {
+        $task->list = "";
+      }
+      
+      // Format due date
+      if($task->date_due == null) {
+        $task->date_due = '';
+      } elseif(Timezone::convertFromUTC(Carbon::now(), Auth::user()->timezone, 'Y-m-d') > date('Y-m-d', strtotime($task->date_due))) {
+        $task->date_due = '<span class="text-danger bold">Overdue</span>';
+      } elseif(Timezone::convertFromUTC(Carbon::now(), Auth::user()->timezone, 'Y-m-d') == date('Y-m-d', strtotime($task->date_due))) {
+        $task->date_due = '<span class="text-success bold">Today</span>';
+      } elseif(Timezone::convertFromUTC(Carbon::now()->addDay(), Auth::user()->timezone, 'Y-m-d') == date('Y-m-d', strtotime($task->date_due))) {
+        $task->date_due = 'Tomorrow';
+      } else {
+        $task->date_due = date('D m/d', strtotime($task->date_due));
+      }
+    }
+    
+		return view('tasks.list_following')
+        ->with([
+            'lists'           => $lists,
+            'lists_following' => $lists_following,
+            'tasks'           => $tasks,
+            'user'            => $user,
             'completed_count' => $completed_count
           ]);
 	}
@@ -187,7 +312,6 @@ class TasksController extends Controller {
     
     if($request->get('type') != 'date_due') { //exclude some updates on task table
       Task::where('taskcode', $request->get('taskcode'))
-            ->where('user_id', Auth::User()->id)
             ->update([
               $request->get('type') => $request->get('data')
             ]);
@@ -219,7 +343,7 @@ class TasksController extends Controller {
       //$this->taskComment($task->id, 'activity', $comment_text);
       
       if($request->get('data') != Auth::User()->id) {
-        $this->updateFollower($request->get('taskcode'), Auth::User()->id, 'active');
+        $this->updateFollower($request->get('taskcode'), $user_id=Auth::User()->id, 'active');
       }
       
     }
@@ -242,7 +366,6 @@ class TasksController extends Controller {
   public function priorityChange($priority, $taskcode)
   {
     Task::where('taskcode', '=', $taskcode)
-              ->where('user_id', Auth::User()->id)
               ->update([
                   'priority' => $priority
                ]);
@@ -328,18 +451,12 @@ class TasksController extends Controller {
             ));
   }
 
-  public function updateFollower($taskcode, $user_id, $status) {
-
+  public function updateFollower(UpdateTaskFollowerRequest $request) {
+    
     // Get post data from javascript
-    if($taskcode==null) {
-      $taskcode = Input::get('taskcode');
-    }
-    if($user_id==null) {
-      $user_id = Input::get('user_id');
-    }
-    if($status==null) {
-      $status = Input::get('status');
-    }
+    $taskcode = $request->get('taskcode');
+    $user_id = $request->get('user_id');
+    $status = $request->get('status');
     
     // Get task id
     $task = Task::where('tasks.taskcode', '=', $taskcode)->first(array('id'));

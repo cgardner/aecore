@@ -123,7 +123,10 @@
 </script>
 
 <div class="task-info-details">
-  <span class="btn-link pull-right small pointer" title="There's no going back!" onClick="updateTask('{!! $taskdata->taskcode !!}', 'delete');">Delete Task</span>
+  @if($taskdata->user_id == Auth::User()->id)
+    <span class="btn-link pull-right small pointer" title="There's no going back!" onClick="updateTask('{!! $taskdata->taskcode !!}', 'delete');">Delete Task</span>
+  @endif
+  
   <div class="form-group">
     @if($taskdata->status == 'complete')
       <span class="taskline-checkbox-complete no-margin" id="task-checkbox-info-{!! $taskdata->taskcode !!}" title="Reopen this task." onClick="updateTask('{!! $taskdata->taskcode !!}', 'open');"></span>
@@ -139,7 +142,10 @@
       <label class="col-xs-1 control-label control-label-lg"><span class="glyphicon glyphicon-user"></span></label>
       <div class="col-xs-11" id="assigned_to">
         <div class="usertag">
-          <img src="{!! Auth::user()->gravatar !!}" />{!! $taskdata->name !!}<span class="usertag-remove"><span class="glyphicon glyphicon-remove-sign" onClick="$('#assigned_to').hide();$('#assigned_to_new').show();$('#term').focus();" title="Remove user & reassign task."></span></span>
+          <img src="{!! Auth::user()->gravatar !!}" />{!! $taskdata->name !!}
+          @if($taskdata->user_id == Auth::User()->id)
+            <span class="usertag-remove"><span class="glyphicon glyphicon-remove-sign" onClick="$('#assigned_to').hide();$('#assigned_to_new').show();$('#term').focus();" title="Remove user & reassign task."></span></span>
+          @endif
         </div>
       </div>
       <div class="col-xs-11" id="assigned_to_new" style="display:none;">
