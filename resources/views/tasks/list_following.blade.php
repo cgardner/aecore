@@ -15,9 +15,6 @@
     <!-- FILTERS -->
     <div class="pagehead">
       <div class="container-fluid">
-        @if($completed_count > 0)
-          <a href="/tasks/refresh" class="btn btn-sm btn-default pull-right btn-spacer-left" title="Refresh list to clear completed tasks."><span class="glyphicon glyphicon-refresh"></span> Clear Completed</a>
-        @endif
         <h1>{!! $user->name !!}</h1>
       </div>
     </div>

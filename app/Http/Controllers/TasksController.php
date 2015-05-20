@@ -61,7 +61,8 @@ class TasksController extends Controller {
     $lists_following = Taskfollower::leftjoin('tasks', 'taskfollowers.task_id', '=', 'tasks.id')
               ->leftjoin('users', 'tasks.user_id', '=', 'users.id')
               ->where('taskfollowers.user_id', '=', Auth::User()->id)
-              ->where('tasks.status', '=', $filter)
+              ->where('taskfollowers.status', '=', 'active')
+              ->where('tasks.status', '=', 'open')
               ->where('tasks.user_id', '!=', Auth::User()->id)
               ->groupby('tasks.user_id', 'users.usercode', 'users.name')
               ->orderby('users.name', 'asc')
@@ -187,7 +188,7 @@ class TasksController extends Controller {
               ->leftjoin('users', 'tasks.user_id', '=', 'users.id')
               ->where('taskfollowers.user_id', '=', Auth::User()->id)
               ->where('taskfollowers.status', '=', 'active')
-              ->where('tasks.status', '=', $filter)
+              ->where('tasks.status', '=', 'open')
               ->where('tasks.user_id', '!=', Auth::User()->id)
               ->groupby('tasks.user_id', 'users.usercode', 'users.name')
               ->orderby('users.name', 'asc')
@@ -224,6 +225,7 @@ class TasksController extends Controller {
               $query_a->orwhere(function($query_c) {
                 $query_c->where('tasks.status', '=', 'complete');
                 $query_c->where('taskrefreshdates.date_refresh', '=', null);
+                $query_c->where('taskrefreshdates.user_id', '=', Auth::User()->id);
               });
             })
             ->orderby('tasks.priority', 'desc')
@@ -341,9 +343,26 @@ class TasksController extends Controller {
       // Add task comment
       $comment_text = '<span class="glyphicon glyphicon-user"></span> reassigned this task';
       //$this->taskComment($task->id, 'activity', $comment_text);
-      
+    
       if($request->get('data') != Auth::User()->id) {
-        $this->updateFollower($request->get('taskcode'), $user_id=Auth::User()->id, 'active');
+        // Check if user is already assigned and update status
+        $taskfollower = Taskfollower::where('task_id', $task->id)
+            ->where('user_id', Auth::User()->id)
+            ->first();
+      
+        if(count($taskfollower) > 0) {
+          // Update status
+          Taskfollower::where(['task_id'=>$task->id])
+              ->where('user_id', Auth::User()->id)
+              ->update(['status' => 'active']);
+        } else {
+          // Create new entry
+          Taskfollower::create([
+              'task_id' => $task->id,
+              'user_id' => Auth::User()->id,
+              'status'  => 'active'
+          ]);
+        }
       }
       
     }

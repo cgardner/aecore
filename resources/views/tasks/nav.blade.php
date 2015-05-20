@@ -26,7 +26,9 @@
       
   <!-- FOLLOWING -->
   <br>
-  <li class="nav-header"><span class="glyphicon glyphicon-eye-open"></span> Following</li>
+  @if(count($lists_following) > 0)
+    <li class="nav-header"><span class="glyphicon glyphicon-eye-open"></span> Following</li>
+  @endif
   @foreach($lists_following as $list_following)
     <li>{!! $list_following->link !!}</li>
   @endforeach

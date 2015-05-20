@@ -15,7 +15,17 @@
     <!-- FILTERS -->
     <div class="pagehead">
       <div class="container-fluid">
-        @if($completed_count > 0)
+        <div class="btn-group pull-right btn-spacer-left">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">{!! Session::get('filter_text') !!} <span class="caret"></span></button>
+          <ul class="dropdown-menu" role="menu">
+            @if(Session::get('filter_text') == "Open Tasks")
+              <li><a href="{!! '/tasks/' . Session::get('listcode') . '?filter=complete' !!}">Completed Tasks</a>
+            @else
+              <li><li><a href="{!! '/tasks/' . Session::get('listcode') . '?filter=open' !!}">Open Tasks</a>
+            @endif
+          </ul>
+        </div>
+        @if($completed_count > 0 && Session::get('filter_text') != "Completed Tasks")
           <a href="/tasks/refresh" class="btn btn-sm btn-default pull-right btn-spacer-left" title="Refresh list to clear completed tasks."><span class="glyphicon glyphicon-refresh"></span> Clear Completed</a>
         @endif
         <h1>{!! $listname !!}</h1>
