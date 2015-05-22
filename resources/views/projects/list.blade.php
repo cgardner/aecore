@@ -2,7 +2,7 @@
 @section('content')
 
   <div class="pagehead">
-    <a href="/projects/create" type="button" class="btn btn-default btn-success pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Project</a>
+    <a href="/projects/create" type="button" class="btn btn-default btn-success pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Project</a>
     <h1>Projects</h1>
   </div>
 

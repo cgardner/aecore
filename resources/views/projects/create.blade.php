@@ -39,7 +39,7 @@
 
 <div class="pagehead">
   <div class="container">
-    <h1>New Project</h1>
+    <h1>Create a New Project</h1>
   </div>
 </div>
 <div class="container">
