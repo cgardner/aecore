@@ -45,4 +45,13 @@ class Project extends Model
     {
         return $this->belongsTo('App\Models\Company');
     }
+    
+    /**
+     * Relationship with the Projectuser model.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function projectuser()
+    {
+      return $this->hasMany('App\Models\Projectuser');
+    }
 }
