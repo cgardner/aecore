@@ -30,7 +30,7 @@ class ProjectsController extends Controller {
 	 */
 	public function index()
 	{
-		return view('projects.list');
+		return view('projects.index');
 	}
   
 	public function create()
