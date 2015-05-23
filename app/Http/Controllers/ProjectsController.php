@@ -70,7 +70,15 @@ class ProjectsController extends Controller
         $input['company_id'] = Auth::User()->company_id;
 
         $project = $this->saveProject($input);
-
+          
+        // Add current user to this project
+        Projectuser::create([
+            'project_id'  => $project->id,
+            'user_id'     => Auth::User()->id,
+            'access'      => 'admin',
+            'role'        => Auth::User()->Company->type
+        ]);
+          
         return Redirect::to('projects');
     }
 
@@ -84,7 +92,6 @@ class ProjectsController extends Controller
 
     public function edit($projectId)
     {
-        /** WOULD BE BETTER TO UTILIZE PROJECT CODE IN LIEU OF PROJECT ID PUBLICLY **/
       
         $project = Project::find($projectId);
 
@@ -101,7 +108,7 @@ class ProjectsController extends Controller
     private function saveProject(array $input)
     {
         if (!Request::has('id')) {
-            return Project::create($input);
+          return Project::create($input);
         }
 
         $project = Project::find(Request::get('id'));

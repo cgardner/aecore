@@ -23,7 +23,7 @@
       $image = Companylogo::where('companylogos.company_id', '=', $company_id)
               ->leftjoin('s3files', 'companylogos.file_id_sq_sm', '=', 's3files.id')
               ->first();
-      if($image->file_id_sq_sm != null) {
+      if(count($image) > 0 && $image->file_id_sq_sm != null) {
         $s3 = AWS::get('s3');
         return $s3->getObjectUrl($image->file_bucket, $image->file_path . '/' . $image->file_name);
       } else {
