@@ -24,7 +24,25 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        return view('projects.index');
+        $projects = Project::where('company_id', Auth::User()->company_id)->get();
+        
+        foreach($projects AS $project) {
+          
+          // Format blank size
+          if($project->size == '') {
+            $project->size = 'N/A';
+          }
+          
+          // Format size unit
+          if($project->size_unit == 'feet' && $project->size != '') {
+            $project->size_unit = 'SF';
+          } elseif($project->size_unit == 'meters' && $project->size != '') {
+            $project->size_unit = 'SM';
+          }
+        }
+        
+        return view('projects.index')
+            ->with('projects', $projects);
     }
 
     /**
@@ -53,7 +71,7 @@ class ProjectsController extends Controller
 
         $project = $this->saveProject($input);
 
-        return redirect()->route('projects.show', ['projects' => $project->id]);
+        return Redirect::to('projects');
     }
 
     public function show($projectId)
@@ -66,6 +84,8 @@ class ProjectsController extends Controller
 
     public function edit($projectId)
     {
+        /** WOULD BE BETTER TO UTILIZE PROJECT CODE IN LIEU OF PROJECT ID PUBLICLY **/
+      
         $project = Project::find($projectId);
 
         return view('projects.edit')

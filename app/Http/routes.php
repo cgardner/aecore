@@ -27,7 +27,16 @@ Route::controllers([
 |--------------------------------------------------------------------------
 */
 
+Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], function(){
+  
+  /* Projects */
+  Route::resource('projects', 'ProjectsController');
+  
+});
+
+// These routes don't require a user to join a company
 Route::group(['middleware'=>'userstatus'], function(){
+  
   // Welcome
   Route::get('welcome/company', function() {
     return View::make('welcome.company');
@@ -81,12 +90,5 @@ Route::group(['middleware'=>'userstatus'], function(){
   /* Autocomplete */
   Route::post('autocomplete/companies', 'AutocompleteController@findCompanies');
   Route::post('autocomplete/users', 'AutocompleteController@findUsers');
-  
-});
-
-Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], function(){
-  
-  /* Projects */
-  Route::resource('projects', 'ProjectsController');
   
 });

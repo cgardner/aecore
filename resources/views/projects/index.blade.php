@@ -8,9 +8,7 @@
   
 	<div class="row">
     <div class="col-sm-9">
-      <div class="panel panel-default">
-        @include('projects.partials.project_list')
-      </div>
+      @include('projects.partials.project_list')
     </div>
 		<div class="col-md-3">
       @include('projects.partials.project_filter')
