@@ -1,22 +1,27 @@
 <?php namespace App\Models;
 
-  use Illuminate\Auth\Authenticatable;
-  use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
-  class Company extends Model {
-    
+class Company extends Model
+{
+
     protected $table = 'companys';
     protected $fillable = ['companycode', 'name', 'type', 'labor', 'account', 'status'];
-      
+
     // relation
-    public function user() {
-      return $this->hasMany('App\Models\User');
+    public function user()
+    {
+        return $this->hasMany('App\Models\User');
     }
-    public function companylocation() {
-      return $this->hasOne('App\Models\Companylocation');
+
+    public function companylocation()
+    {
+        return $this->hasOne('App\Models\Companylocation');
     }
-    public function companyavatar() {
-      return $this->hasOne('App\Models\Companyavatar');
+
+    public function companyavatar()
+    {
+        return $this->hasOne('App\Models\Companyavatar');
     }
-    
-  }
+   
+}
