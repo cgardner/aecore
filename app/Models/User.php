@@ -80,6 +80,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->belongsTo('App\Models\Company');
     }
 
+    public function project()
+    {
+        return $this->hasMany('App\Models\Project');
+    }
+
     public function getGravatarAttribute()
     {
         // Defaulting to gravatar
