@@ -30,7 +30,8 @@ Route::controllers([
 Route::group(['middleware'=>'userstatus'], function(){
     
   /* Projects */
-  Route::get('projects', 'ProjectsController@index');
+  Route::resource('projects', 'ProjectsController');
+  
   
   /* Tasks */
   Route::post('tasks/create', 'TasksController@createTask');

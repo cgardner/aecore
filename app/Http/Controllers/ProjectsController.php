@@ -32,5 +32,10 @@ class ProjectsController extends Controller {
 	{
 		return view('projects.list');
 	}
+  
+	public function create()
+	{
+		return view('projects.create');
+	}
 
 }

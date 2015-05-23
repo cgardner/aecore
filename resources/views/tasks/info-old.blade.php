@@ -82,7 +82,6 @@
         </div>
       </div>
     </div>
-  {!! Form::close() !!}
 
   {!! Form::open(array('id'=>'task_attachments_upload', 'method' => 'post', 'class' => 'form-horizontal', 'files' => true)) !!}
     <div class="form-group no-margin">
