@@ -28,10 +28,10 @@ Route::controllers([
 */
 
 Route::group(['middleware'=>'userstatus'], function(){
-    
-  /* Projects */
-  Route::resource('projects', 'ProjectsController');
-  
+  // Welcome
+  Route::get('welcome/company', function() {
+    return View::make('welcome.company');
+  }); 
   
   /* Tasks */
   Route::post('tasks/create', 'TasksController@createTask');
@@ -41,13 +41,13 @@ Route::group(['middleware'=>'userstatus'], function(){
   Route::get('tasks/{listcode?}', 'TasksController@index');
   Route::get('tasks/following/{usercode}', array('uses' => 'TasksController@indexFollowing'));
   
-    /* Task details */
-    Route::get('tasks/details/{taskcode}', array('uses' => 'TasksController@showTask'));
-    Route::post('tasks/follower', 'TasksController@updateFollower');
-    
-    /* Task Lists */
-    Route::post('tasks/list/create', 'TasksController@createList');
-    Route::post('tasks/list/remove', 'TasksController@removeList');
+  /* Task details */
+  Route::get('tasks/details/{taskcode}', array('uses' => 'TasksController@showTask'));
+  Route::post('tasks/follower', 'TasksController@updateFollower');
+
+  /* Task Lists */
+  Route::post('tasks/list/create', 'TasksController@createList');
+  Route::post('tasks/list/remove', 'TasksController@removeList');  
   
   /* Company Settings */
   Route::group(['middleware'=>'admincheck'], function(){
@@ -81,5 +81,12 @@ Route::group(['middleware'=>'userstatus'], function(){
   /* Autocomplete */
   Route::post('autocomplete/companies', 'AutocompleteController@findCompanies');
   Route::post('autocomplete/users', 'AutocompleteController@findUsers');
+  
+});
+
+Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], function(){
+  
+  /* Projects */
+  Route::resource('projects', 'ProjectsController');
   
 });

@@ -9,9 +9,10 @@ class Project extends Model
 
     protected $fillable = [
         'company_id',
-        'status',
-        'name',
+        'user_id',
+        'projectcode',
         'number',
+        'name',
         'type',
         'start',
         'finish',
@@ -23,8 +24,8 @@ class Project extends Model
         'city',
         'state',
         'zip_code',
-        'submittal_code',
-        'user_id'
+        'status',
+        'submittal_code'
     ];
 
     /**

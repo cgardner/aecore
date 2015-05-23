@@ -4,6 +4,7 @@ use App\Models\Project;
 use App\Models\User;
 use Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 use Request;
 
 class ProjectsController extends Controller
@@ -23,7 +24,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        return view('projects.list');
+        return view('projects.index');
     }
 
     /**
@@ -41,15 +42,14 @@ class ProjectsController extends Controller
      */
     public function store()
     {
-        /** @var User $user */
-        $user = Auth::User();
 
         $input = Request::except('value', 'size', '_token');
 
-        $input['user_id'] = $user->id;
+        $input['projectcode'] = Str::random(10);
+        $input['user_id'] = Auth::User()->id;
         $input['value'] = filter_var(Request::get('value'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $input['size'] = filter_var(Request::get('size'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $input['company_id'] = $user->company_id;
+        $input['company_id'] = Auth::User()->company_id;
 
         $project = $this->saveProject($input);
 
