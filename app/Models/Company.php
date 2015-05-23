@@ -23,5 +23,9 @@ class Company extends Model
     {
         return $this->hasOne('App\Models\Companyavatar');
     }
-   
+
+    public function projects()
+    {
+        return $this->hasMany('App\Models\Project');
+    }
 }
