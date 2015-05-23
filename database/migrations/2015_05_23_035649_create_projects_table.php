@@ -15,7 +15,8 @@ class CreateProjectsTable extends Migration {
 	{
         Schema::create('projects', function(Blueprint $table) {
             $table->unsignedBigInteger('id', true);
-            $table->unsignedInteger('company_id');
+            $table->unsignedInteger('company_id')
+                ->nullable();
             $table->string('status');
             $table->string('name');
             $table->string('type');
@@ -38,10 +39,6 @@ class CreateProjectsTable extends Migration {
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
-
-            $table->foreign('company_id')
-                ->references('id')
-                ->on('companys');
         });
 	}
 
