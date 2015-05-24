@@ -342,8 +342,11 @@ class TasksController extends Controller {
           ->update([
             'assigned_by' => Auth::User()->id
           ]);
+      
+      $user = User::where('id', $request->get('data'))->first(['name']);
+      
       // Add task comment
-      $comment_text = '<span class="glyphicon glyphicon-user small"></span> reassigned this task';
+      $comment_text = '<span class="glyphicon glyphicon-user small"></span> assigned this task to <strong>' . $user->name . '</strong>';
       $this->taskComment($task->id, 'activity', $comment_text);
     
       if($request->get('data') != Auth::User()->id) {
