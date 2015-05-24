@@ -38,13 +38,10 @@
     </script>
 
     <div class="pagehead">
-        <div class="container">
-            <h1>Create a New Project</h1>
-        </div>
+      <h1>Create a New Project</h1>
     </div>
-    <div class="container">
 
-        @yield('form-open')
+    @yield('form-open')
 
         <div class="panel panel-default">
             <div class="panel-heading">Basic Information</div>
@@ -213,6 +210,5 @@
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
-    </div>
+  {!! Form::close() !!}
 @stop

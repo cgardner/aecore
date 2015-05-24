@@ -37,6 +37,18 @@ fieldset[disabled] .btn-link-light {
   background-color: transparent;
 }
 
+/* Hide items on mobile */
+@media (max-width: 767px) {
+  .mobile-hide {
+    display:none;
+  }
+}
+@media (max-width: 992px) {
+  .tablet-hide {
+    display:none;
+  }
+}
+
 /* Nav Bar */
 .navbar-default {
   border-bottom:1px solid #d5d5d5;

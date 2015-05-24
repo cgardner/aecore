@@ -10,10 +10,10 @@
         <thead>
           <th style="text-align:right;">#</th>
           <th>Project</th>
-          <th>Address</th>
-          <th>Size</th>
-          <th>Value</th>
-          <th>Status</th>
+          <th class="tablet-hide">Address</th>
+          <th class="mobile-hide">Size</th>
+          <th class="mobile-hide">Value</th>
+          <th class="mobile-hide">Status</th>
           <th></th>
         </thead>
         <tbody>
@@ -21,10 +21,10 @@
           <tr>
             <td style="text-align:right;">{!! $project->number !!}</td>
             <td><a class="bold" href="#" title="Launch project.">{!! $project->name !!}</a></td>
-            <td>{!! @$project->street !!}<br>{!! $project->city . ', ' . $project->state . ' ' . $project->zip_code !!}</td>
-            <td>{!! number_format($project->size, 0, '.', ',') . ' ' . $project->size_unit !!}</td>
-            <td>{!! '$' . number_format($project->value, 0, '.', ',') !!}</td>
-            <td>{!! $project->status !!}</td>
+            <td class="tablet-hide">{!! @$project->street !!}<br>{!! $project->city . ', ' . $project->state . ' ' . $project->zip_code !!}</td>
+            <td class="mobile-hide">{!! number_format($project->size, 0, '.', ',') . ' ' . $project->size_unit !!}</td>
+            <td class="mobile-hide">{!! '$' . number_format($project->value, 0, '.', ',') !!}</td>
+            <td class="mobile-hide">{!! $project->status !!}</td>
             <td>{!! link_to('projects/edit/' . $project->projectcode, 'Edit', array('class' => 'btn btn-xs btn-default')) !!}</td>
           </tr>
           @endforeach
@@ -33,11 +33,3 @@
     </div>
   </div>
 @endif
-
-<ul class="pagination pull-right">
-  <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-  <li class="active"><a href="#">1</a></li>
-  <li><a href="#">2</a></li>
-  <li><a href="#">3</a></li>
-  <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-</ul>
