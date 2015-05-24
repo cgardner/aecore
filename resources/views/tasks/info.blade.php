@@ -119,6 +119,59 @@
         .append('<a>' + item.avatar + '<span class="bold" style="margin:0 0 2px 0;">' + item.label + '</span><br><span class="text-muted small" style="margin:0;">' + item.title + '</span>' )
         .appendTo(ul);
       };      
+      
+    //Find task lists
+    var NoResultsLabel = "No results found.";
+    $('#term_lists').autocomplete({
+      source: function(request, response) {    
+        $.ajax({ url: "/autocomplete/tasklists",
+          data: {term: $("#term_lists").val()},
+          dataType: "json",
+          type: "POST",
+          success: function(data){
+            if(!data.length){
+              var result = [{
+                label: NoResultsLabel,
+                title: '',
+                value: response.term,
+                file: ''
+              }];
+               response(result);
+             } else {
+              response(data);
+            }
+          }
+        });
+      },
+      minLength:1,
+      focus: function(event, ui) {
+        if (ui.item.label === NoResultsLabel) {
+          event.preventDefault();
+        } else {
+          $("#term_lists").val(ui.item.label);
+        }
+        return false; // Prevent the widget from inserting the value.
+      },
+      change: function (event, ui) {
+        if(!ui.item){
+          $(event.target).val("");
+        }
+      },
+      select: function(event, ui) {
+        if (ui.item.label === NoResultsLabel) {
+          $(event.target).val("");
+        } else {
+          updateTask('<?php echo $taskdata->taskcode; ?>', 'addList', ui.item.value);
+          $(event.target).val("");
+        }
+        return false;// Prevent the widget from inserting the value.
+      }
+    }).data("ui-autocomplete")._renderItem = function(ul, item) {
+        return $('<li></li>')
+        .append('<a><span style="margin:0 0 2px 0;">' + item.label + '</span>')
+        .appendTo(ul);
+      };
+      
   });
 </script>
 
@@ -176,6 +229,22 @@
             <span id="follower-{!! $follower->taskcode . $follower->user_id !!}" class="label label-info label-lg" style="display:inline-block;margin:5px 5px 0 0;">{!! $follower->name !!} <span class="glyphicon glyphicon-remove pointer small" onClick="removeFollower('<?php echo $follower->taskcode; ?>', '<?php echo $follower->user_id; ?>');" title="Remove user from task."></span></span>
           @endforeach
         </div>
+      </div>
+    </div>
+    
+    <!-- LIST -->
+    <div class="form-group">
+      <label class="col-xs-1 control-label control-label-lg"><span class="glyphicon glyphicon-list"></span></label>
+      <div class="col-xs-11">
+        @if(count($listdata) > 0)
+          <div class="usertag" id="list-{!! $listdata->taskcode !!}">
+            <span style="margin-left:10px;">{!! $listdata->list !!}</span>
+            <span class="usertag-remove"><span class="glyphicon glyphicon-remove-sign" onClick="updateTask('<?php echo $listdata->taskcode; ?>', 'removeList');" title="Remove list from task."></span></span>
+          </div>
+          {!! Form::text('term_lists', null, array('id'=>'term_lists', 'class'=>'form-control', 'style'=>'display:none;', 'placeholder'=>'Pin to list...')) !!}
+        @else
+          {!! Form::text('term_lists', null, array('id'=>'term_lists', 'class'=>'form-control', 'placeholder'=>'Pin to list...')) !!}
+        @endif
       </div>
     </div>
     

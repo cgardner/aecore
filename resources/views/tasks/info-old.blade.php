@@ -71,17 +71,7 @@
 </script>
 
 
-    <div class="form-group">
-      <label class="col-xs-1 control-label control-label-lg"><span class="glyphicon glyphicon-pushpin"></span></label>
-      <div class="col-xs-11">
-        {!! Form::text('term_lists', null, array('id'=>'term_lists', 'class'=>'form-control', 'placeholder'=>'Pin to lists...')) !!}
-        <div id="lists">
-          @foreach($tasklists as $list)
-            <span id="list-{!! $list->listcode !!}" class="label label-warning label-lg" style="display:inline-block;margin:5px 5px 0 0;">{!! $list->list !!} <span class="glyphicon glyphicon-remove pointer small" onClick="task_list_remove('<?php echo $taskdata->code; ?>', '<?php echo $list->listcode; ?>');" title="Remove list from task."></span></span>
-          @endforeach
-        </div>
-      </div>
-    </div>
+
 
   {!! Form::open(array('id'=>'task_attachments_upload', 'method' => 'post', 'class' => 'form-horizontal', 'files' => true)) !!}
     <div class="form-group no-margin">

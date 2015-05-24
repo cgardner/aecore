@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Input;
+use Auth;
 use DB;
 use Response;
 
@@ -13,6 +14,7 @@ use App\Models\Company;
 use App\Models\Companylogo;
 use App\Models\User;
 use App\Models\Useravatar;
+use App\Models\Tasklist;
 
 class AutocompleteController extends Controller {
 
@@ -88,6 +90,42 @@ class AutocompleteController extends Controller {
         'label'     => $row->name,
         'title'     => $row->title,
         'avatar'    => '<img class="avatar_company" src="' . $useravatar->getUserAvatar($row->id, 'sm') . '"/>'
+      );
+    }
+    
+    // Return array data
+    return Response::json($data);
+  }
+
+  public function findTasklists() {
+
+    // Get search term
+    $term = Input::get('term');
+
+    // Run query
+    $result = Tasklist::where('tasklists.list', 'ILIKE', '%'.trim($term).'%')
+              ->where('tasklists.status', '=', 'active')
+              ->where('tasklists.user_id', '=', Auth::User()->id)
+              ->orderBy('tasklists.list', 'asc')
+              ->get(array(
+                  'tasklists.id',
+                  'tasklists.listcode',
+                  'tasklists.list'
+                ));
+
+    // Build array
+    $data = array();
+    $useravatar = new Useravatar;
+
+    foreach($result as $row){
+      
+      if($row->title == "") {
+        $row->title = "No title";
+      }
+      
+      $data[] = array(
+        'value'     => $row->id,
+        'label'     => $row->list
       );
     }
     

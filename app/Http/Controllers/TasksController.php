@@ -434,10 +434,29 @@ class TasksController extends Controller {
     
     $taskdata = Task::leftjoin('users', 'tasks.user_id', '=', 'users.id')
               ->leftjoin('taskdates', 'tasks.id', '=', 'taskdates.task_id')
-              ->leftjoin('tasklists', 'tasklists.id', '=', 'tasks.tasklist_id')
               ->where('tasks.taskcode', '=', $taskcode)
               ->where('tasks.status', '!=', 'disabled')
-              ->first(array('tasks.id', 'tasks.user_id', 'tasks.taskcode', 'users.name', 'tasks.task', 'tasks.status', 'tasks.priority', 'taskdates.date_due'));
+              ->first([
+                'users.name',
+                'tasks.id',
+                'tasks.user_id',
+                'tasks.taskcode',
+                'tasks.task',
+                'tasks.status',
+                'tasks.priority',
+                'taskdates.date_due'
+              ]);
+    
+    $listdata = Tasklist::leftjoin('tasks', 'tasklists.id', '=', 'tasks.tasklist_id')
+              ->where('tasks.taskcode', '=', $taskcode)
+              ->where('tasks.status', '!=', 'disabled')
+              ->where('tasklists.status', '!=', 'disabled')
+              ->first([
+                'tasks.taskcode',
+                'tasklists.list',
+                'tasklists.status',
+                'tasklists.listcode'
+              ]);
     
     $taskfollowers = Taskfollower::leftjoin('users', 'taskfollowers.user_id', '=', 'users.id')
               ->leftjoin('tasks', 'taskfollowers.task_id', '=', 'tasks.id')
@@ -445,7 +464,9 @@ class TasksController extends Controller {
               ->where('taskfollowers.status', '=', 'active')
               ->where('taskfollowers.user_id', '!=', $taskdata->user_id)
               ->get(array('taskfollowers.id', 'tasks.taskcode', 'taskfollowers.user_id', 'users.name'));
-//    
+    
+    
+            
 //    $attachments = \DB::table('taskattachments')
 //              ->leftjoin('s3files', 'taskattachments.file_id', '=', 's3files.id')
 //              ->where('task_id', '=', $taskdata->id)
@@ -464,6 +485,7 @@ class TasksController extends Controller {
             ->with(array(
               'taskdata' => $taskdata,
               'taskfollowers' => $taskfollowers,
+              'listdata' => $listdata,
               //'attachments' => $attachments,
               //'activitys' => $activitys,
               //'functionscontroller' => new FunctionsController

@@ -90,5 +90,6 @@ Route::group(['middleware'=>'userstatus'], function(){
   /* Autocomplete */
   Route::post('autocomplete/companies', 'AutocompleteController@findCompanies');
   Route::post('autocomplete/users', 'AutocompleteController@findUsers');
+  Route::post('autocomplete/tasklists', 'AutocompleteController@findTasklists');
   
 });

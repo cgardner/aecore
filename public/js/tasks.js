@@ -35,7 +35,7 @@ function showTask(taskcode) {
 }
 
 // Update a task
-function updateTask(taskcode, action, postdata) {
+function updateTask(taskcode, action, data) {
   
   $.ajaxSetup({
     headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
@@ -80,7 +80,6 @@ function updateTask(taskcode, action, postdata) {
    
   if(action == 'assign') {
     var type = 'user_id';
-    var data = postdata;   
   }
    
   if(action == 'date') {
@@ -91,19 +90,34 @@ function updateTask(taskcode, action, postdata) {
     }
   }
   
+  if(action == 'removeList') {
+    var type = 'tasklist_id';
+    var data = '0';
+  }
+  
+  if(action == 'addList') {
+    var type = 'tasklist_id';
+  }
+  
   if(data != "") {
     $.ajax({
       type: "POST",
       url: '/tasks/update',
       data: {taskcode:taskcode, type:type, data:data},
       success: function() {
-        if(action == 'assign') {
+        if(action == 'assign' || action == 'addList') {
           showTask(taskcode);
         }
         if(action == 'date') {
           setTimeout(function() { 
             $('#loader-line-date').html(''); 
           }, 500);
+        }
+        if(action == 'removeList') {
+          $('#list-tag-'+taskcode).hide();
+          $('#list-'+taskcode).hide();
+          $('#term_lists').show();
+          $('#term_lists').focus();
         }
       }
     });

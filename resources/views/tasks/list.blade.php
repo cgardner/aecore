@@ -68,7 +68,7 @@
       </div>
       <div class="taskline-input-wrapper">
         @if($mytask->list != "")
-          <a href="{!! URL::to('tasks/' . $mytask->listcode) !!}" class="task_tags task_project">{!! $mytask->list !!}</a>
+          <a href="{!! URL::to('tasks/' . $mytask->listcode) !!}" id="list-tag-{!! $mytask->taskcode !!}" class="task_tags task_project">{!! $mytask->list !!}</a>
         @endif
         @if($mytask->date_due != "")
           <span id="task-date-{!! $mytask->taskcode !!}" class="task_tags task_date">{!! $mytask->date_due !!}</span>
