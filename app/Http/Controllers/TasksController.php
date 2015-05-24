@@ -17,10 +17,12 @@ use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Requests\CreateTasklistRequest;
 use App\Http\Requests\UpdateTaskFollowerRequest;
+use App\Http\Requests\TaskCommentRequest;
 
 // Models
 use App\Models\Task;
 use App\Models\Taskdate;
+use App\Models\Taskfeed;
 use App\Models\Taskfollower;
 use App\Models\Tasklist;
 use App\Models\Taskrefresh;
@@ -292,7 +294,7 @@ class TasksController extends Controller {
       $list_id = "0";
     }
     
-		Task::create([
+		$task = Task::create([
       'user_id'     => Auth::User()->id,
       'assigned_by' => Auth::User()->id,
       'tasklist_id' => $list_id,
@@ -301,8 +303,8 @@ class TasksController extends Controller {
     ]);
     
     // Add task comment
-    $comment_text = "created this task";
-    //$this->taskComment($task_id_instert, 'activity', $comment_text);
+    $comment_text = '<span class="glyphicon glyphicon-plus small"></span> created this task';
+    $this->taskComment($task->id, 'activity', $comment_text);
       
     return Redirect::to('tasks/'.Session::get('listcode'));
 	}
@@ -321,8 +323,8 @@ class TasksController extends Controller {
     
     if($request->get('data') == 'open') {
       // Add task comment
-      $comment_text = '<span class="glyphicon glyphicon-unchecked"></span> reopened this task';
-      //$this->taskComment($task->id, 'activity', $comment_text);          
+      $comment_text = '<span class="glyphicon glyphicon-unchecked small"></span> reopened this task';
+      $this->taskComment($task->id, 'activity', $comment_text);          
     }
     
     if($request->get('data') == 'complete') {
@@ -331,8 +333,8 @@ class TasksController extends Controller {
                   'date_complete' => \Carbon::now()
                 ]);
       // Add task comment
-      $comment_text = '<span class="glyphicon glyphicon-check"></span> completed this task';
-      //$this->taskComment($task->id, 'activity', $comment_text);       
+      $comment_text = '<span class="glyphicon glyphicon-check small"></span> completed this task';
+      $this->taskComment($task->id, 'activity', $comment_text);       
     }
     
     if($request->get('type') == 'user_id') {
@@ -341,8 +343,8 @@ class TasksController extends Controller {
             'assigned_by' => Auth::User()->id
           ]);
       // Add task comment
-      $comment_text = '<span class="glyphicon glyphicon-user"></span> reassigned this task';
-      //$this->taskComment($task->id, 'activity', $comment_text);
+      $comment_text = '<span class="glyphicon glyphicon-user small"></span> reassigned this task';
+      $this->taskComment($task->id, 'activity', $comment_text);
     
       if($request->get('data') != Auth::User()->id) {
         // Check if user is already assigned and update status
@@ -364,7 +366,6 @@ class TasksController extends Controller {
           ]);
         }
       }
-      
     }
     
     if($request->get('type') == 'date_due') {
@@ -377,8 +378,8 @@ class TasksController extends Controller {
                   'date_due' => $date_due
                 ]);
       // Add task comment
-      $comment_text = '<span class="glyphicon glyphicon-calendar"></span> changed date due to <strong>' . $request->get('data') . '</strong>';
-      //$this->taskComment($task->id, 'activity', $comment_text);
+      $comment_text = '<span class="glyphicon glyphicon-calendar small"></span> changed date due to <strong>' . $request->get('data') . '</strong>';
+      $this->taskComment($task->id, 'activity', $comment_text);
     }
 	}
 
@@ -393,9 +394,12 @@ class TasksController extends Controller {
     if($priority == '2') { $priority_text = '<span class="label label-warning">medium</span>'; }
     if($priority == '1') { $priority_text = '<span class="label label-primary">low</span>'; }
 
+    // Get id
+    $task = Task::where('taskcode', '=', $taskcode)->first();
+    
     // Add task comment
-    $comment_text = "changed the task priority to " . $priority_text;
-    //$this->taskComment($task->id, 'activity', $comment_text);
+    $comment_text = '<span class="glyphicon glyphicon-exclamation-sign small"></span> changed the task priority to ' . $priority_text;
+    $this->taskComment($task->id, 'activity', $comment_text);
       
     return Redirect::to('tasks/'.Session::get('listcode'));
   }
@@ -474,12 +478,11 @@ class TasksController extends Controller {
 //              ->orderby('s3files.file_name', 'asc')
 //              ->get();
 //    
-//    $activitys = \DB::table('taskcomments')
-//              ->leftjoin('users', 'taskcomments.user_id', '=', 'users.id')
-//              ->where('taskcomments.task_id', '=', $taskdata->id)
-//              ->where('taskcomments.status', '=', 'active')
-//              ->orderby('taskcomments.created_at', 'asc')
-//              ->get(array('users.name', 'taskcomments.user_id', 'taskcomments.comment', 'taskcomments.comment_type', 'taskcomments.created_at'));
+    $feeds = Taskfeed::leftjoin('users', 'taskfeeds.user_id', '=', 'users.id')
+              ->where('taskfeeds.task_id', '=', $taskdata->id)
+              ->where('taskfeeds.status', '=', 'active')
+              ->orderby('taskfeeds.created_at', 'asc')
+              ->get(array('users.name', 'taskfeeds.user_id', 'taskfeeds.comment', 'taskfeeds.type', 'taskfeeds.created_at'));
     
     return view('tasks.info')
             ->with(array(
@@ -487,7 +490,7 @@ class TasksController extends Controller {
               'taskfollowers' => $taskfollowers,
               'listdata' => $listdata,
               //'attachments' => $attachments,
-              //'activitys' => $activitys,
+              'feeds' => $feeds,
               //'functionscontroller' => new FunctionsController
             ));
   }
@@ -517,8 +520,30 @@ class TasksController extends Controller {
       Taskfollower::create([
           'task_id' => $task->id,
           'user_id' => $user_id,
-          'status' => $status
+          'status'  => $status
       ]);
     }
   }
+  
+  public function postTaskComment(TaskCommentRequest $request) {
+    // Get post data from javascript
+    $taskcode = $request->get('taskcode');
+    $comment = $request->get('comment');
+    
+    // Get task id
+    $task = Task::where('taskcode', $taskcode)->first();
+    
+    // Add task comment
+    $this->taskComment($task->id, 'comment', $comment);
+  }
+  
+  public function taskComment($id, $type, $comment) {
+    Taskfeed::create([
+      'task_id' => $id,
+      'user_id' => Auth::User()->id,
+      'type'    => $type,
+      'comment' => $comment
+    ]);
+  }
+  
 }

@@ -21,5 +21,8 @@
     public function taskfollower() {
       return $this->hasMany('App\Models\Taskfollower');
     }
+    public function taskfeed() {
+      return $this->hasMany('App\Models\Taskfeed');
+    }
     
   }

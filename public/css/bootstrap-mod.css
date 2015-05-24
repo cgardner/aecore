@@ -563,6 +563,45 @@ a.task_project:hover {
   color:#3D474E;
   font-size:1.1em;
 }
+.task-info-feed {
+  padding:0 15px 15px 15px;
+  position:absolute;
+  top:60%;
+  right:0;
+  bottom:54px;
+  left:0;
+  overflow-y:auto;
+  border-top:1px solid #ddd;
+}
+.task-info-comment {
+  height:54px;
+  padding:10px;
+  position:absolute;
+  right:0;
+  bottom:0;
+  left:0;
+  border-top:1px solid #ddd;
+  background:#f7f7f7;
+}
+.task-comment-wrapper {
+  max-height:200px;
+  overflow-y:auto;
+}
+.task-comment {
+  margin:12px 0 0 0;
+}
+.task-comment p.task-comment-line1 {
+  margin:0 0 0 44px;
+  font-size:0.9em;
+  line-height:16px;
+}
+.task-comment p.task-comment-line2 {
+  margin:0 0 0 44px;
+}
+.task-comment p.task-comment-line2 .label {
+  position:relative;
+  top:-2px;
+}
 
 /* Margin, must be last! */
 .no-margin { margin:0; }

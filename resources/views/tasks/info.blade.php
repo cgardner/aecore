@@ -1,8 +1,9 @@
 <script type="text/javascript">
   
+  // Submit comment on enter
   $('#comment').keypress(function(e){
      if(e.which == 13){
-        taskComment('<?php echo $taskdata->code; ?>');
+        taskComment('<?php echo $taskdata->taskcode; ?>');
      }
   });
 
@@ -15,7 +16,15 @@
     }
   });
     
-  $(document).ready(function(){         
+  $(document).ready(function(){
+  
+    // Scroll to bottom of comments
+    $(function () {
+        var comments = $('#task-comments');
+        var height = comments[0].scrollHeight;
+        comments.scrollTop(height);
+    });
+  
     //Find assign users
     var NoResultsLabel = "No results found.";
     $('#term').autocomplete({
@@ -211,9 +220,9 @@
       <label class="col-xs-1 control-label control-label-lg" for="date_due"><span class="glyphicon glyphicon-calendar"></span></label>
       <div class="col-xs-6">
         @if($taskdata->date_due != null)
-          {!! Form::text('date_due', date('m/d/Y', strtotime($taskdata->date_due)), array('id'=>'date_due', 'class' => 'form-control', 'placeholder' => 'Date required...')) !!}
+          {!! Form::text('date_due', date('m/d/Y', strtotime($taskdata->date_due)), array('id'=>'date_due', 'class' => 'form-control', 'placeholder' => 'Date due...')) !!}
         @else
-          {!! Form::text('date_due', null, array('id'=>'date_due', 'class' => 'form-control', 'placeholder' => 'Date required...')) !!}
+          {!! Form::text('date_due', null, array('id'=>'date_due', 'class' => 'form-control', 'placeholder' => 'Date due...')) !!}
         @endif
         <div id="loader-line-date"></div>
       </div>
@@ -248,5 +257,29 @@
       </div>
     </div>
     
+    <div class="task-info-feed" id="task-comments">
+      <?php $useravatar = new App\Models\Useravatar; ?>
+      @foreach($feeds AS $feed)
+      <div class="task-comment">
+        <img src="{!! $useravatar->getUserAvatar($feed->user_id, 'sm') !!}" class="avatar_sm" />
+        <p class="task-comment-line1">
+          <span class="pull-right text-muted small">{!! Timezone::convertFromUTC($feed->created_at, Auth::user()->timezone, 'M d') !!}</span>
+          <a href="" class="bold" title="View {!! $feed->name !!}'s profile.">{!! $feed->name !!}</a>
+        </p>
+        <p class="task-comment-line2 <?php if($feed->type == 'activity') { echo 'text-muted'; } ?>">{!! $feed->comment !!}</p>  
+      </div>
+      @endforeach
+    </div>
+    
+    <div class="task-info-comment">
+      <div class="form-group no-margin">
+        <div class="col-xs-1">
+          <img src="{!! Auth::user()->gravatar !!}" class="avatar_sm"/>
+        </div>
+        <div class="col-xs-11">
+          {!! Form::text('comment', null, array('id'=>'comment', 'class'=>'form-control', 'placeholder'=>'Comment...')) !!}
+        </div>
+      </div>
+    </div>
   {!! Form::close() !!}
 </div>
