@@ -1,20 +1,24 @@
 <?php namespace App\Http\Controllers;
 
 use App\Models\Project;
-use App\Models\User;
-use Auth;
-use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
-use Request;
+use Illuminate\View\View;
 
 class ProjectsController extends Controller
 {
+    private $project;
+
     /**
      * Create a new controller instance.
+     * @param Project $project Project Model.
      */
-    public function __construct()
+    public function __construct(Project $project)
     {
         $this->middleware('auth');
+        $this->project = $project;
     }
 
     /**
@@ -24,25 +28,8 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = Project::where('company_id', Auth::User()->company_id)->get();
-        
-        foreach($projects AS $project) {
-          
-          // Format blank size
-          if($project->size == '') {
-            $project->size = 'N/A';
-          }
-          
-          // Format size unit
-          if($project->size_unit == 'feet' && $project->size != '') {
-            $project->size_unit = 'SF';
-          } elseif($project->size_unit == 'meters' && $project->size != '') {
-            $project->size_unit = 'SM';
-          }
-        }
-        
         return view('projects.index')
-            ->with('projects', $projects);
+            ->with('projects', Auth::User()->projects);
     }
 
     /**
@@ -60,43 +47,18 @@ class ProjectsController extends Controller
      */
     public function store()
     {
-
         $input = Request::except('value', 'size', '_token');
 
+        $user = Auth::User();
+
         $input['projectcode'] = Str::random(10);
-        $input['user_id'] = Auth::User()->id;
+        $input['user_id'] = $user->id;
         $input['value'] = filter_var(Request::get('value'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $input['size'] = filter_var(Request::get('size'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-        $input['company_id'] = Auth::User()->company_id;
+        $input['company_id'] = $user->company_id;
 
-        $project = $this->saveProject($input);
-          
-        // Add current user to this project
-        Projectuser::create([
-            'project_id'  => $project->id,
-            'user_id'     => Auth::User()->id,
-            'access'      => 'admin',
-            'role'        => Auth::User()->Company->type
-        ]);
-          
-        return Redirect::to('projects');
-    }
-
-    public function show($projectId)
-    {
-        $project = Project::find($projectId);
-
-        return view('projects.show')
-            ->with('project', $project);
-    }
-
-    public function edit($projectId)
-    {
-      
-        $project = Project::find($projectId);
-
-        return view('projects.edit')
-            ->with('project', $project);
+        $this->saveProject($input);
+        return new RedirectResponse(route('projects.index'));
     }
 
     /**
@@ -108,12 +70,36 @@ class ProjectsController extends Controller
     private function saveProject(array $input)
     {
         if (!Request::has('id')) {
-          return Project::create($input);
+            return $this->project
+                ->create($input);
         }
 
-        $project = Project::find(Request::get('id'));
+        $project = $this->project
+            ->find(Request::get('id'));
         $project->fill($input);
         $project->save();
         return $project;
+    }
+
+    public function show($projectId)
+    {
+        $project = $this->project
+            ->find($projectId);
+
+        return view('projects.show')
+            ->with('project', $project);
+    }
+
+    public function edit($projectId)
+    {
+        $user = Auth::user();
+        $project = $this->project
+            ->find($projectId);
+        if ($user->company_id != $project->company_id) {
+            return new RedirectResponse(route('projects.index'));
+        }
+
+        return view('projects.edit')
+            ->with('project', $project);
     }
 }

@@ -19,13 +19,21 @@
         <tbody>
           @foreach($projects as $project)
           <tr>
-            <td style="text-align:right;">{!! $project->number !!}</td>
-            <td><a class="bold" href="#" title="Launch project.">{!! $project->name !!}</a></td>
-            <td class="tablet-hide">{!! @$project->street !!}<br>{!! $project->city . ', ' . $project->state . ' ' . $project->zip_code !!}</td>
-            <td class="mobile-hide">{!! number_format($project->size, 0, '.', ',') . ' ' . $project->size_unit !!}</td>
-            <td class="mobile-hide">{!! '$' . number_format($project->value, 0, '.', ',') !!}</td>
+            <td class="project-number">{!! $project->number !!}</td>
+            <td>
+                {!! link_to_route('projects.show', $project->name, ['project' => $project->id], ['class' => 'bold']) !!}
+            </td>
+            <td class="tablet-hide">
+                {!! @$project->street !!}<br>{!! $project->city . ', ' . $project->state . ' ' . $project->zip_code !!}
+            </td>
+            <td class="mobile-hide">
+                {!! $project->size ? number_format($project->size, 0, '.', ',') . ' ' . $project->size_unit : 'N/A' !!}
+            </td>
+            <td class="mobile-hide">${!! number_format($project->value, 0, '.', ',') !!}</td>
             <td class="mobile-hide">{!! $project->status !!}</td>
-            <td>{!! link_to('projects/edit/' . $project->projectcode, 'Edit', array('class' => 'btn btn-xs btn-default')) !!}</td>
+            <td>
+                {!! link_to_route('projects.edit', 'Edit', ['project' => $project->id], array('class' => 'btn btn-xs btn-default')) !!}
+            </td>
           </tr>
           @endforeach
         </tbody>

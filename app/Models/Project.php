@@ -28,24 +28,29 @@ class Project extends Model
         'submittal_code'
     ];
 
+    public function getSizeUnitAttribute()
+    {
+        $sizeUnit = $this->attributes['size_unit'];
+        if ($sizeUnit == '') {
+            return '';
+        }
+
+        if ($sizeUnit == 'feet') {
+            return 'SF';
+        }
+
+        return 'SM';
+    }
+
     /**
      * Relationship with the User model.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function users()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->hasManyThrough('App\Models\User', 'App\Models\Projectuser', 'user_id', 'id');
     }
 
-    /**
-     * Relationship with the Company model.
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function company()
-    {
-        return $this->belongsTo('App\Models\Company');
-    }
-    
     /**
      * Relationship with the Projectuser model.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
