@@ -1,19 +1,16 @@
 <?php
 use App\Models\Project;
 use App\Models\User;
-use Illuminate\Support\Facades\Redirect;
 
 class ProjectsControllerTest extends \TestCase
 {
     public function testStoreSavesNewProject()
     {
-        $user = new User();
-        $user->company_id = 1;
-        $user->company_user_status = 'active';
+        $user = new User(['company_id' => 1, 'company_user_status' => 'active']);
 
         $this->be($user);
 
-        $this->createMock('App\Models\Project')
+        $this->createMockModel('App\Models\Project')
             ->shouldReceive('create')
             ->once()
             ->andReturnSelf();
@@ -22,28 +19,20 @@ class ProjectsControllerTest extends \TestCase
         $this->assertRedirectedToRoute('projects.index');
     }
 
-    public function testProjectEditPageRedirectsUserToProjectsListWhenEditingAProjectTheyDidntCreate()
+    public function testProjectEditPageRedirectsUserToProjectsListWhenEditingAProjectTheyDidNotCreate()
     {
-        $this->markTestIncomplete();
-        $user = new User();
-        $user->id = 1;
-        $user->company_id = 1;
-        $user->company_user_status = 'active';
+        $user = new User(['id' => 1, 'company_id' => 1, 'company_user_status' => 'active']);
 
         $this->be($user);
 
-        $project = new Project();
-        $project->company_id = 2;
+        $project = new Project(['company_id' => 2]);
 
-        $this->createMock('App\Models\Project', ['find'])
+        $this->createMock('App\Models\Project', 'App\Models\Project[find]')
             ->shouldReceive('find')
             ->once()
             ->andReturn($project);
 
-        $response = $this->call('GET', 'projects/1/edit');
-        dd($response->getContent());
+        $this->call('GET', 'projects/1/edit');
         $this->assertRedirectedToRoute('projects.index');
     }
-
-
 }
