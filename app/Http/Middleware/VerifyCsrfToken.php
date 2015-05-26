@@ -17,4 +17,11 @@ class VerifyCsrfToken extends BaseVerifier {
 		return parent::handle($request, $next);
 	}
 
+    protected function tokensMatch($request)
+    {
+        if (env('APP_ENV') === 'testing') {
+            return true;
+        }
+        return parent::tokensMatch($request);
+    }
 }

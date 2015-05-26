@@ -605,3 +605,7 @@ a.task_project:hover {
 
 /* Margin, must be last! */
 .no-margin { margin:0; }
+
+.project-number {
+    text-align:right;
+}
