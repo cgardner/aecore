@@ -82,7 +82,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function projects()
     {
-        return $this->hasManyThrough('App\Models\Project', 'App\Models\Projectuser', 'project_id', 'id');
+        return $this->hasManyThrough('App\Models\Project', 'App\Models\Projectuser', 'user_id', 'id');
     }
 
     public function getGravatarAttribute()
