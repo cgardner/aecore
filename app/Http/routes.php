@@ -46,6 +46,7 @@ Route::group(['middleware'=>'userstatus'], function(){
   Route::post('tasks/create', 'TasksController@createTask');
   Route::post('tasks/update', 'TasksController@updateTask');
   Route::get('tasks/refresh', 'TasksController@refreshList');
+  Route::post('tasks/comment', 'TasksController@postTaskComment');
   Route::get('tasks/priority/{priority}/{taskcode}', 'TasksController@priorityChange');
   Route::get('tasks/{listcode?}', 'TasksController@index');
   Route::get('tasks/following/{usercode}', array('uses' => 'TasksController@indexFollowing'));

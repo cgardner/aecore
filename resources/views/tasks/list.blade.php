@@ -73,7 +73,7 @@
         @if($mytask->date_due != "")
           <span id="task-date-{!! $mytask->taskcode !!}" class="task_tags task_date">{!! $mytask->date_due !!}</span>
         @endif
-        <input type="text" class="form-control taskline-input <?php if($mytask->status == 'complete') { echo 'strike'; } ?>" id="task-text-{!! $mytask->taskcode !!}" value="{!! htmlspecialchars($mytask->task) !!}" onFocus="$('#taskline-<?php echo $mytask->taskcode; ?>').addClass('taskline-active');showTask('<?php echo $mytask->taskcode; ?>');" onBlur="updateTask('<?php echo $mytask->taskcode; ?>', 'task');$('#taskline-<?php echo $mytask->taskcode; ?>').removeClass('taskline-active');" onkeyup="$('#task-text-info').html(this.value);"/>
+        <input type="text" class="form-control taskline-input <?php if($mytask->status == 'complete') { echo 'strike'; } ?>" id="task-text-{!! $mytask->taskcode !!}" value="{!! htmlspecialchars($mytask->task) !!}" onFocus="$('div').removeClass('taskline-active');$('#taskline-<?php echo $mytask->taskcode; ?>').addClass('taskline-active');showTask('<?php echo $mytask->taskcode; ?>');" onBlur="updateTask('<?php echo $mytask->taskcode; ?>', 'task');" onkeyup="$('#task-text-info').html(this.value);"/>
       </div>
     </div>
     @endforeach

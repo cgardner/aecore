@@ -154,3 +154,19 @@ function removeFollower(taskcode, user_id) {
     }
   });
 }
+
+function taskComment(taskcode) {
+  $.ajaxSetup({
+    headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+  });
+  
+  var comment = $('#comment').val();
+  $.ajax({
+    type: "POST",
+    url: '/tasks/comment',
+    data: {taskcode:taskcode, comment:comment},
+    success: function() {
+      showTask(taskcode);
+    }
+  });
+}
