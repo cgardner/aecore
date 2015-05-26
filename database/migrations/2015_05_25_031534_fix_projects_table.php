@@ -18,6 +18,7 @@ class FixProjectsTable extends Migration
             'projects',
             function (Blueprint $table) {
                 $table->dropForeign('projects_user_id_foreign');
+                $table->index('projectcode');
             }
         );
     }
@@ -35,6 +36,8 @@ class FixProjectsTable extends Migration
                 $table->foreign('user_id')
                     ->references('id')
                     ->on('users');
+
+                $table->dropIndex('projects_projectcode_index');
             }
         );
     }
