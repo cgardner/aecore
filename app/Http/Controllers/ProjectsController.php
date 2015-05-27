@@ -28,8 +28,11 @@ class ProjectsController extends Controller
      */
     public function index()
     {
+        $projects = $this->project
+            ->forUser(Auth::User());
+
         return view('projects.index')
-            ->with('projects', Auth::User()->projects);
+            ->with('projects', $projects);
     }
 
     /**
