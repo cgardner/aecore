@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'default' => 'pgsql',
+	'default' => env('DB_DRIVER', 'pgsql'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -56,6 +56,12 @@ return [
 			'prefix'   => '',
 			'schema'   => 'public',
 		],
+
+        'sqlite' => [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => ''
+        ]
 
 	],
 
