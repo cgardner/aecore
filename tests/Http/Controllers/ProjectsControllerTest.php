@@ -27,9 +27,10 @@ class ProjectsControllerTest extends \TestCase
 
         $project = new Project(['company_id' => 2]);
 
-        $this->createMock('App\Models\Project', 'App\Models\Project[find]')
-            ->shouldReceive('find')
-            ->once()
+        $mockProject = $this->createMock('App\Models\Project', 'App\Models\Project');
+
+        $mockProject->shouldReceive('newQuery->find')
+            ->with(1)
             ->andReturn($project);
 
         $this->call('GET', 'projects/1/edit');
