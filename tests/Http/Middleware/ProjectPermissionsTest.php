@@ -40,9 +40,9 @@ class ProjectPermissionsTest extends \TestCase {
             ->andReturn(false);
 
         $response = $this->middleware
-            ->handle($this->request, function(){});
+            ->handle($this->request, function(){ return 'Redirected!'; });
 
-        $this->assertInstanceOf('Illuminate\Http\RedirectResponse', $response);
+        $this->assertEquals('Redirected!', $response);
     }
 
     public function testHandleOnARouteWithProjectParameterWhereTheCompanyDoesNotMatch()
@@ -98,5 +98,31 @@ class ProjectPermissionsTest extends \TestCase {
 
         $this->assertEquals('Success!', $response);
     }
+
+    public function testHandleOnARouteWhenNoProjectExists()
+    {
+        $this->request
+            ->shouldReceive('route->getParameter')
+            ->once()
+            ->with('projects', false)
+            ->andReturn(1);
+
+        $this->project
+            ->shouldReceive('newQuery->find')
+            ->once()
+            ->with(1)
+            ->andReturn(null);
+
+        $user = new User(['company_id' => 123]);
+        \Auth::shouldReceive('User')
+            ->once()
+            ->andReturn($user);
+
+        $response = $this->middleware
+            ->handle($this->request, function($request) { return 'Success!'; });
+
+        $this->assertInstanceOf('Illuminate\Http\RedirectResponse', $response);
+    }
+
 
 }

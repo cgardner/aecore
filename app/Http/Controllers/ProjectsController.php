@@ -18,7 +18,7 @@ class ProjectsController extends Controller
     public function __construct(Project $project)
     {
         $this->middleware('auth');
-        $this->middleware('project.permissions', ['only' => ['edit', 'show']]);
+        $this->middleware('project.permissions');
         $this->project = $project;
     }
 
