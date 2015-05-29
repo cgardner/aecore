@@ -18,6 +18,7 @@ class ProjectsController extends Controller
     public function __construct(Project $project)
     {
         $this->middleware('auth');
+        $this->middleware('project.permissions');
         $this->project = $project;
     }
 
@@ -95,12 +96,8 @@ class ProjectsController extends Controller
 
     public function edit($projectId)
     {
-        $user = Auth::user();
         $project = $this->project
             ->find($projectId);
-        if ($user->company_id != $project->company_id) {
-            return new RedirectResponse(route('projects.index'));
-        }
 
         return view('projects.edit')
             ->with('project', $project);
