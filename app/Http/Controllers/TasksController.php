@@ -21,6 +21,7 @@ use App\Http\Requests\TaskCommentRequest;
 
 // Models
 use App\Models\Task;
+use App\Models\Taskattachment;
 use App\Models\Taskdate;
 use App\Models\Taskfeed;
 use App\Models\Taskfollower;
@@ -437,7 +438,8 @@ class TasksController extends Controller {
             ]);
 	}
   
-  public function showTask($taskcode) {
+  public function showTask($taskcode)
+  {
     
     $taskdata = Task::leftjoin('users', 'tasks.user_id', '=', 'users.id')
               ->leftjoin('taskdates', 'tasks.id', '=', 'taskdates.task_id')
@@ -471,16 +473,13 @@ class TasksController extends Controller {
               ->where('taskfollowers.status', '=', 'active')
               ->where('taskfollowers.user_id', '!=', $taskdata->user_id)
               ->get(array('taskfollowers.id', 'tasks.taskcode', 'taskfollowers.user_id', 'users.name'));
+                
+    $attachments = Taskattachment::leftjoin('s3files', 'taskattachments.file_id', '=', 's3files.id')
+              ->where('task_id', '=', $taskdata->id)
+              ->where('status', '=', 'active')
+              ->orderby('s3files.file_name', 'asc')
+              ->get();
     
-    
-            
-//    $attachments = \DB::table('taskattachments')
-//              ->leftjoin('s3files', 'taskattachments.file_id', '=', 's3files.id')
-//              ->where('task_id', '=', $taskdata->id)
-//              ->where('status', '=', 'active')
-//              ->orderby('s3files.file_name', 'asc')
-//              ->get();
-//    
     $feeds = Taskfeed::leftjoin('users', 'taskfeeds.user_id', '=', 'users.id')
               ->where('taskfeeds.task_id', '=', $taskdata->id)
               ->where('taskfeeds.status', '=', 'active')
@@ -492,13 +491,14 @@ class TasksController extends Controller {
               'taskdata' => $taskdata,
               'taskfollowers' => $taskfollowers,
               'listdata' => $listdata,
-              //'attachments' => $attachments,
+              'attachments' => $attachments,
               'feeds' => $feeds,
-              //'functionscontroller' => new FunctionsController
+              'functionscontroller' => new FunctionsController
             ));
   }
 
-  public function updateFollower(UpdateTaskFollowerRequest $request) {
+  public function updateFollower(UpdateTaskFollowerRequest $request)
+  {
     
     // Get post data from javascript
     $taskcode = $request->get('taskcode');
@@ -528,7 +528,32 @@ class TasksController extends Controller {
     }
   }
   
-  public function postTaskComment(TaskCommentRequest $request) {
+  public function TaskAttachment($action, $code)
+  {
+    // Get post data from javascript
+    $file_id = Input::get('file_id');
+    
+    $task = Task::where('tasks.taskcode', '=', $code)->first(array('id'));
+    
+    $attachment = new Taskattachment;
+    if($action == 'add') {
+      foreach($file_id as $key => $i) {        
+        $attachment_data = array (
+          'task_id' => $task->id,
+          'file_id' => $file_id[$key],
+          'user_id' => Auth::User()->id
+        );
+        $attachment->create($attachment_data);
+      }
+    } elseif($action == 'remove') {
+      $attachment->where('task_id', '=', $task->id)
+              ->where('file_id', '=', $file_id)
+              ->update(['status' => 'disabled']);
+    }
+  }
+  
+  public function postTaskComment(TaskCommentRequest $request)
+  {
     // Get post data from javascript
     $taskcode = $request->get('taskcode');
     $comment = $request->get('comment');

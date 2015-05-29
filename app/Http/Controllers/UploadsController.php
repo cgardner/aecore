@@ -53,13 +53,13 @@ class UploadsController extends Controller {
         ));
 
         // Save image info in the database
-        $file_data = array (
+        $id = S3file::create([
+          'user_id' => Auth::user()->id,
           'file_bucket' => $s3bucket,
           'file_path' => $s3path,
           'file_name' => $file_name,
           'file_size' => $file_size
-        );
-        $id = Auth::user()->s3file()->create($file_data);
+        ]);
         return $id->id;
       }
     }
@@ -107,7 +107,6 @@ class UploadsController extends Controller {
           'file_name' => $file_name,
           'file_size' => $file_size
         ]);
-        
         return $id->id;
       }
     }

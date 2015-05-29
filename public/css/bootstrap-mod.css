@@ -586,9 +586,11 @@ a.task_project:hover {
 .task-comment-wrapper {
   max-height:200px;
   overflow-y:auto;
+  background:#fff;
 }
 .task-comment {
   margin:12px 0 0 0;
+  background:#fff;
 }
 .task-comment p.task-comment-line1 {
   margin:0 0 0 44px;

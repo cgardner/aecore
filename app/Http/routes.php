@@ -54,7 +54,8 @@ Route::group(['middleware'=>'userstatus'], function(){
   /* Task details */
   Route::get('tasks/details/{taskcode}', array('uses' => 'TasksController@showTask'));
   Route::post('tasks/follower', 'TasksController@updateFollower');
-
+  Route::post('tasks/attachment/{action}/{code}', array('uses' => 'TasksController@TaskAttachment'));
+  
   /* Task Lists */
   Route::post('tasks/list/create', 'TasksController@createList');
   Route::post('tasks/list/remove', 'TasksController@removeList');  
@@ -92,5 +93,8 @@ Route::group(['middleware'=>'userstatus'], function(){
   Route::post('autocomplete/companies', 'AutocompleteController@findCompanies');
   Route::post('autocomplete/users', 'AutocompleteController@findUsers');
   Route::post('autocomplete/tasklists', 'AutocompleteController@findTasklists');
+  
+  /* Updloads */
+  Route::post('attachment/upload', array('uses' => 'UploadsController@uploadFile'));
   
 });
