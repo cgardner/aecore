@@ -192,6 +192,22 @@ fieldset[disabled] .btn-link-light {
   text-shadow:1px 1px #FFF;
 }
 
+/* Main content wrapper */
+.page-wrapper {
+  position:absolute;
+  top:50px;
+  right:0;
+  bottom:0;
+  left:250px;
+  overflow-y:auto;
+  background:#FFF;
+}
+@media(max-width:768px) {
+  .page-wrapper {
+    left:0;
+  }
+}
+
 /* Labels */
 .control-label {
   color:#666;
@@ -327,6 +343,10 @@ fieldset[disabled] .btn-link-light {
 .sidebar-nav li a:active,
 .sidebar-nav li a:focus {
   text-decoration: none;
+}
+.sidebar-nav li a .glyphicon {
+  top:0;
+  margin-right:5px;
 }
 @media(min-width:768px) {
   .sidebar-nav {
