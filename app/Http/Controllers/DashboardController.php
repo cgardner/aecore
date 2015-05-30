@@ -8,7 +8,7 @@ class DashboardController extends Controller
     public function showDashboard()
     {
         $project = Session::get('project');
-        return view('dashboard')
+        return view('projects.dashboard')
             ->with('project', $project);
     }
 }

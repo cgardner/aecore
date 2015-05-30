@@ -3,4 +3,4 @@
     This is the dashboard.
 
     {{$project}}
-@endsectiop
+@endsection
