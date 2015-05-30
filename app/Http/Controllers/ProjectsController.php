@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Session;
 
 class ProjectsController extends Controller
 {
@@ -88,15 +89,18 @@ class ProjectsController extends Controller
     public function show($projectId)
     {
         $project = $this->project
+            ->newQuery()
             ->find($projectId);
 
-        return view('projects.show')
-            ->with('project', $project);
+        Session::set('project', $project);
+
+        return redirect('dashboard');
     }
 
     public function edit($projectId)
     {
         $project = $this->project
+            ->newQuery()
             ->find($projectId);
 
         return view('projects.edit')
