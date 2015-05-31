@@ -117,43 +117,30 @@ class ProjectsController extends Controller
             ->with('project', $project);
     }
     
-    public function listProjectsDropdown()
+    public function listProjects()
     {
-        $projects = DB::table('projects')
-            ->select(
-                [
-                    'projects.code',
-                    'projects.name',
-                    DB::raw('primaryNumber.number AS primaryNumber'),
-                    DB::raw('altNumber.number AS altNumber')
-                ]
-            )
-            ->leftjoin('projectnumbers AS primaryNumber', 'projects.id', '=', 'primaryNumber.project_id')
-            ->leftjoin('projectnumbers AS altNumber', 'projects.id', '=', 'altNumber.project_id')
-            ->leftjoin('projectusers', 'projects.id', '=', 'projectusers.project_id')
+
+        $projects = Project::leftjoin('projectusers', 'projects.id', '=', 'projectusers.project_id')
             ->where('projectusers.user_id', '=', '' . Auth::user()->id . '')
             ->where('projects.status', '!=', 'Archived')
-            ->where('projects.status', '!=', 'Completed')
-            ->orderby('altNumber.number', 'asc')
-            ->orderby('primaryNumber.number', 'asc')
-            ->get();
-
-        echo '<select class="form-control sidebar-project-list" onChange="location.href=\'/projects/launch/\'+this.options[this.selectedIndex].value;">';
+            ->orderby('projects.number', 'asc')
+            ->orderby('projects.name', 'asc')
+            ->get([
+                'projects.id',
+                'projects.number',
+                'projects.name'
+            ]);
+        
+        echo '<select class="form-control sidebar-project-list" onChange="location.href=\'/projects/\'+this.options[this.selectedIndex].value;">';
         foreach ($projects AS $project) {
-            //Format number
-            if ($project->altNumber != null && $project->altNumber != "") {
-                $project->number = $project->altNumber;
-            } elseif (isset($project->primaryNumber) && $project->primaryNumber != "") {
-                $project->number = $project->primaryNumber;
-            }
-
-            if (Session::get('project_code') == $project->code) {
+            if(Session::get('project')->id == $project->id) {
                 $selected = 'selected="selected"';
             } else {
                 $selected = '';
             }
-            echo '<option value="' . $project->code . '" ' . $selected . '>#' . $project->number . ' ' . $project->name . '</option>';
+            echo '<option value="' . $project->id . '" ' . $selected . '>#' . $project->number . ' ' . $project->name . '</option>';
         }
         echo '</select>';
     }
+
 }
