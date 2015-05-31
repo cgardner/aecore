@@ -4,6 +4,10 @@ use App\Models\User;
 
 class ProjectsControllerTest extends \TestCase
 {
+    /**
+     * @covers \App\Http\Controllers\ProjectsController
+     * @covers \App\Http\Controllers\ProjectsController
+     */
     public function testStoreSavesNewProject()
     {
         $user = new User(['company_id' => 1, 'company_user_status' => 'active']);
@@ -19,6 +23,9 @@ class ProjectsControllerTest extends \TestCase
         $this->assertRedirectedToRoute('projects.index');
     }
 
+    /**
+     * @covers \App\Http\Controllers\ProjectsController
+     */
     public function testProjectEditPageRedirectsUserToProjectsListWhenEditingAProjectTheyDidNotCreate()
     {
         $user = new User(['id' => 1, 'company_id' => 1, 'company_user_status' => 'active']);
@@ -37,6 +44,9 @@ class ProjectsControllerTest extends \TestCase
         $this->assertRedirectedToRoute('projects.index');
     }
 
+    /**
+     * @covers \App\Http\Controllers\ProjectsController
+     */
     public function testProjectShowRedirectsToDashboard()
     {
         $user = new User(['id' => 1, 'company_id' => 1, 'company_user_status' => 'active']);
@@ -56,6 +66,9 @@ class ProjectsControllerTest extends \TestCase
         $this->assertRedirectedTo('dashboard', ['project' => $project]);
     }
 
+    /**
+     * @covers \App\Http\Controllers\ProjectsController::show
+     */
     public function testProjectShowRedirectsToProjectListWhenNoProjectFound()
     {
         $user = new User(['id' => 1, 'company_id' => 1, 'company_user_status' => 'active']);
