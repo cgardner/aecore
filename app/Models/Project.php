@@ -1,9 +1,14 @@
 <?php namespace App\Models;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    /**
+     * @var DateTime
+     */
+    private $now;
 
     protected $table = 'projects';
 
@@ -28,18 +33,37 @@ class Project extends Model
         'submittal_code'
     ];
 
-    public function getSizeUnitAttribute()
+    function __construct(array $attributes = array())
     {
-        $sizeUnit = $this->attributes['size_unit'];
-        if ($sizeUnit == '') {
-            return '';
-        }
+        parent::__construct($attributes);
+        $this->now = new DateTime();
+    }
 
-        if ($sizeUnit == 'feet') {
-            return 'SF';
-        }
+    public function getProgressAttribute()
+    {
+        $startTime = new DateTime($this->start);
+        $finishTime = new DateTime($this->finish);
 
-        return 'SM';
+        $totalTime = $finishTime->diff($startTime)
+            ->format('%d');
+
+        $currentProgress = $this->getNow()
+            ->diff($startTime)
+            ->format('%d');
+
+        $progress = ($currentProgress / $totalTime) * 100;
+
+        if ($progress > 100) {
+            return 100;
+        }
+        return $progress;
+    }
+
+    public function getDaysLeftAttribute()
+    {
+        return $this->getNow()
+            ->diff(new DateTime($this->finish))
+            ->format('%r%d');
     }
 
     /**
@@ -67,5 +91,23 @@ class Project extends Model
             ->leftJoin('projectusers', 'projectusers.project_id', '=', 'projects.id')
             ->where('projectusers.user_id', '=', $user->id)
             ->get();
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getNow()
+    {
+        return $this->now;
+    }
+
+    /**
+     * @param DateTime $now
+     * @return $this
+     */
+    public function setNow(DateTime $now)
+    {
+        $this->now = $now;
+        return $this;
     }
 }

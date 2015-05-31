@@ -681,6 +681,13 @@ a.task_project:hover {
     text-align:right;
 }
 
-
 /* Margin, must be last! */
 .no-margin { margin:0; }
+
+#schedule .panel-body .progress {
+    margin-top: 45px;
+}
+
+#project-information .row {
+    padding-bottom: 10px;
+}

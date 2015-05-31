@@ -27,6 +27,7 @@ class ProjectPermissions implements Middleware
     {
         $projectId = $request->route()
             ->getParameter('projects', false);
+
         if (!$projectId) {
             return $next($request);
         }
@@ -34,7 +35,6 @@ class ProjectPermissions implements Middleware
         $project = $this->project
             ->newQuery()
             ->find($projectId);
-
         $user = Auth::User();
         if ($project == null || $user->company_id != $project->company_id) {
             return new RedirectResponse(route('projects.index'));

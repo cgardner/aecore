@@ -28,15 +28,16 @@ Route::controllers([
 */
 
 Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], function(){
-  
-  /* Projects */
-  Route::resource('projects', 'ProjectsController');
-  
+
+    /* Projects */
+    Route::resource('projects', 'ProjectsController');
+    Route::get('dashboard', 'DashboardController@showDashboard');
+
 });
 
 // These routes don't require a user to join a company
 Route::group(['middleware'=>'userstatus'], function(){
-  
+
   // Welcome
   Route::get('welcome/company', function() {
     return View::make('welcome.company');

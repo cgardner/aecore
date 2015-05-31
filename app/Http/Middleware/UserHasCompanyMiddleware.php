@@ -16,6 +16,10 @@ class UserHasCompanyMiddleware
      */
     public function handle($request, Closure $next)
     {
+        if (Auth::User() == null) {
+            return Redirect::to('/');
+        }
+
         if (Auth::User()->company_id == '' || Auth::User()->company_user_status != 'active') {
             return Redirect::to('welcome/company');
         }
