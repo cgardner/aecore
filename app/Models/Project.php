@@ -39,23 +39,19 @@ class Project extends Model
         $this->now = new DateTime();
     }
 
-    public function getSizeUnitAttribute()
-    {
-        $sizeUnit = $this->attributes['size_unit'];
-        if ($sizeUnit == '') {
-            return '';
-        }
-
-        if ($sizeUnit == 'feet') {
-            return 'SF';
-        }
-
-        return 'SM';
-    }
-
     public function getProgressAttribute()
     {
-        $progress = $this->getNow()->getTimestamp() / strtotime($this->start) * 100;
+        $startTime = new DateTime($this->start);
+        $finishTime = new DateTime($this->finish);
+
+        $totalTime = $finishTime->diff($startTime)
+            ->format('%d');
+
+        $currentProgress = $this->getNow()
+            ->diff($startTime)
+            ->format('%d');
+
+        $progress = ($currentProgress / $totalTime) * 100;
 
         if ($progress > 100) {
             return 100;

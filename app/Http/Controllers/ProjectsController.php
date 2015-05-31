@@ -10,6 +10,9 @@ use Session;
 
 class ProjectsController extends Controller
 {
+    /**
+     * @var Project
+     */
     private $project;
 
     /**
@@ -86,6 +89,7 @@ class ProjectsController extends Controller
         }
 
         $project = $this->project
+            ->newQuery()
             ->find(Request::get('id'));
         $project->fill($input);
         $project->save();
