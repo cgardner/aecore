@@ -32,7 +32,13 @@ class ProjectsController extends Controller
     {
         $projects = $this->project
             ->forUser(Auth::User());
-
+        
+        // Format size unit
+        foreach($projects as $project) {
+            if($project->size_unit == "feet") { $project->size_unit = "SF"; }
+            if($project->size_unit == "meters") { $project->size_unit = "SM"; }
+        }
+                
         return view('projects.index')
             ->with('projects', $projects);
     }
