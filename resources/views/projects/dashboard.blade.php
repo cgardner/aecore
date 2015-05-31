@@ -5,7 +5,8 @@
         <div class="pagehead">
             <div class="container-fluid">
                 <span class="btn btn-primary pull-left toggle-nav" style="margin-right:10px;padding:7px;" onClick="$('#projectnav').toggle();"><span class="glyphicon glyphicon-menu-hamburger"></span></span>
-                <h1>{!! $project->number . ' ' . $project->name !!}</h1>
+                <h1>{!! '#' . $project->number . ' ' . $project->name !!}</h1>
+                <p class="text-muted no-margin">Your project at a glance.</p>
             </div>
         </div>
       
@@ -37,11 +38,11 @@
                             <div class="row">
                                 <div class="col-xs-6">
                                     <span class="text-muted">Project Size</span><br/>
-                                    {{ $project->size }} {{ $project->size_unit }}
+                                    {!! $project->size ? number_format($project->size, 0, '.', ',') . ' ' . $project->size_unit : 'N/A' !!}
                                 </div>
                                 <div class="col-xs-6">
                                     <span class="text-muted">Project Value</span><br/>
-                                    ${{ number_format($project->value) }}
+                                    {!! $project->value ? '$' . number_format($project->value, 0, '.', ',') : 'N/A' !!}
                                 </div>
                             </div>
                             <div class="row">

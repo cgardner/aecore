@@ -299,6 +299,7 @@ fieldset[disabled] .btn-link-light {
   padding:10px 0;
   list-style: none;
   z-index:50;
+  background:#F4F7F9;
   display:none;
   border-right:1px solid #c9d1d6;
 }
@@ -323,7 +324,7 @@ fieldset[disabled] .btn-link-light {
   text-shadow:1px 1px #FFF;
 }
 .sidebar-nav li a {
-  padding:6px 10px 6px 12px;
+  padding:7px 10px 7px 12px;
   display:block;
   text-decoration:none;
 	color:#3D464D;
