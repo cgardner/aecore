@@ -7,5 +7,5 @@
 
 @section('form-buttons')
     {!! Form::submit('Save Project', array('class' => 'btn btn-success')) !!}
-    {!! Html::linkRoute('projects.show', 'Cancel', ['projects' => $project->id], array('class' => 'btn btn-default btn-spacer-left')) !!}
+    {!! Html::linkRoute('projects.index', 'Cancel', null, array('class' => 'btn btn-default btn-spacer-left')) !!}
 @stop
