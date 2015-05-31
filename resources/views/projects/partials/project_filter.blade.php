@@ -1,4 +1,5 @@
 <div class="form-inline table-filters">
+    <a href="/projects/create" type="button" class="btn btn-success pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Project</a>
     <div class="form-group">
         {!! Form::text('search', null, array('class' => 'form-control', 'style'=>'min-width:250px;', 'placeholder' => 'Search...' )) !!}
     </div>
