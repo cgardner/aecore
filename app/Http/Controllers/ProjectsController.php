@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Repositories\ProjectRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -11,19 +12,19 @@ use Session;
 class ProjectsController extends Controller
 {
     /**
-     * @var Project
+     * @var ProjectRepository
      */
-    private $project;
+    private $projectRepository;
 
     /**
      * Create a new controller instance.
-     * @param Project $project Project Model.
+     * @param ProjectRepository $project Project Repository.
      */
-    public function __construct(Project $project)
+    public function __construct(ProjectRepository $project)
     {
         $this->middleware('auth');
         $this->middleware('project.permissions');
-        $this->project = $project;
+        $this->projectRepository = $project;
     }
 
     /**
@@ -33,7 +34,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = $this->project
+        $projects = $this->projectRepository
             ->forUser(Auth::User());
         
         // Format size unit
@@ -84,12 +85,11 @@ class ProjectsController extends Controller
     private function saveProject(array $input)
     {
         if (!Request::has('id')) {
-            return $this->project
+            return $this->projectRepository
                 ->create($input);
         }
 
-        $project = $this->project
-            ->newQuery()
+        $project = $this->projectRepository
             ->find(Request::get('id'));
         $project->fill($input);
         $project->save();
@@ -98,8 +98,7 @@ class ProjectsController extends Controller
 
     public function show($projectId)
     {
-        $project = $this->project
-            ->newQuery()
+        $project = $this->projectRepository
             ->find($projectId);
 
         Session::set('project', $project);
@@ -109,8 +108,7 @@ class ProjectsController extends Controller
 
     public function edit($projectId)
     {
-        $project = $this->project
-            ->newQuery()
+        $project = $this->projectRepository
             ->find($projectId);
 
         return view('projects.edit')
@@ -121,7 +119,7 @@ class ProjectsController extends Controller
     {
 
         $projects = Project::leftjoin('projectusers', 'projects.id', '=', 'projectusers.project_id')
-            ->where('projectusers.user_id', '=', '' . Auth::user()->id . '')
+            ->where('projectusers.user_id', '=', Auth::user()->id)
             ->where('projects.status', '!=', 'Archived')
             ->orderby('projects.number', 'asc')
             ->orderby('projects.name', 'asc')
@@ -132,11 +130,11 @@ class ProjectsController extends Controller
             ]);
         
         echo '<select class="form-control sidebar-project-list" onChange="location.href=\'/projects/\'+this.options[this.selectedIndex].value;">';
+
         foreach ($projects AS $project) {
+            $selected = '';
             if(Session::get('project')->id == $project->id) {
                 $selected = 'selected="selected"';
-            } else {
-                $selected = '';
             }
             echo '<option value="' . $project->id . '" ' . $selected . '>#' . $project->number . ' ' . $project->name . '</option>';
         }

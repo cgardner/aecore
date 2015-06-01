@@ -13,30 +13,18 @@ class ProjectsControllerTest extends \TestCase
 
         $this->be($user);
 
-        $this->createMockModel('App\Models\Project')
-            ->shouldReceive('create')
+        $project = new Project(['id' => 123]);
+
+        $projectRepository = Mockery::mock('\App\Repositories\AbstractRepository, \App\Repositories\ProjectRepository');
+
+        $projectRepository->shouldReceive('create')
             ->once()
-            ->andReturnSelf();
-
-        $this->call('POST', 'projects');
-        $this->assertRedirectedToRoute('projects.index');
-    }
-
-    public function testProjectEditPageRedirectsUserToProjectsListWhenEditingAProjectTheyDidNotCreate()
-    {
-        $user = new User(['id' => 1, 'company_id' => 1, 'company_user_status' => 'active']);
-
-        $this->be($user);
-
-        $project = new Project(['company_id' => 2]);
-
-        $mockProject = $this->createMock('App\Models\Project', 'App\Models\Project');
-
-        $mockProject->shouldReceive('newQuery->find')
-            ->with(1)
             ->andReturn($project);
 
-        $this->call('GET', 'projects/1/edit');
+        $this->app
+            ->instance('App\Repositories\ProjectRepository', $projectRepository);
+
+        $this->call('POST', 'projects');
         $this->assertRedirectedToRoute('projects.index');
     }
 
@@ -48,9 +36,11 @@ class ProjectsControllerTest extends \TestCase
 
         $project = new Project(['company_id' => 1]);
 
-        $mockProject = $this->createMock('App\Models\Project', 'App\Models\Project');
+        $projectRepository = Mockery::mock('\App\Repositories\AbstractRepository, \App\Repositories\ProjectRepository');
+        $this->app
+            ->instance('App\Repositories\ProjectRepository', $projectRepository);
 
-        $mockProject->shouldReceive('newQuery->find')
+        $projectRepository->shouldReceive('find')
             ->with(1)
             ->andReturn($project);
 
@@ -65,9 +55,11 @@ class ProjectsControllerTest extends \TestCase
 
         $this->be($user);
 
-        $mockProject = $this->createMock('App\Models\Project', 'App\Models\Project');
+        $projectRepository = Mockery::mock('\App\Repositories\AbstractRepository, \App\Repositories\ProjectRepository');
+        $this->app
+            ->instance('App\Repositories\ProjectRepository', $projectRepository);
 
-        $mockProject->shouldReceive('newQuery->find')
+        $projectRepository->shouldReceive('find')
             ->with(1)
             ->andReturn(null);
 

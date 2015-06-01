@@ -5,11 +5,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    /**
-     * @var DateTime
-     */
-    private $now;
-
     protected $table = 'projects';
 
     protected $fillable = [
@@ -32,6 +27,11 @@ class Project extends Model
         'status',
         'submittal_code'
     ];
+
+    /**
+     * @var DateTime
+     */
+    private $now;
 
     function __construct(array $attributes = array())
     {
@@ -59,6 +59,24 @@ class Project extends Model
         return $progress;
     }
 
+    /**
+     * @return DateTime
+     */
+    public function getNow()
+    {
+        return $this->now;
+    }
+
+    /**
+     * @param DateTime $now
+     * @return $this
+     */
+    public function setNow(DateTime $now)
+    {
+        $this->now = $now;
+        return $this;
+    }
+
     public function getDaysLeftAttribute()
     {
         return $this->getNow()
@@ -81,33 +99,6 @@ class Project extends Model
      */
     public function projectuser()
     {
-      return $this->hasMany('App\Models\Projectuser');
-    }
-
-    public function forUser(User $user)
-    {
-        return \DB::table('projects')
-            ->select('projects.*')
-            ->leftJoin('projectusers', 'projectusers.project_id', '=', 'projects.id')
-            ->where('projectusers.user_id', '=', $user->id)
-            ->get();
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getNow()
-    {
-        return $this->now;
-    }
-
-    /**
-     * @param DateTime $now
-     * @return $this
-     */
-    public function setNow(DateTime $now)
-    {
-        $this->now = $now;
-        return $this;
+        return $this->hasMany('App\Models\Projectuser');
     }
 }

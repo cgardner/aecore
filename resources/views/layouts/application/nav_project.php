@@ -59,12 +59,8 @@
 
 <ul class="sidebar-nav" id="projectnav">
   <?php
-      App::bind('ProjectsController', function($app)
-      {
-          return new App\Http\Controllers\ProjectsController(Session::get('project'));
-      });
-      $ProjectsController = App::make('ProjectsController');
-      $data = $ProjectsController->listProjects();
+      $data = App::make('App\Http\Controllers\ProjectsController')
+        ->listProjects();
   ?>
   <span class="btn btn-primary pull-right toggle-nav" style="margin:5px 10px 0 0;padding:6px;" onClick="$('#projectnav').toggle();"><span class="glyphicon glyphicon-menu-hamburger" style="margin:0;"></span></span>
   <li class="nav-header">Project Navigation</li>
