@@ -3,6 +3,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Project;
 use App\Models\User;
+use Mockery;
 
 class ProjectPermissionsTest extends \TestCase {
 
@@ -14,7 +15,7 @@ class ProjectPermissionsTest extends \TestCase {
     /**
      * @var Project|\Mockery\MockInterface
      */
-    private $project;
+    private $projectRepository;
 
     /**
      * @var \Illuminate\Http\Request|\Mockery\MockInterface
@@ -25,10 +26,12 @@ class ProjectPermissionsTest extends \TestCase {
     {
         parent::setUp();
 
-        $this->project = \Mockery::mock('\App\Models\Project');
-        $this->request = \Mockery::mock('\Illuminate\Http\Request');
+        $this->projectRepository = Mockery::mock(
+            '\App\Repositories\AbstractRepository, \App\Repositories\ProjectRepository'
+        );
+        $this->request = Mockery::mock('\Illuminate\Http\Request');
 
-        $this->middleware = new ProjectPermissions($this->project);
+        $this->middleware = new ProjectPermissions($this->projectRepository);
     }
 
 
@@ -53,12 +56,13 @@ class ProjectPermissionsTest extends \TestCase {
             ->with('projects', false)
             ->andReturn(1);
 
-        $this->project
-            ->shouldReceive('newQuery->find')
+        $project = new Project(['company_id' => 123]);
+
+        $this->projectRepository
+            ->shouldReceive('find')
             ->once()
             ->with(1)
-            ->andSet('company_id', 123)
-            ->andReturnSelf();
+            ->andReturn($project);
 
 
         $user = new User(['company_id' => 124]);
@@ -80,12 +84,13 @@ class ProjectPermissionsTest extends \TestCase {
             ->with('projects', false)
             ->andReturn(1);
 
-        $this->project
-            ->shouldReceive('newQuery->find')
+        $project = new Project(['company_id' => 123]);
+
+        $this->projectRepository
+            ->shouldReceive('find')
             ->once()
             ->with(1)
-            ->andSet('company_id', 123)
-            ->andReturnSelf();
+            ->andReturn($project);
 
 
         $user = new User(['company_id' => 123]);
@@ -107,8 +112,8 @@ class ProjectPermissionsTest extends \TestCase {
             ->with('projects', false)
             ->andReturn(1);
 
-        $this->project
-            ->shouldReceive('newQuery->find')
+        $this->projectRepository
+            ->shouldReceive('find')
             ->once()
             ->with(1)
             ->andReturn(null);

@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Middleware;
 
-use App\Models\Project;
+use App\Repositories\ProjectRepository;
 use Closure;
 use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Http\RedirectResponse;
@@ -9,11 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectPermissions implements Middleware
 {
-    private $project;
+    /**
+     * @var ProjectRepository
+     */
+    private $projectRepository;
 
-    public function __construct(Project $project)
+    public function __construct(ProjectRepository $projectRepository)
     {
-        $this->project = $project;
+        $this->projectRepository = $projectRepository;
     }
 
     /**
@@ -32,8 +35,7 @@ class ProjectPermissions implements Middleware
             return $next($request);
         }
 
-        $project = $this->project
-            ->newQuery()
+        $project = $this->projectRepository
             ->find($projectId);
         $user = Auth::User();
         if ($project == null || $user->company_id != $project->company_id) {
