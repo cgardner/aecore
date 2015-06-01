@@ -12,7 +12,7 @@ use Session;
 class ProjectsController extends Controller
 {
     /**
-     * @var Project
+     * @var ProjectRepository
      */
     private $projectRepository;
 
@@ -119,7 +119,7 @@ class ProjectsController extends Controller
     {
 
         $projects = Project::leftjoin('projectusers', 'projects.id', '=', 'projectusers.project_id')
-            ->where('projectusers.user_id', '=', '' . Auth::user()->id . '')
+            ->where('projectusers.user_id', '=', Auth::user()->id)
             ->where('projects.status', '!=', 'Archived')
             ->orderby('projects.number', 'asc')
             ->orderby('projects.name', 'asc')
@@ -130,11 +130,11 @@ class ProjectsController extends Controller
             ]);
         
         echo '<select class="form-control sidebar-project-list" onChange="location.href=\'/projects/\'+this.options[this.selectedIndex].value;">';
+
         foreach ($projects AS $project) {
+            $selected = '';
             if(Session::get('project')->id == $project->id) {
                 $selected = 'selected="selected"';
-            } else {
-                $selected = '';
             }
             echo '<option value="' . $project->id . '" ' . $selected . '>#' . $project->number . ' ' . $project->name . '</option>';
         }

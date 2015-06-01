@@ -84,15 +84,6 @@ class Project extends Model
       return $this->hasMany('App\Models\Projectuser');
     }
 
-    public function forUser(User $user)
-    {
-        return \DB::table('projects')
-            ->select('projects.*')
-            ->leftJoin('projectusers', 'projectusers.project_id', '=', 'projects.id')
-            ->where('projectusers.user_id', '=', $user->id)
-            ->get();
-    }
-
     /**
      * @return DateTime
      */

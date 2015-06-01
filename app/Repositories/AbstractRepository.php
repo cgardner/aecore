@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 
+use App\Repositories\Exception\MethodNotFoundException;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class AbstractRepository implements RepositoryInterface
@@ -52,5 +53,14 @@ abstract class AbstractRepository implements RepositoryInterface
         }
 
         return $count;
+    }
+
+    public function __call($name, $arguments)
+    {
+        if (!method_exists($this->model, $name)) {
+            throw new MethodNotFoundException(sprintf('%s is not a valid method', $name));
+        }
+
+        return call_user_func_array([$this->model, $name], $arguments);
     }
 }

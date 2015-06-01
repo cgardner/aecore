@@ -1,6 +1,8 @@
 <?php
 namespace App\Repositories;
 
+use App\Models\User;
+
 class ProjectRepositoryTest extends \TestCase {
 
     /**
@@ -85,5 +87,25 @@ class ProjectRepositoryTest extends \TestCase {
         $this->assertEquals(1, $count);
     }
 
+    public function testMagicCallMethodCallsTheModelMethod()
+    {
+        $expectation = $this->model
+            ->shouldReceive('getNow')
+            ->once();
 
+        $this->projectRepository
+            ->getNow();
+
+        $this->assertNotFalse($expectation->verify());
+    }
+
+    /**
+     * @expectedException \App\Repositories\Exception\MethodNotFoundException
+     * @expectedExceptionMessage shouldNotExist is not a valid method
+     */
+    public function testMagicCallThrowsExceptionWhenMethodDoesNotExist()
+    {
+        $this->projectRepository
+            ->shouldNotExist();
+    }
 }
