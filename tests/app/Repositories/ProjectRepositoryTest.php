@@ -1,9 +1,8 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\User;
-
-class ProjectRepositoryTest extends \TestCase {
+class ProjectRepositoryTest extends \TestCase
+{
 
     /**
      * @var \Mockery\MockInterface|\App\Models\Project
