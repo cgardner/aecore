@@ -3020,7 +3020,7 @@ input[type="button"].btn-block {
   right: 0;
   left: auto;
 }
-.dropdown-menu .divider {
+.divider {
   height: 1px;
   margin: 9px 0;
   overflow: hidden;

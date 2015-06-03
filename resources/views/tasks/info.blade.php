@@ -73,7 +73,7 @@
       }
     }).data("ui-autocomplete")._renderItem = function(ul, item) {
         return $('<li></li>')
-        .append('<a>' + item.file + '<span class="bold" style="margin:0 0 2px 0;">' + item.label + '</span><br><span class="text-muted small" style="margin:0;">' + item.title + '</span>' )
+        .append('<a>' + item.avatar + '<span class="bold" style="margin:0 0 2px 0;">' + item.label + '</span><br><span class="text-muted small" style="margin:0;">' + item.title + '</span>' )
         .appendTo(ul);
       };
     
@@ -125,7 +125,7 @@
       }
     }).data("ui-autocomplete")._renderItem = function(ul, item) {
         return $('<li></li>')
-        .append('<a>' + item.file + '<span class="bold" style="margin:0 0 2px 0;">' + item.label + '</span><br><span class="text-muted small" style="margin:0;">' + item.title + '</span>' )
+        .append('<a>' + item.avatar + '<span class="bold" style="margin:0 0 2px 0;">' + item.label + '</span><br><span class="text-muted small" style="margin:0;">' + item.title + '</span>' )
         .appendTo(ul);
       };      
       

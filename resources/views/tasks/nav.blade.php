@@ -20,8 +20,10 @@
     {!! Form::text('list_name', null, array('id'=>'list_name_input', 'class' => 'form-control', 'placeholder' => 'List name', 'autocomplete'=>'off', 'title'=>'Press Enter to submit.' )) !!}
     {!! Form::close() !!}
   </div>
+  <li class="divider"></li>
   <li>
-    <span class="btn btn-link-light btn-xs" id="new-list-btn" title="Add a new list." style="padding:6px 0;margin-left:15px;" onClick="$('#list_name').show();$('#list_name_input').focus();"><span class="glyphicon glyphicon-plus"></span> Add List</span>
+    <span class="btn btn-link-light btn-xs" id="new-list-btn" title="Add a new list." style="padding:0;margin-left:15px;" onClick="$('#list_name').show();$('#list_name_input').focus();"><span class="glyphicon glyphicon-plus"></span> Add List</span>
+    <span class="btn btn-link-light btn-xs" id="new-list-btn" title="View your deleted lists & tasks." style="padding:0;margin-left:10px;" onClick="window.location='/tasks/trash';"><span class="glyphicon glyphicon-trash"></span> Trash</span>
   </li>
       
   <!-- FOLLOWING -->
