@@ -202,7 +202,7 @@ class SettingsController extends Controller {
     Session::forget('company_id');
     Session::forget('company_user_access');
     
-    return Redirect::to('settings/company/account')
+    return Redirect::to('settings/account')
             ->with('UpdateSuccess', '<strong>Success!</strong> You have been removed from your previous company.');
   }
   

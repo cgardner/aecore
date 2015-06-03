@@ -87,7 +87,7 @@
             <span class="text-muted small">You can leave this company later if you need to.</span>
           </div>
         </div>
-        {!! Form::open(array('id'=>'join_company_form', 'class'=>'no-margin', 'url' => 'settings/account/company/join', 'method' => 'post')) !!}
+        {!! Form::open(array('id'=>'join_company_form', 'class'=>'no-margin', 'url' => 'settings/company/join', 'method' => 'post')) !!}
         {!! Form::hidden('company_id', null, array('id'=>'company_id')) !!}
         {!! Form::close() !!}
       </div>

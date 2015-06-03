@@ -242,6 +242,46 @@ fieldset[disabled] .btn-link-light {
   float:left;
 }
 
+/* Attachments */
+.attachment-tile {
+  width:300px;
+  margin:7px 7px 0 0;
+  padding:5px;
+  background:#F7F7F7;
+  border:1px solid #ddd;
+  border-radius:3px;
+  float:left;
+}
+.attachment-tile p.l1 {
+  font-size:0.85em;
+  margin:0 0 0 22px;
+}
+.attachment-tile p.l2 {
+  font-size:0.75em;
+  color:#666;
+  margin:0 0 0 22px;
+}
+/* FILE TYPE ICONS - ATTACHMENTS*/
+span.filetype-sprite-small {
+  width:18px;
+  height:24px;
+  display:block;
+  margin:2px 0 0 0;
+  float:left;
+}
+.filetype-sprite-small.pdf { background:url('img/sprites/filetype-sprite-small.png') 0 0 no-repeat; }
+.filetype-sprite-small.dwg { background:url('img/sprites/filetype-sprite-small.png') -18px 0 no-repeat; }
+.filetype-sprite-small.dwx { background:url('img/sprites/filetype-sprite-small.png') -18px 0 no-repeat; }
+.filetype-sprite-small.xls { background:url('img/sprites/filetype-sprite-small.png') 0 -24px no-repeat; }
+.filetype-sprite-small.xlsx { background:url('img/sprites/filetype-sprite-small.png') 0 -24px no-repeat; }
+.filetype-sprite-small.doc { background:url('img/sprites/filetype-sprite-small.png') -18px -24px no-repeat; }
+.filetype-sprite-small.zip { background:url('img/sprites/filetype-sprite-small.png') 0 -48px no-repeat; }
+.filetype-sprite-small.txt { background:url('img/sprites/filetype-sprite-small.png') -18px -48px no-repeat; }
+.filetype-sprite-small.blank { background:url('img/sprites/filetype-sprite-small.png') -18px -48px no-repeat; }
+.filetype-sprite-small.ppt { background:url('img/sprites/filetype-sprite-small.png') 0 -72px no-repeat; }
+.filetype-sprite-small.img { background:url('img/sprites/filetype-sprite-small.png') -18px -72px no-repeat; }
+.filetype-sprite-small.folder { background:url('img/sprites/filetype-sprite-small.png') 0 -96px no-repeat; }
+
 /* User Tags */
 .usertag {
   padding-right:8px;
