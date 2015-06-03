@@ -170,3 +170,18 @@ function taskComment(taskcode) {
     }
   });
 }
+
+function removeTaskAttachment(taskcode, file_id) {
+  $.ajaxSetup({
+    headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+  });
+  
+  $.ajax({
+    type: "POST",
+    url: '/tasks/attachment/remove/'+taskcode,
+    data: {file_id:file_id},
+    success: function() {
+      $('#attachment-' + file_id).remove();
+    }
+  });
+}
