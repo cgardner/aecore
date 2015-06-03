@@ -5,6 +5,8 @@ use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
+use DB;
+
 class ProjectRepository extends AbstractRepository
 {
     /**
@@ -25,8 +27,8 @@ class ProjectRepository extends AbstractRepository
      */
     public function forUser(User $user)
     {
-        return \DB::table('projects')
-            ->select('projects.*')
+        return DB::table('projects')
+            ->select('projects.*', 'projectusers.access')
             ->leftJoin('projectusers', 'projectusers.project_id', '=', 'projects.id')
             ->where('projectusers.user_id', '=', $user->id)
             ->get();

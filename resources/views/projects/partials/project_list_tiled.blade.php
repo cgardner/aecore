@@ -8,7 +8,9 @@
     <div class="project-listing" id="project-search-field" onmouseover="$('#<?php echo $project->id; ?>').show();" onmouseout="$('#<?php echo $project->id; ?>').hide();">
       <span class="project-tile-image default" style="cursor:default;"></span>
       <div class="project-listing-data">
-        {!! link_to_route('projects.edit', 'Edit', ['project' => $project->id], array('class' => 'btn btn-xs btn-default pull-right')) !!}
+        @if($project->access == 'admin')
+            {!! link_to_route('projects.edit', 'Edit', ['project' => $project->id], array('class' => 'btn btn-xs btn-default pull-right')) !!}
+        @endif
         <h4>{!! link_to_route('projects.show', $project->number . ' ' . $project->name, ['project' => $project->id], ['class' => 'bold']) !!}</h4>
         <p class="text-muted">{!! @$project->street . ' | ' . $project->city . ', ' . $project->state . ' ' . $project->zip_code !!}</p>
         <div class="project-listing-description" id="project-description">{!! $project->description !!}</div>

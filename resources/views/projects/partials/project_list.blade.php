@@ -14,7 +14,9 @@
           <th class="mobile-hide">Size</th>
           <th class="mobile-hide">Value</th>
           <th class="mobile-hide">Status</th>
-          <th></th>
+          @if($project->access == 'admin')
+              <th></th>
+          @endif
         </thead>
         <tbody>
           @foreach($projects as $project)
@@ -31,9 +33,11 @@
             </td>
             <td class="mobile-hide">${!! number_format($project->value, 0, '.', ',') !!}</td>
             <td class="mobile-hide">{!! $project->status !!}</td>
-            <td>
-                {!! link_to_route('projects.edit', 'Edit', ['project' => $project->id], array('class' => 'btn btn-xs btn-default')) !!}
-            </td>
+            @if($project->access == 'admin')
+                <td>
+                    {!! link_to_route('projects.edit', 'Edit', ['project' => $project->id], array('class' => 'btn btn-xs btn-default')) !!}
+                </td>
+            @endif
           </tr>
           @endforeach
         </tbody>
