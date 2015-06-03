@@ -450,10 +450,10 @@ span.filetype-sprite-small {
   background:#F4F7F9;
 }
 .taskline-active {
-  background:#EBF2FB;
+  background:#F4F7F9;
 }
 .taskline-active:hover {
-  background:#EBF2FB;
+  background:#F4F7F9;
 }
 .taskline-checkbox {
   width:16px;
@@ -635,6 +635,7 @@ a.task_project:hover {
   bottom:54px;
   left:0;
   overflow-y:auto;
+  background:#FFF;
   border-top:1px solid #ddd;
 }
 .task-info-comment {

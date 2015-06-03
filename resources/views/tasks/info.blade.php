@@ -287,7 +287,7 @@
                     url: '/tasks/attachment/add/<?php echo $taskdata->taskcode; ?>',
                     data: $('#task_attachments').serialize(),
                     success: function() {
-                      //do nothing
+                      showTask('<?php echo $taskdata->taskcode; ?>');
                     }
                   });
                 }
@@ -303,7 +303,7 @@
               <span class="glyphicon glyphicon-remove text-danger small pointer pull-right" title="Remove attachment." onClick="task_remove_attachment('<?php echo $taskdata->code; ?>', '<?php echo $attachment->file_id; ?>');"></span>
               {!! $functionscontroller->display_file_icon($attachment->file_name) !!}
               <p class="l1">{!! $attachment->file_name !!}</p>
-              <p class="l2">{!! $functionscontroller->formatBytes($attachment->file_size) !!} - <a href="{!! $s3->getObjectUrl($attachment->file_bucket, $attachment->file_path . '/' . $attachment->file_name); !!}" title="Download attachment.">Download</a></p>
+              <p class="l2"><a href="{!! $s3->getObjectUrl($attachment->file_bucket, $attachment->file_path . '/' . $attachment->file_name); !!}" title="Download attachment."><span class="glyphicon glyphicon-cloud-download"></span> Download</a> - {!! $functionscontroller->formatBytes($attachment->file_size) !!}</p>
             </div>
           @endforeach
         </div>
