@@ -17,7 +17,7 @@
   @endforeach
   <div class="form-group" id="list_name" style="margin:6px 10px;display:none;">
     {!! Form::open(array('url' => '/tasks/list/create', 'method' => 'post', 'class' => 'form-horizontal')) !!}
-    {!! Form::text('list_name', null, array('id'=>'list_name_input', 'class' => 'form-control', 'placeholder' => 'List name', 'autocomplete'=>'off', 'title'=>'Press Enter to submit.' )) !!}
+    {!! Form::text('list_name', null, array('id'=>'list_name_input', 'class' => 'form-control', 'onBlur' => '$(\'#list_name\').hide()', 'placeholder' => 'List name', 'autocomplete'=>'off', 'title'=>'Press Enter to submit.' )) !!}
     {!! Form::close() !!}
   </div>
   <li class="divider"></li>
