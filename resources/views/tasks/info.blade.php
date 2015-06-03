@@ -38,7 +38,7 @@
               var result = [{
                 label: NoResultsLabel,
                 title: '',
-                value: response.term,
+                value: '',
                 file: ''
               }];
                response(result);
@@ -91,7 +91,7 @@
                 label: NoResultsLabel,
                 title: '',
                 value: '',
-                file: ''
+                avatar: ''
               }];
                response(result);
              } else {
@@ -143,7 +143,7 @@
                 label: NoResultsLabel,
                 title: '',
                 value: response.term,
-                file: ''
+                avatar: ''
               }];
                response(result);
              } else {
