@@ -13,6 +13,7 @@
     <script type="text/javascript" src="{!! asset('/js/jquery-ui/jquery-ui.min.js') !!}"></script>
     <script type="text/javascript" src="{!! asset('/js/bootstrap.min.js') !!}"></script>
     <script type="text/javascript" src="{!! asset('/js/uploadifive/jquery.uploadifive.min.js') !!}"></script>
+    <script type="text/javascript" src="{!! asset('/js/jquery.quicksearch.js') !!}"></script>
     <script type="text/javascript">
       $(function(){
         $('body').on('hidden.bs.modal', '.modal', function () {

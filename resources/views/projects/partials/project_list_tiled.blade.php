@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input#search').quicksearch('div#project-search');
+    });
+</script>
+
 @if(count($projects) == 0)
   <div class="alert alert-info">
     <p class="bold">No projects were found.</p>
@@ -5,7 +11,7 @@
   </div>
 @else
   @foreach($projects as $project)
-    <div class="project-listing" id="project-search-field" onmouseover="$('#<?php echo $project->id; ?>').show();" onmouseout="$('#<?php echo $project->id; ?>').hide();">
+    <div class="project-listing" id="project-search" onmouseover="$('#<?php echo $project->id; ?>').show();" onmouseout="$('#<?php echo $project->id; ?>').hide();">
       <span class="project-tile-image default" style="cursor:default;"></span>
       <div class="project-listing-data">
         @if($project->access == 'admin')

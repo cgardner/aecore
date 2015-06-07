@@ -1,3 +1,7 @@
+<script type="text/javascript">
+    $('input#search').quicksearch('table tbody tr');
+</script>
+
 @if(count($projects) == 0)
   <div class="alert alert-info">
     <p class="bold">No projects were found.</p>
