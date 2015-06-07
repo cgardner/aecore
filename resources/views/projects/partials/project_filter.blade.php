@@ -9,5 +9,5 @@
             <li><a href="#">Open</a></li>
             <li><a href="#">Archived</a></li>
         </ul>
-      </div>
+    </div>
 </div>

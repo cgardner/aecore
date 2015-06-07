@@ -33,6 +33,8 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
     Route::resource('projects', 'ProjectsController');
     Route::get('dashboard', 'DashboardController@showDashboard');
 
+    /* Collaborators */
+    Route::resource('collaborators', 'CollaboratorsController');
 });
 
 // These routes don't require a user to join a company

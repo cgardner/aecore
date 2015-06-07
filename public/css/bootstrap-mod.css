@@ -180,7 +180,7 @@ fieldset[disabled] .btn-link-light {
 
 /* Page heading */
 .pagehead {
-  padding:10px 0;
+  padding:15px 0;
 }
 .pagehead h1 {
   padding:0;
@@ -731,6 +731,21 @@ a.task_project:hover {
   padding-bottom: 10px;
 }
 
+
+/* Collaborators */
+.team-tile {
+  padding:10px;
+  overflow:hidden;
+}
+.team-tile p {
+  margin:0 0 0 85px;
+  padding:0;
+  white-space:nowrap;
+}
+.team-tile-footer {
+    height:42px;
+    line-height:22px;
+}
 
 /* Margin, must be last! */
 .no-margin { margin:0; }

@@ -115,7 +115,6 @@ class AutocompleteController extends Controller {
 
     // Build array
     $data = array();
-    $useravatar = new Useravatar;
 
     foreach($result as $row){
       
