@@ -1,110 +1,24 @@
 <?php
 namespace App\Repositories;
 
-class ProjectRepositoryTest extends \TestCase
+class ProjectRepositoryTest extends RepositoryTestCase
 {
 
     /**
      * @var \Mockery\MockInterface|\App\Models\Project
      */
-    private $model;
+    protected $model;
 
     /**
      * @var ProjectRepository
      */
-    private $projectRepository;
+    protected $repository;
 
     public function setUp()
     {
         parent::setUp();
         $this->model = $this->createMockModel('\App\Models\Project');
 
-        $this->projectRepository = new ProjectRepository($this->model);
-    }
-
-    public function testCreate()
-    {
-        $attributes = [
-            'key1' => uniqid(),
-            'key2' => uniqid()
-        ];
-        $this->model
-            ->shouldReceive('save')
-            ->once()
-            ->with($attributes)
-            ->andReturnSelf();
-
-        $project = $this->projectRepository
-            ->create($attributes);
-
-        $this->assertSame($this->model, $project);
-    }
-
-    public function testFind()
-    {
-        $this->model
-            ->shouldReceive('newQuery->find')
-            ->once()
-            ->andReturn($this->model);
-
-        $project = $this->projectRepository
-            ->find(1);
-
-        $this->assertSame($this->model, $project);
-    }
-
-    public function testAll()
-    {
-        $this->model
-            ->shouldReceive('newQuery->get')
-            ->once()
-            ->andReturn([$this->model]);
-
-        $projects = $this->projectRepository
-            ->all();
-
-        $this->assertEquals([$this->model], $projects);
-    }
-
-    public function testDestroy()
-    {
-        $this->model
-            ->shouldReceive('getKeyName')
-            ->andReturn('id');
-
-        $this->model
-            ->shouldReceive('newQuery->getQuery->whereIn->get')
-            ->andReturn([$this->model]);
-
-        $this->model
-            ->shouldReceive('delete')
-            ->andReturn(true);
-
-        $count = $this->projectRepository
-            ->destroy(1);
-
-        $this->assertEquals(1, $count);
-    }
-
-    public function testMagicCallMethodCallsTheModelMethod()
-    {
-        $expectation = $this->model
-            ->shouldReceive('getNow')
-            ->once();
-
-        $this->projectRepository
-            ->getNow();
-
-        $this->assertNotFalse($expectation->verify());
-    }
-
-    /**
-     * @expectedException \App\Repositories\Exception\MethodNotFoundException
-     * @expectedExceptionMessage shouldNotExist is not a valid method
-     */
-    public function testMagicCallThrowsExceptionWhenMethodDoesNotExist()
-    {
-        $this->projectRepository
-            ->shouldNotExist();
+        $this->repository = new ProjectRepository($this->model);
     }
 }
