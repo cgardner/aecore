@@ -33,4 +33,13 @@ class CollaboratorsController extends Controller
         return view('collaborators.index');
     }
 
+    /**
+     * Open the help modal
+     *
+     */
+    public function help()
+    {
+        return view('collaborators.modals.help');
+    }
+
 }

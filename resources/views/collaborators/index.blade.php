@@ -4,7 +4,7 @@
     <div class="page-wrapper">
         <div class="pagehead">
             <div class="container-fluid">
-                <span class="btn btn-primary pull-left toggle-nav" style="margin-right:10px;padding:7px;" onClick="$('#projectnav').toggle();"><span class="glyphicon glyphicon-menu-hamburger"></span></span>
+                <a class="btn btn-default btn-sm pull-right btn-spacer-left" href="/collaborators/help" data-target="#modal" data-toggle="modal" title="How does this work?">Help</a>
                 <h1>Collaborators</h1>
                 <p class="text-muted no-margin">Add your project team.</p>
             </div>
