@@ -35,14 +35,16 @@ class ProjectsController extends Controller
     public function index()
     {
         $projects = $this->projectRepository
-            ->forUser(Auth::User());
-        
+            ->findActiveProjectsForUser(Auth::User()->id);
+
         // Format size unit
-        foreach($projects as $project) {
-            if($project->size_unit == "feet") { $project->size_unit = "SF"; }
-            if($project->size_unit == "meters") { $project->size_unit = "SM"; }
+        foreach ($projects as $project) {
+            $project->size_unit = "SM";
+            if ($project->size_unit == "feet") {
+                $project->size_unit = "SF";
+            }
         }
-                
+
         return view('projects.index')
             ->with('projects', $projects);
     }
@@ -114,31 +116,4 @@ class ProjectsController extends Controller
         return view('projects.edit')
             ->with('project', $project);
     }
-    
-    public function listProjects()
-    {
-
-        $projects = Project::leftjoin('projectusers', 'projects.id', '=', 'projectusers.project_id')
-            ->where('projectusers.user_id', '=', Auth::user()->id)
-            ->where('projects.status', '!=', 'Archived')
-            ->orderby('projects.number', 'asc')
-            ->orderby('projects.name', 'asc')
-            ->get([
-                'projects.id',
-                'projects.number',
-                'projects.name'
-            ]);
-        
-        echo '<select class="form-control sidebar-project-list" onChange="location.href=\'/projects/\'+this.options[this.selectedIndex].value;">';
-
-        foreach ($projects AS $project) {
-            $selected = '';
-            if(Session::get('project')->id == $project->id) {
-                $selected = 'selected="selected"';
-            }
-            echo '<option value="' . $project->id . '" ' . $selected . '>#' . $project->number . ' ' . $project->name . '</option>';
-        }
-        echo '</select>';
-    }
-
 }

@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    const STATUS_ARCHIVED = 'archived';
+
     protected $table = 'projects';
 
     protected $fillable = [
