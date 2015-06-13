@@ -1,8 +1,5 @@
 <?php namespace App\Models;
 
-use Auth;
-use AWS;
-use DB;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -78,6 +75,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function company()
     {
         return $this->belongsTo('App\Models\Company');
+    }
+
+    public function projectUser()
+    {
+        return $this->hasMany('App\Models\Projectuser');
     }
 
     public function getGravatarAttribute()

@@ -19,6 +19,12 @@ class ProjectUserRepository extends AbstractRepository implements RepositoryInte
         $this->model = $model;
     }
 
+    /**
+     * Find Active users for a project.
+     * @param integer $projectId
+     * @return \Illuminate\Database\Eloquent\Model[]
+     * @codeCoverageIgnore
+     */
     public function findActiveByProject($projectId)
     {
         $query = $this->model
