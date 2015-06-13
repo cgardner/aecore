@@ -1,26 +1,27 @@
 <?php namespace App\Http\Controllers;
 
-use App\Models\Project;
-use App\Repositories\ProjectRepository;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Str;
+use App\Repositories\ProjectUserRepository;
+use App\Repositories\UserRepository;
 use Illuminate\View\View;
 use Session;
 
 class CollaboratorsController extends Controller
 {
-    
+    /**
+     * @var ProjectUserRepository
+     */
+    private $projectUserRepository;
 
     /**
      * Create a new controller instance.
-     * @param ProjectRepository $project Project Repository.
+     * @param ProjectUserRepository $projectUserRepository
      */
-    public function __construct(ProjectRepository $project)
+    public function __construct(ProjectUserRepository $projectUserRepository)
     {
         $this->middleware('auth');
         $this->middleware('project.permissions');
+
+        $this->projectUserRepository = $projectUserRepository;
     }
 
     /**
@@ -30,7 +31,9 @@ class CollaboratorsController extends Controller
      */
     public function index()
     {
-        return view('collaborators.index');
+        $project = \Session::get('project');
+        $collaborators = $this->projectUserRepository->findActiveByProject($project->id);
+        return view('collaborators.index')->with(['collaborators' => $collaborators, 'project' => $project]);
     }
 
     /**
@@ -41,7 +44,7 @@ class CollaboratorsController extends Controller
     {
         return view('collaborators.modals.add');
     }
-    
+
     /**
      * Open the help modal
      *
@@ -50,5 +53,4 @@ class CollaboratorsController extends Controller
     {
         return view('collaborators.modals.help');
     }
-
 }
