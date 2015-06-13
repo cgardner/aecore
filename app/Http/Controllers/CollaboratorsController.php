@@ -34,10 +34,19 @@ class CollaboratorsController extends Controller
     }
 
     /**
+     * Open the add collaborators modal
+     *
+     */
+    public function addModal()
+    {
+        return view('collaborators.modals.add');
+    }
+    
+    /**
      * Open the help modal
      *
      */
-    public function help()
+    public function helpModal()
     {
         return view('collaborators.modals.help');
     }

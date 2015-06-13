@@ -34,7 +34,8 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
     Route::get('dashboard', 'DashboardController@showDashboard');
 
     /* Collaborators */
-    Route::get('collaborators/help', 'CollaboratorsController@help');
+    Route::get('collaborators/add', 'CollaboratorsController@addModal');
+    Route::get('collaborators/help', 'CollaboratorsController@helpModal');
     Route::resource('collaborators', 'CollaboratorsController');
 });
 
