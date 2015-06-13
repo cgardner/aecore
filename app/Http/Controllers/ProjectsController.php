@@ -35,14 +35,16 @@ class ProjectsController extends Controller
     public function index()
     {
         $projects = $this->projectRepository
-            ->forUser(Auth::User());
-        
+            ->findActiveProjectsForUser(Auth::User()->id);
+
         // Format size unit
-        foreach($projects as $project) {
-            if($project->size_unit == "feet") { $project->size_unit = "SF"; }
-            if($project->size_unit == "meters") { $project->size_unit = "SM"; }
+        foreach ($projects as $project) {
+            $project->size_unit = "SM";
+            if ($project->size_unit == "feet") {
+                $project->size_unit = "SF";
+            }
         }
-                
+
         return view('projects.index')
             ->with('projects', $projects);
     }

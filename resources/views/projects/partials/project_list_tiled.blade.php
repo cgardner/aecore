@@ -18,12 +18,20 @@
             {!! link_to_route('projects.edit', 'Edit', ['project' => $project->id], array('class' => 'btn btn-xs btn-default pull-right')) !!}
         @endif
         <h4>{!! link_to_route('projects.show', $project->number . ' ' . $project->name, ['project' => $project->id], ['class' => 'bold']) !!}</h4>
-        <p class="text-muted">{!! @$project->street . ' | ' . $project->city . ', ' . $project->state . ' ' . $project->zip_code !!}</p>
-        <div class="project-listing-description" id="project-description">{!! $project->description !!}</div>
-        <span class="text-muted pull-left"><small>{!! $project->size ? number_format($project->size, 0, '.', ',') . ' ' . $project->size_unit : 'N/A' !!}</small></span>
-        <span class="text-muted pull-left" style="margin-left:8px;"><small>${!! number_format($project->value, 0, '.', ',') !!}</small></span>
-        <span class="text-muted pull-left" style="margin-left:8px;"><small><span class="glyphicon glyphicon-star-empty"></span>Start: </small></span>
-        <span class="text-muted pull-left" style="margin-left:8px;"><small><span class="glyphicon glyphicon-star"></span>Finish: </small></span>
+        <p class="text-muted">{{ $project->street . ' | ' . $project->city . ', ' . $project->state . ' ' . $project->zip_code }}</p>
+        <div class="project-listing-description" id="project-description">{{ $project->description }}</div>
+        <span class="text-muted pull-left"><small>{{ $project->size ? number_format($project->size, 0, '.', ',') . ' ' . $project->size_unit : 'N/A' }}</small></span>
+        <span class="text-muted pull-left" style="margin-left:8px;"><small>${{ number_format($project->value, 0, '.', ',') }}</small></span>
+        <span class="text-muted pull-left" style="margin-left:8px;">
+          <small>
+            <span class="glyphicon glyphicon-star-empty"></span>Start: {{ $project->start }}
+          </small>
+        </span>
+        <span class="text-muted pull-left" style="margin-left:8px;">
+          <small>
+            <span class="glyphicon glyphicon-star"></span>Finish: {{ $project->finish }}
+          </small>
+        </span>
       </div>
     </div>
   @endforeach

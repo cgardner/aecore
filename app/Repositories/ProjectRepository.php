@@ -2,10 +2,11 @@
 namespace App\Repositories;
 
 use App\Models\Project;
+use App\Models\Projectuser;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
-
 use DB;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProjectRepository extends AbstractRepository
 {
@@ -22,15 +23,24 @@ class ProjectRepository extends AbstractRepository
     /**
      * Get a collection of projects for the given user.
      *
-     * @param User $user
-     * @return Collection
+     * @param integer $userId
+     * @codeCoverageIgnore
+     * @return \Illuminate\Database\Eloquent\Model[]
      */
-    public function forUser(User $user)
+    public function findActiveProjectsForUser($userId)
     {
-        return DB::table('projects')
-            ->select('projects.*', 'projectusers.access')
-            ->leftJoin('projectusers', 'projectusers.project_id', '=', 'projects.id')
-            ->where('projectusers.user_id', '=', $user->id)
-            ->get();
+        $query = $this->model
+            ->newQuery()
+            ->where('status', '!=', Project::STATUS_ARCHIVED)
+            ->whereHas(
+                'projectuser',
+                function (Builder $query) use ($userId) {
+                    $query->has('user')
+                        ->where('projectusers.status', '=', Projectuser::STATUS_ACTIVE)
+                        ->where('projectusers.user_id', '=', $userId);
+                }
+            );
+
+        return $query->getModels();
     }
 }
