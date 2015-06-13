@@ -6,7 +6,6 @@
             <div class="container-fluid">
                 <a class="btn btn-default btn-sm pull-right btn-spacer-left" href="/collaborators/help" data-target="#modal" data-toggle="modal" title="How does this work?">Help</a>
                 <a class="btn btn-success btn-sm pull-right" href="/collaborators/add" data-target="#modal" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Add Collaborators</a>
-                {{ $project->name }}
                 <h1>Collaborators</h1>
                 <p class="text-muted no-margin">Add your project team.</p>
             </div>
@@ -14,20 +13,19 @@
       
         <div class="container-fluid">
             <div class="row">
-                {{-- FOREACH --}}
                 @foreach($collaborators as $collaborator)
                 <div class="col-sm-6 col-md-5 col-lg-3">
                     <div class="panel panel-default">
                         <div class="panel-body team-tile">
                             <img src="{{ $collaborator->user->gravatar }}" class="avatar_lg" />
                             <span class="pull-right label label-{{ $collaborator->status == \App\Models\Projectuser::STATUS_ACTIVE ? 'info' : 'danger' }}">{{ $collaborator->status }}</span>
-                            <p><a href="/profile" style="font-size:1.2em;">{{ $collaborator->user->name }}</a></p>
+                            <p style="font-size:1.2em;">{{ $collaborator->user->name }}</p>
                             <p class="text-muted small bold">
                                 {{ $collaborator->user->title . !empty($collaborator->user->title) ? ' at ' : '' . $collaborator->user->company->name }}
                             </p>
                             <p class="text-muted small">
-                                <span class="glyphicon glyphicon-envelope"></span>
-                                <a href="mailto:{!! $collaborator->user->email !!}">Email</a>
+                                <span class="glyphicon glyphicon-envelope" style="top:2px;"></span>
+                                <a href="mailto:{!! $collaborator->user->email !!}" title="{!! $collaborator->user->email !!}">Send Email</a>
                             </p>
                             @if($collaborator->user->userphone)
                             <p class="text-muted small">{{ $collaborator->user->userphone->direct }}</p>
@@ -68,7 +66,6 @@
                     </div>
                 </div>
                 @endforeach
-                {{-- /FOREACH --}}
             </div>
         </div>
     </div>
