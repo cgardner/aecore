@@ -21,18 +21,18 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     <span class="text-muted">Address</span><br/>
-                                    {{ $project->street }}<br/>
-                                    {{ $project->city }} {{ $project->state }}, {{ $project->zip }}
+                                    {!! $project->street !!}<br/>
+                                    {!! $project->city !!} {!! $project->state !!}, {!! $project->zip !!}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-6">
                                     <span class="text-muted">Project Status</span><br/>
-                                    {{ $project->status }}
+                                    {!! $project->status !!}
                                 </div>
                                 <div class="col-xs-6">
                                     <span class="text-muted">Project Type</span><br/>
-                                    {{ $project->type }}
+                                    {!! $project->type !!}
                                 </div>
                             </div>
                             <div class="row">
@@ -48,7 +48,7 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     <span class="text-muted">Description</span><br/>
-                                    {{ $project->description }}
+                                    {!! $project->description !!}
                                 </div>
                             </div>
                         </div>
@@ -60,17 +60,17 @@
                         </div>
                         <div class="panel-body">
                             <div class="pull-left">
-                                <div class="text-muted">Start</div>
-                                {{ $project->start }}
+                                <div class="text-muted small">Start</div>
+                                {!! $project->start !!}
                             </div>
-                            <div class="pull-right">
-                                <div class="text-muted">Finish</div>
-                                {{ $project->finish }}
+                            <div class="pull-right" style="text-align:right;">
+                                <div class="text-muted small">Finish</div>
+                                {!! $project->finish !!}
                             </div>
                             <div class="progress">
-                                <div class="progress-bar progress-bar-{{ $project->daysLeft < 0 ? "danger" : "info" }}" role="progressbar"
-                                     style="width: {{ $project->progress }}%;">
-                                    {{ $project->daysLeft }} Days
+                                <div class="progress-bar progress-bar-{!! $project->daysLeft < 0 ? "danger" : "info" !!}" role="progressbar"
+                                     style="width: {!! $project->progress !!}%;">
+                                    {!! $project->daysLeft !!} Days
                                 </div>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                             <span class="glyphicon glyphicon-question-sign"></span><span class="btn-spacer-left">Requests for Information</span>
                         </div>
                         <div class="panel-body">
-                            <h3>In Progress
+                            <h4>In Progress</h4>
                         </div>
                     </div>{{-- /.panel --}}
 
@@ -90,7 +90,7 @@
                             <span class="glyphicon glyphicon-tags"></span><span class="btn-spacer-left">Submittals</span>
                         </div>
                         <div class="panel-body">
-                            <h3>In Progress
+                            <h4>In Progress</h4>
                         </div>
                     </div>{{-- /.panel --}}
                 </div>
