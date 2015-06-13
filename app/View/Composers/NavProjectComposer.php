@@ -49,32 +49,27 @@ class NavProjectComposer
             [
                 'title' => 'Collaborators',
                 'url' => route('collaborators.index'),
-                'icon' => 'glyphicon-user small'
+                'icon' => 'glyphicon-user'
             ],
             [
-                'title' => 'Requests For Information',
-                'url' => url('rfis'),
-                'icon' => 'glyphicon-question-sign'
-            ],
-            [
-                'title' => 'Plan Room',
-                'url' => url('planroom'),
-                'icon' => 'glyphicon-th-large'
-            ],
+                'title' => 'Documents',
+                'url' => url('documents'),
+                'icon' => 'glyphicon-folder-open'
+            ],            
             [
                 'title' => 'Bidding',
                 'url' => url('bidding'),
                 'icon' => 'glyphicon-bullhorn'
             ],
             [
-                'title' => 'Budget',
-                'url' => url('budget'),
-                'icon' => 'glyphicon-usd'
-            ],
+                'title' => 'Plan Room',
+                'url' => url('planroom'),
+                'icon' => 'glyphicon-th-large'
+            ],            
             [
-                'title' => 'Documents',
-                'url' => url('documents'),
-                'icon' => 'glyphicon-folder-open'
+                'title' => 'Requests For Information',
+                'url' => url('rfis'),
+                'icon' => 'glyphicon-question-sign'
             ],
             [
                 'title' => 'Submittals',
@@ -85,11 +80,6 @@ class NavProjectComposer
                 'title' => 'Meeting Minutes',
                 'url' => url('minutes'),
                 'icon' => 'glyphicon-pencil'
-            ],
-            [
-                'title' => 'Daily Construction Reports',
-                'url' => url('daily-reports'),
-                'icon' => 'glyphicon-book'
             ],
             [
                 'title' => 'Daily Reports',
