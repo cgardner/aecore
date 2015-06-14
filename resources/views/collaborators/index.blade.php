@@ -20,15 +20,19 @@
                             <img src="{{ $collaborator->user->gravatar }}" class="avatar_lg" />
                             <span class="pull-right label label-{{ $collaborator->status == \App\Models\Projectuser::STATUS_ACTIVE ? 'info' : 'danger' }}">{{ $collaborator->status }}</span>
                             <p style="font-size:1.2em;">{{ $collaborator->user->name }}</p>
-                            <p class="text-muted small bold">
-                                {{ $collaborator->user->title . !empty($collaborator->user->title) ? ' at ' : '' . $collaborator->user->company->name }}
+                            <p class="text-muted small">
+                                {{ $collaborator->user->title }}
+                                {{ $collaborator->user->title . !empty($collaborator->user->company->name) ? ' at ' . $collaborator->user->company->name : '' }}
                             </p>
                             <p class="text-muted small">
                                 <span class="glyphicon glyphicon-envelope" style="top:2px;"></span>
-                                <a href="mailto:{!! $collaborator->user->email !!}" title="{!! $collaborator->user->email !!}">Send Email</a>
+                                <a href="mailto:{!! $collaborator->user->email !!}" title="{!! $collaborator->user->email !!}">{!! $collaborator->user->email !!}</a>
                             </p>
                             @if($collaborator->user->userphone)
-                            <p class="text-muted small">{{ $collaborator->user->userphone->direct }}</p>
+                                <p class="text-muted small">
+                                    <span class="glyphicon glyphicon-phone" style="top:2px;"></span>
+                                    {{ $collaborator->user->userphone->mobile }}
+                                </p>
                             @endif
                         </div>
                         <div class="panel-footer team-tile-footer">
