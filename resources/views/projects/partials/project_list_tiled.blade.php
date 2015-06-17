@@ -14,7 +14,7 @@
     <div class="project-listing" id="project-search" onmouseover="$('#<?php echo $project->id; ?>').show();" onmouseout="$('#<?php echo $project->id; ?>').hide();">
       <span class="project-tile-image default" style="cursor:default;"></span>
       <div class="project-listing-data">
-        @if($project->access == 'admin')
+        @if(\App\Models\Projectuser::ACCESS_ADMIN == 'admin')
             {!! link_to_route('projects.edit', 'Edit', ['project' => $project->id], array('class' => 'btn btn-xs btn-default pull-right')) !!}
         @endif
         <h4>{!! link_to_route('projects.show', $project->number . ' ' . $project->name, ['project' => $project->id], ['class' => 'bold']) !!}</h4>

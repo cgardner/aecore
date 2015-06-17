@@ -72,6 +72,10 @@ fieldset[disabled] .btn-link-light {
     display:inline-block;
   }
 }
+/* Modals */
+.modal-body {
+    //background:#F4F7F9;
+}
 
 /* Top Bar Links */
 .navbar-nav > li > a {
