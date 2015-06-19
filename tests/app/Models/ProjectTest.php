@@ -18,10 +18,10 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->project
             ->setNow(new \DateTime('2015-06-01'));
 
-        $finish = new \DateTime('2015-06-04');
+        $finish = new \DateTime('2015-06-10');
         $this->project->finish = $finish->format('m/d/Y');
 
-        $this->assertEquals(3, $this->project->daysLeft);
+        $this->assertEquals(9, $this->project->daysLeft);
     }
 
     public function testGetProgressAttribute()

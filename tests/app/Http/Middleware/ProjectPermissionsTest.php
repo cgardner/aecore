@@ -13,7 +13,7 @@ class ProjectPermissionsTest extends \TestCase {
     private $middleware;
 
     /**
-     * @var Project|\Mockery\MockInterface
+     * @var \App\Repositories\ProjectRepository|\Mockery\MockInterface
      */
     private $projectRepository;
 
@@ -22,6 +22,9 @@ class ProjectPermissionsTest extends \TestCase {
      */
     private $request;
 
+    /**
+     * Set up the test.
+     */
     public function setUp()
     {
         parent::setUp();
@@ -46,34 +49,6 @@ class ProjectPermissionsTest extends \TestCase {
             ->handle($this->request, function(){ return 'Redirected!'; });
 
         $this->assertEquals('Redirected!', $response);
-    }
-
-    public function testHandleOnARouteWithProjectParameterWhereTheCompanyDoesNotMatch()
-    {
-        $this->request
-            ->shouldReceive('route->getParameter')
-            ->once()
-            ->with('projects', false)
-            ->andReturn(1);
-
-        $project = new Project(['company_id' => 123]);
-
-        $this->projectRepository
-            ->shouldReceive('find')
-            ->once()
-            ->with(1)
-            ->andReturn($project);
-
-
-        $user = new User(['company_id' => 124]);
-        \Auth::shouldReceive('User')
-            ->once()
-            ->andReturn($user);
-
-        $response = $this->middleware
-            ->handle($this->request, function(){});
-
-        $this->assertInstanceOf('Illuminate\Http\RedirectResponse', $response);
     }
 
     public function testHandleOnARouteWithProjectParameterWhereTheCompanyDoesMatch()
