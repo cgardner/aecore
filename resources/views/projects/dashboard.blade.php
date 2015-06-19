@@ -70,7 +70,7 @@
                             <div class="progress">
                                 <div class="progress-bar progress-bar-{!! $project->daysLeft < 0 ? "danger" : "info" !!}" role="progressbar"
                                      style="width: {!! $project->progress !!}%;">
-                                    {!! $project->daysLeft !!} Days
+                                    {!! abs($project->daysLeft) !!} Days {{ $project->daysLeft > 0 ? 'Left' : 'Overdue' }}
                                 </div>
                             </div>
                         </div>
