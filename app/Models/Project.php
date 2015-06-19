@@ -86,7 +86,7 @@ class Project extends Model
     {
         return $this->getNow()
             ->diff(new DateTime($this->finish))
-            ->format('%r%d');
+            ->days;
     }
 
     /**

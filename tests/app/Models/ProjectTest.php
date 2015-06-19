@@ -16,12 +16,12 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
     public function testGetDaysLeftAttribute()
     {
         $this->project
-            ->setNow(new \DateTime('2015-06-12'));
+            ->setNow(new \DateTime('2015-06-18'));
 
-        $finish = new \DateTime('2015-06-17');
+        $finish = new \DateTime('2015-07-30');
         $this->project->finish = $finish->format('m/d/Y');
 
-        $this->assertEquals(5, $this->project->daysLeft);
+        $this->assertEquals(42, $this->project->daysLeft);
     }
 
     public function testGetProgressAttribute()
