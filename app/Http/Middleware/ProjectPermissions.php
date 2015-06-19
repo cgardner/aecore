@@ -37,7 +37,6 @@ class ProjectPermissions implements Middleware
 
         $project = $this->projectRepository
             ->find($projectId);
-        $user = Auth::User();
         if ($project == null) {
             return new RedirectResponse(route('projects.index'));
         }

@@ -32,4 +32,19 @@ class ProjectUserRepository extends AbstractRepository implements RepositoryInte
             ->where('project_id', '=', $projectId);
         return $query->getModels();
     }
+
+    /**
+     * Find Active Projects that a user has access to.
+     * @param $userId
+     * @return \Illuminate\Database\Eloquent\Model[]
+     */
+    public function findActiveForUser($userId)
+    {
+        $query = $this->model
+            ->newQuery()
+            ->where('user_id', '=', $userId)
+            ->where('status', '=', Projectuser::STATUS_ACTIVE);
+
+        return $query->getModels();
+    }
 }

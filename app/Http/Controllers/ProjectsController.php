@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-use App\Models\Project;
 use App\Repositories\ProjectRepository;
+use App\Repositories\ProjectUserRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -17,14 +17,21 @@ class ProjectsController extends Controller
     private $projectRepository;
 
     /**
-     * Create a new controller instance.
-     * @param ProjectRepository $project Project Repository.
+     * @var ProjectUserRepository;
      */
-    public function __construct(ProjectRepository $project)
+    private $projectUserRepository;
+
+    /**
+     * Create a new controller instance.
+     * @param ProjectRepository $projectRepository Project Repository.
+     * @param ProjectUserRepository $projectUserRepository Project/User Repository
+     */
+    public function __construct(ProjectRepository $projectRepository, ProjectUserRepository $projectUserRepository)
     {
         $this->middleware('auth');
         $this->middleware('project.permissions');
-        $this->projectRepository = $project;
+        $this->projectRepository = $projectRepository;
+        $this->projectUserRepository = $projectUserRepository;
     }
 
     /**
@@ -34,19 +41,11 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = $this->projectRepository
-            ->findActiveProjectsForUser(Auth::User()->id);
-
-        // Format size unit
-        foreach ($projects as $project) {
-            $project->size_unit = "SM";
-            if ($project->size_unit == "feet") {
-                $project->size_unit = "SF";
-            }
-        }
+        $projectUsers = $this->projectUserRepository
+            ->findActiveForUser(Auth::User()->id);
 
         return view('projects.index')
-            ->with('projects', $projects);
+            ->with('projectUsers', $projectUsers);
     }
 
     /**
