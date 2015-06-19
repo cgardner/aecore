@@ -47,18 +47,18 @@ class Project extends Model
         $finishTime = new DateTime($this->finish);
 
         $totalTime = $finishTime->diff($startTime)
-            ->format('%d');
+            ->days;
 
         $currentProgress = $this->getNow()
             ->diff($startTime)
-            ->format('%d');
+            ->days;
 
         $progress = ($currentProgress / $totalTime) * 100;
 
         if ($progress > 100) {
             return 100;
         }
-        return $progress;
+        return sprintf('%1.2f', $progress);
     }
 
     /**
@@ -79,6 +79,9 @@ class Project extends Model
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getDaysLeftAttribute()
     {
         return $this->getNow()
