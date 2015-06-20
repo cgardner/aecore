@@ -16,7 +16,7 @@
       <span class="project-tile-image default" style="cursor:default;"></span>
       <div class="project-listing-data">
         @if($projectUser->access == App\Models\Projectuser::ACCESS_ADMIN)
-            {!! link_to_route('projects.edit', 'Edit Project', ['project' => $projectUser->project->id], array('class' => 'btn btn-xs btn-default pull-right btn-spacer-left')) !!}
+            <a href="{!! URL::route('projects.edit', ['project' => $projectUser->project->id]) !!}" class="btn btn-xs btn-default pull-right btn-spacer-left"><span class="glyphicon glyphicon-pencil"></span> Edit Project</a>
             <span class="text-muted pull-right small" style="margin-top:3px;"><span class="glyphicon glyphicon-tower small"></span> Admin</span>
         @endif
         <h4>{!! link_to_route('projects.show', $projectUser->project->number . ' ' . $projectUser->project->name, ['project' => $projectUser->project->id], ['class' => 'bold']) !!}</h4>

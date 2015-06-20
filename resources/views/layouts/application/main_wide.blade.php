@@ -29,7 +29,7 @@
     <link rel="stylesheet" type="text/css" href="{!! asset('/css/bootstrap.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('/css/bootstrap-mod.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('/js/jquery-ui/css/jquery-ui.css') !!}">
-    <link rel="stylesheet" type="text/css" href="{!! URL::asset('/js/uploadifive/uploadifive.css') !!}">
+    <link rel="stylesheet" type="text/css" href="{!! asset('/js/uploadifive/uploadifive.css') !!}">
   </head>
   
   <body>

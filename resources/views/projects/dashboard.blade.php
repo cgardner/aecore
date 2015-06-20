@@ -4,7 +4,7 @@
     <div class="page-wrapper">
         <div class="pagehead">
             <div class="container-fluid">
-                <span class="btn btn-primary pull-left toggle-nav" style="margin-right:10px;padding:7px;" onClick="$('#projectnav').toggle();"><span class="glyphicon glyphicon-menu-hamburger"></span></span>
+                <a href="{!! URL::route('projects.edit', ['project' => $project->id]) !!}" class="btn btn-sm btn-default pull-right btn-spacer-left"><span class="glyphicon glyphicon-pencil"></span> Edit Project</a>
                 <h1>{!! '#' . $project->number . ' ' . $project->name !!}</h1>
                 <p class="text-muted no-margin">Your project at a glance.</p>
             </div>
@@ -70,7 +70,7 @@
                             <div class="progress">
                                 <div class="progress-bar progress-bar-{!! $project->daysLeft < 0 ? "danger" : "info" !!}" role="progressbar"
                                      style="width:{!! $project->progress !!}%;">
-                                    {!! abs($project->daysLeft) !!} Days {{ $project->daysLeft >= 0 ? 'Left' : 'Overdue' }}
+                                    {!! abs($project->daysLeft) !!} Days {{ $project->daysLeft >= 0 ? 'Remaining' : 'Overdue' }}
                                 </div>
                             </div>
                         </div>
