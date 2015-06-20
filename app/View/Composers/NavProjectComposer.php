@@ -52,24 +52,19 @@ class NavProjectComposer
                 'icon' => 'glyphicon-user'
             ],
             [
-                'title' => 'Documents',
-                'url' => url('documents'),
-                'icon' => 'glyphicon-folder-open'
-            ],            
-            [
                 'title' => 'Bidding',
                 'url' => url('bidding'),
                 'icon' => 'glyphicon-bullhorn'
+            ],            
+            [
+                'title' => 'Documents',
+                'url' => url('documents'),
+                'icon' => 'glyphicon-folder-open'
             ],
             [
                 'title' => 'Plan Room',
                 'url' => url('planroom'),
                 'icon' => 'glyphicon-th-large'
-            ],            
-            [
-                'title' => 'Requests For Information',
-                'url' => url('rfis'),
-                'icon' => 'glyphicon-question-sign'
             ],
             [
                 'title' => 'Submittals',
@@ -77,20 +72,25 @@ class NavProjectComposer
                 'icon' => 'glyphicon-tags'
             ],
             [
-                'title' => 'Meeting Minutes',
-                'url' => url('minutes'),
-                'icon' => 'glyphicon-pencil'
-            ],
+                'title' => 'Requests For Information',
+                'url' => url('rfis'),
+                'icon' => 'glyphicon-question-sign'
+            ],            
+//            [
+//                'title' => 'Meeting Minutes',
+//                'url' => url('minutes'),
+//                'icon' => 'glyphicon-pencil'
+//            ],
             [
                 'title' => 'Daily Reports',
-                'url' => url('daily-reports'),
+                'url' => url('dailyreports'),
                 'icon' => 'glyphicon-book'
             ],
-            [
-                'title' => 'Punchlist',
-                'url' => url('punchlist'),
-                'icon' => 'glyphicon-star'
-            ]
+//            [
+//                'title' => 'Punchlist',
+//                'url' => url('punchlist'),
+//                'icon' => 'glyphicon-star'
+//            ]
         ];
         return $navigation;
     }
