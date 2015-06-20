@@ -1,6 +1,10 @@
 <?php namespace App\Models;
 
+use Auth;
+use Carbon;
 use DateTime;
+use DateTimeZone;
+use Timezone;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -43,18 +47,20 @@ class Project extends Model
 
     public function getProgressAttribute()
     {
-        $startTime = new DateTime($this->start);
-        $finishTime = new DateTime($this->finish);
-
-        $totalTime = $finishTime->diff($startTime)
+               
+        $startTime = new DateTime($this->start,  new DateTimeZone(Auth::user()->timezone));
+        $finishTime = new DateTime($this->finish,  new DateTimeZone(Auth::user()->timezone));
+        
+        $totalTime = $finishTime
+            ->diff($startTime)
             ->days;
-
+                
         $currentProgress = $this->getNow()
             ->diff($startTime)
             ->days;
-
+        
         $progress = ($currentProgress / $totalTime) * 100;
-
+        
         if ($progress > 100) {
             return 100;
         }
@@ -66,17 +72,7 @@ class Project extends Model
      */
     public function getNow()
     {
-        return $this->now;
-    }
-
-    /**
-     * @param DateTime $now
-     * @return $this
-     */
-    public function setNow(DateTime $now)
-    {
-        $this->now = $now;
-        return $this;
+        return new DateTime(Carbon::now(),  new DateTimeZone(Auth::user()->timezone));
     }
 
     /**
@@ -84,9 +80,15 @@ class Project extends Model
      */
     public function getDaysLeftAttribute()
     {
-        return $this->getNow()
-            ->diff(new DateTime($this->finish))
-            ->days;
+        $daysLeft = $this->getNow()
+            ->diff(new DateTime($this->finish,  new DateTimeZone(Auth::user()->timezone)))
+            ->format('%r%a');
+        
+        if($daysLeft <= 0) {
+            return $daysLeft;
+        } elseif($daysLeft > 0) {
+            return $daysLeft + 1;
+        }
     }
 
     /**
