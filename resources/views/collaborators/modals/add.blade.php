@@ -1,15 +1,11 @@
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 <script type="text/javascript">
     $(document).ready(function(){
-        
-        /*
-         * 
-         * 
-         * THIS NEEDS TO BE UPDATED
-         * ADD AUTOCOMPELTE FUNCTION IN AutocompleteController
-         * 
-         * 
-         */
-        
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
         //Find users
         var NoResultsLabel = "No results found.";
         $('#term').autocomplete({
@@ -24,7 +20,7 @@
                     label: NoResultsLabel,
                     title: '',
                     value: response.term,
-                    file: ''
+                    avatar: ''
                   }];
                    response(result);
                  } else {
@@ -51,8 +47,14 @@
             if (ui.item.label === NoResultsLabel) {
               $(event.target).val("");
             } else {
-              $('#collaborator-list').append('<div class="user_tile pull-left" id="collab_tag_' + ui.item.identifier + '">' + ui.item.avatar + '<span class="glyphicon glyphicon-remove" onClick="$(\'#collab_tag_' + ui.item.identifier + '\').remove();$(\'#collab_' + ui.item.identifier + '\').remove();" title="Remove"></span><p class="line1">' + ui.item.label + '</p><p class="line2">' + ui.item.title + '</p></div>');
-              $('#collaborator-list-data').append('<input type="hidden" id="collab_' + ui.item.identifier + '" name="user[]" value="' + ui.item.identifier + '" />');
+                $(".panel").show();
+              $('#collaborator-list').append('\n\
+                <div class="usertag" id="collab_tag_' + ui.item.usercode + '" style="margin-top:6px;">\n\
+                    ' + ui.item.avatar + '\n\
+                    <span>' + ui.item.label + '</span>\n\
+                    <span class="usertag-remove" style="margin-top:8px;"><span class="glyphicon glyphicon-remove-sign" onClick="$(\'#collab_tag_' + ui.item.usercode + '\').remove();$(\'#collab_' + ui.item.usercode + '\').remove();" title="Remove from invite."></span></span>\n\
+                </div>');
+              $('#collaborator-list-data').append('<input type="hidden" id="collab_' + ui.item.usercode + '" name="usercode[]" value="' + ui.item.usercode + '" />');
               $(event.target).val("");
             }
             return false;// Prevent the widget from inserting the value.
@@ -71,24 +73,22 @@
 </div>
 <!-- Add collaborator form -->
 <div id="collab_form">
-    <div class="modal-body">
-        <div class="panel panel-default no-margin">
-            <div class="panel-heading" style="padding:0;">
-                {!! Form::text('term', null, array('id'=>'term', 'class'=>'form-control', 'placeholder'=>'Invite users to this project...', 'style'=>'border-radius:0;border:none;', 'autofocus')) !!}
+    {!! Form::open(array('url' => 'collaborators/add', 'method' => 'post', 'class' => 'form-horizontal no-margin')) !!}
+        <div class="modal-body">
+            <div class="form-group" style="margin-bottom:10px;">
+                <div class="col-lg-12">
+                    {!! Form::text('term', null, array('id'=>'term', 'class'=>'form-control', 'placeholder'=>'Add collaborators...', 'autofocus')) !!}
+                </div>
             </div>
-            <div class="panel-body">
-                {!! Form::open(array('id'=>'add_team_form', 'url' => 'team/add', 'method' => 'post', 'class' => 'form-horizontal no-margin')) !!}
-                    dev: tags here, i.e.:
-                    <div class="usertag" id="" style="margin-top:6px;">
-                        <img src="{!! Auth::user()->gravatar !!}" />
-                        <span>{!! Auth::user()->name !!}</span>
-                        <span class="usertag-remove" style="margin-top:8px;"><span class="glyphicon glyphicon-remove-sign" onClick="$('#assigned_to').hide();$('#assigned_to_new').show();$('#term').focus();" title="Remove user & reassign task."></span></span>
-                    </div>
-                {!! Form::close() !!}
+            <div class="panel panel-default no-margin" style="display:none;max-height:260px;overflow-y:auto;">
+                <div class="panel-body" id="collaborator-list" style="padding:5px 10px 10px 10px;"></div>
+                <div id="collaborator-list-data"></div>
             </div>
+            <p style="font-size:1em;margin:5px 0 0 0;" class="text-muted small">Can't find who you're looking for? <span class="btn-link" onClick="toggle_collab();">Invite to Aecore</span></p>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default btn-spacer-left" data-dismiss="modal">Cancel</button>
-    </div>
+        <div class="modal-footer">
+            {!! Form::submit('Add Collaborators', array('class' => 'btn btn-success')) !!}
+            <button type="button" class="btn btn-default btn-spacer-left" data-dismiss="modal">Cancel</button>
+        </div>
+    {!! Form::close() !!}
 </div>

@@ -444,14 +444,14 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-menu {
-	list-style: none;
-	display: block;
-	outline: none;
-  padding:5px;
-  border:1px solid #ccc;
-  border-top:none;
-  max-height:350px;
-  overflow:auto;	
+    list-style: none;
+    display: block;
+    outline: none;
+    padding:5px;
+    border:1px solid #c9d1d6;
+    border-top:none;
+    max-height:350px;
+    overflow:auto;	
 }
 .ui-menu .ui-menu {
 	margin-top: -3px;
@@ -800,7 +800,7 @@ body .ui-tooltip {
 	font-size: 1em;
 }
 .ui-widget-content {
-	border: 1px solid #ccc;
+	border: 1px solid #c9d1d6;
 	background: #fff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
 	color: #222;
 }
@@ -809,7 +809,7 @@ body .ui-tooltip {
 }
 .ui-widget-header {
 	border: 1px solid #aaaaaa;
-	background: #cccccc url(images/ui-bg_highlight-soft_75_ddf1fc_1x100.png) 50% 50% repeat-x;
+	background: #c9d1d6 url(images/ui-bg_highlight-soft_75_ddf1fc_1x100.png) 50% 50% repeat-x;
 	color: #222222;
 	font-weight: bold;
 }

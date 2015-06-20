@@ -31,7 +31,6 @@ class ProjectRepository extends AbstractRepository
     {
         $query = $this->model
             ->newQuery()
-            //->leftjoin('projectusers', 'projectusers.project_id', '=', 'projects.id')  <--Need this for "access" variable? But then can't launch project?
             ->where('projects.status', '!=', Project::STATUS_ARCHIVED)
             ->whereHas(
                 'projectuser',

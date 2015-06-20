@@ -15,8 +15,9 @@
             ();" onmouseout="$('#<?php echo $projectUser->project_id; ?>').hide();">
       <span class="project-tile-image default" style="cursor:default;"></span>
       <div class="project-listing-data">
-        @if($projectUser->project->access == 'admin')
-            {!! link_to_route('projects.edit', 'Edit', ['project' => $projectUser->project->id], array('class' => 'btn btn-xs btn-default pull-right')) !!}
+        @if($projectUser->access == App\Models\Projectuser::ACCESS_ADMIN)
+            {!! link_to_route('projects.edit', 'Edit Project', ['project' => $projectUser->project->id], array('class' => 'btn btn-xs btn-default pull-right btn-spacer-left')) !!}
+            <span class="text-muted pull-right small" style="margin-top:3px;"><span class="glyphicon glyphicon-tower small"></span> Admin</span>
         @endif
         <h4>{!! link_to_route('projects.show', $projectUser->project->number . ' ' . $projectUser->project->name, ['project' => $projectUser->project->id], ['class' => 'bold']) !!}</h4>
         <p class="text-muted">{{ $projectUser->project->street . ' | ' . $projectUser->project->city . ', ' . $projectUser->project->state . ' ' . $projectUser->project->zip_code }}</p>
@@ -28,10 +29,6 @@
             <span class="glyphicon glyphicon-star-empty"></span>Start: {{ $projectUser->project->start }}
           </small>
         </span>
-          @if($projectUser->access == App\Models\Projectuser::ACCESS_ADMIN)
-            I am an admin for this project
-          @endif
-
         <span class="text-muted pull-left" style="margin-left:8px;">
           <small>
             <span class="glyphicon glyphicon-star"></span>Finish: {{ $projectUser->project->finish }}
