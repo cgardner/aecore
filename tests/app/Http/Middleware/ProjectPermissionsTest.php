@@ -5,7 +5,8 @@ use App\Models\Project;
 use App\Models\User;
 use Mockery;
 
-class ProjectPermissionsTest extends \TestCase {
+class ProjectPermissionsTest extends \TestCase
+{
 
     /**
      * @var ProjectPermissions
@@ -23,6 +24,11 @@ class ProjectPermissionsTest extends \TestCase {
     private $request;
 
     /**
+     * @var User
+     */
+    private $user;
+
+    /**
      * Set up the test.
      */
     public function setUp()
@@ -35,6 +41,11 @@ class ProjectPermissionsTest extends \TestCase {
         $this->request = Mockery::mock('\Illuminate\Http\Request');
 
         $this->middleware = new ProjectPermissions($this->projectRepository);
+
+        $this->user = new User(['company_id' => 123, 'timezone' => 'America/Los_Angeles']);
+        \Auth::shouldReceive('user')
+            ->zeroOrMoreTimes()
+            ->andReturn($this->user);
     }
 
 
@@ -46,7 +57,12 @@ class ProjectPermissionsTest extends \TestCase {
             ->andReturn(false);
 
         $response = $this->middleware
-            ->handle($this->request, function(){ return 'Redirected!'; });
+            ->handle(
+                $this->request,
+                function () {
+                    return 'Redirected!';
+                }
+            );
 
         $this->assertEquals('Redirected!', $response);
     }
@@ -67,14 +83,13 @@ class ProjectPermissionsTest extends \TestCase {
             ->with(1)
             ->andReturn($project);
 
-
-        $user = new User(['company_id' => 123]);
-        \Auth::shouldReceive('User')
-            ->once()
-            ->andReturn($user);
-
         $response = $this->middleware
-            ->handle($this->request, function($request) { return 'Success!'; });
+            ->handle(
+                $this->request,
+                function () {
+                    return 'Success!';
+                }
+            );
 
         $this->assertEquals('Success!', $response);
     }
@@ -93,13 +108,13 @@ class ProjectPermissionsTest extends \TestCase {
             ->with(1)
             ->andReturn(null);
 
-        $user = new User(['company_id' => 123]);
-        \Auth::shouldReceive('User')
-            ->once()
-            ->andReturn($user);
-
         $response = $this->middleware
-            ->handle($this->request, function($request) { return 'Success!'; });
+            ->handle(
+                $this->request,
+                function () {
+                    return 'Success!';
+                }
+            );
 
         $this->assertInstanceOf('Illuminate\Http\RedirectResponse', $response);
     }
