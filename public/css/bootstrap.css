@@ -1740,7 +1740,7 @@ input[type="date"] {
     min-height: 20px;
     margin-top: 10px;
     margin-bottom: 10px;
-    padding-left: 20px;
+    padding-left: 17px;
 }
 .radio label,
 .checkbox label {
@@ -1753,7 +1753,7 @@ input[type="date"] {
 .checkbox input[type="checkbox"],
 .checkbox-inline input[type="checkbox"] {
     float: left;
-    margin-left: -20px;
+    margin-left: -17px;
 }
 .radio + .radio,
 .checkbox + .checkbox {
@@ -1762,7 +1762,7 @@ input[type="date"] {
 .radio-inline,
 .checkbox-inline {
     display: inline-block;
-    padding-left: 20px;
+    padding-left: 17px;
     margin-bottom: 0;
     vertical-align: middle;
     font-weight: normal;
@@ -1771,7 +1771,7 @@ input[type="date"] {
 .radio-inline + .radio-inline,
 .checkbox-inline + .checkbox-inline {
     margin-top: 0;
-    margin-left: 10px;
+    margin-left: 15px;
 }
 input[type="radio"][disabled],
 input[type="checkbox"][disabled],

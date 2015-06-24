@@ -774,5 +774,8 @@ a.task_project:hover {
     line-height:22px;
 }
 
-/* Margin, must be last! */
+
+
+/* Must be last to override all css! */
+.no-padding { padding:0; }
 .no-margin { margin:0; }

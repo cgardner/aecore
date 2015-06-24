@@ -37,6 +37,9 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
     Route::get('collaborators/add', 'CollaboratorsController@addModal');
     Route::get('collaborators/help', 'CollaboratorsController@helpModal');
     Route::resource('collaborators', 'CollaboratorsController');
+    
+    /* RFI's */
+    Route::resource('rfis', 'RfisController');
 });
 
 // These routes don't require a user to join a company
