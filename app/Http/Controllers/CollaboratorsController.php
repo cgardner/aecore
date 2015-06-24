@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers;
 
+use App\Models\Projectuser;
+use App\Models\User;
 use App\Repositories\ProjectUserRepository;
 use App\Repositories\UserRepository;
 use Illuminate\View\View;
@@ -13,15 +15,21 @@ class CollaboratorsController extends Controller
     private $projectUserRepository;
 
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
      * Create a new controller instance.
      * @param ProjectUserRepository $projectUserRepository
      */
-    public function __construct(ProjectUserRepository $projectUserRepository)
+    public function __construct(ProjectUserRepository $projectUserRepository, UserRepository $userRepository)
     {
         $this->middleware('auth');
         $this->middleware('project.permissions');
 
         $this->projectUserRepository = $projectUserRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -36,6 +44,20 @@ class CollaboratorsController extends Controller
         return view('collaborators.index')->with(['collaborators' => $collaborators, 'project' => $project]);
     }
 
+    public function store()
+    {
+        $userCodes = \Request::get('usercode');
+
+        if (count($userCodes) == 0) {
+            return redirect('collaborators');
+        }
+
+        $users = array_map(array($this->userRepository, 'findByUserCode'), $userCodes);
+
+        array_walk($users, array($this, 'addUserToProject'));
+        return redirect('collaborators');
+    }
+    
     /**
      * Open the add collaborators modal
      *
@@ -52,5 +74,21 @@ class CollaboratorsController extends Controller
     public function helpModal()
     {
         return view('collaborators.modals.help');
+    }
+
+    private function addUserToProject(User $user)
+    {
+        /** @var \App\Models\Project $project */
+        $project = \Session::get('project');
+
+        $this->projectUserRepository
+            ->create([
+                'project_id' => $project->id,
+                'user_id' => $user->id,
+                'access' => Projectuser::ACCESS_USER,
+                'status' => Projectuser::STATUS_ACTIVE,
+                'role' => Projectuser::ROLE_DEFAULT,
+            ]);
+
     }
 }

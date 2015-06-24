@@ -14,4 +14,11 @@ class UserRepository extends AbstractRepository
     {
         $this->model = $user;
     }
+
+    public function findByUserCode($userCode)
+    {
+        return $this->model
+            ->where('usercode', '=', $userCode)
+            ->first();
+    }
 }
