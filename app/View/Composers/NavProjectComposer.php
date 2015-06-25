@@ -51,41 +51,41 @@ class NavProjectComposer
                 'url' => route('collaborators.index'),
                 'icon' => 'glyphicon-user'
             ],
-            [
-                'title' => 'Bidding',
-                'url' => url('bidding'),
-                'icon' => 'glyphicon-bullhorn'
-            ],            
-            [
-                'title' => 'Documents',
-                'url' => url('documents'),
-                'icon' => 'glyphicon-folder-open'
-            ],
-            [
-                'title' => 'Plan Room',
-                'url' => url('planroom'),
-                'icon' => 'glyphicon-th-large'
-            ],
-            [
-                'title' => 'Submittals',
-                'url' => url('submittals'),
-                'icon' => 'glyphicon-tags'
-            ],
+//            [
+//                'title' => 'Bidding',
+//                'url' => url('bidding'),
+//                'icon' => 'glyphicon-bullhorn'
+//            ],            
+//            [
+//                'title' => 'Documents',
+//                'url' => url('documents'),
+//                'icon' => 'glyphicon-folder-open'
+//            ],
+//            [
+//                'title' => 'Plan Room',
+//                'url' => url('planroom'),
+//                'icon' => 'glyphicon-th-large'
+//            ],
             [
                 'title' => 'Requests For Information',
                 'url' => url('rfis'),
                 'icon' => 'glyphicon-question-sign'
             ],            
+            [
+                'title' => 'Submittals',
+                'url' => url('submittals'),
+                'icon' => 'glyphicon-tags'
+            ],
 //            [
 //                'title' => 'Meeting Minutes',
 //                'url' => url('minutes'),
 //                'icon' => 'glyphicon-pencil'
 //            ],
-            [
-                'title' => 'Daily Reports',
-                'url' => url('dailyreports'),
-                'icon' => 'glyphicon-book'
-            ],
+//            [
+//                'title' => 'Daily Reports',
+//                'url' => url('dailyreports'),
+//                'icon' => 'glyphicon-book'
+//            ],
 //            [
 //                'title' => 'Punchlist',
 //                'url' => url('punchlist'),
