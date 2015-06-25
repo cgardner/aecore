@@ -41,7 +41,8 @@
                                     <ul class="dropdown-menu" role="menu" style="width:100%;">
                                         <!-- List Collaborators -->
                                         <li>
-                                            <a href="#" onClick="$('#assign_to').val('');"><img src="{{ Auth::User()->gravatar }}" class="avatar_sm"/>
+                                            <a href="#" onClick="$('#assign_to').val('');">
+                                                <img src="{{ Auth::User()->gravatar }}" class="avatar_sm"/>
                                                 Name Here<br>
                                                 <span class="small text-muted">Company Name</span>
                                             </a>
@@ -80,6 +81,15 @@
                                 <label class="radio-inline text-danger"><input type="radio" name="priority" value="3"> High</label>
                                 <label class="radio-inline text-warning"><input type="radio" name="priority" value="2" checked> Medium</label>
                                 <label class="radio-inline text-info"><input type="radio" name="priority" value="1"> Low</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Origin -->
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                {!! Form::label('origin', 'Originated From', array('class' => 'control-label', 'style'=>'padding:0;')) !!}
+                                {!! Form::text('origin', null, array('class' => 'form-control', 'placeholder' => 'Ex. AC Const. RFI-001...', 'required'=>'true' )) !!}
+                                <span class="text-danger">{!! $errors->first('origin') !!}</span>
                             </div>
                         </div>
                         
@@ -138,7 +148,7 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
                 </div>
