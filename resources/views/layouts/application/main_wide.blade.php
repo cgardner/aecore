@@ -52,5 +52,6 @@
         </div> <!-- End Modal Content -->
       </div> <!-- End Modal Dialog -->
     </div> <!-- End Modal -->
+    @yield('endbody')
   </body>
 </html>

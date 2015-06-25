@@ -22,6 +22,7 @@ class CollaboratorsController extends Controller
     /**
      * Create a new controller instance.
      * @param ProjectUserRepository $projectUserRepository
+     * @param UserRepository $userRepository
      */
     public function __construct(ProjectUserRepository $projectUserRepository, UserRepository $userRepository)
     {
@@ -40,7 +41,8 @@ class CollaboratorsController extends Controller
     public function index()
     {
         $project = \Session::get('project');
-        $collaborators = $this->projectUserRepository->findActiveByProject($project->id);
+        $collaborators = $this->projectUserRepository
+            ->findActiveByProject($project->id);
         return view('collaborators.index')->with(['collaborators' => $collaborators, 'project' => $project]);
     }
 
@@ -56,6 +58,37 @@ class CollaboratorsController extends Controller
 
         array_walk($users, array($this, 'addUserToProject'));
         return redirect('collaborators');
+    }
+
+    /**
+     * @param $collaboratorId
+     * @return bool
+     */
+    public function update($collaboratorId)
+    {
+        /** @var Projectuser|null $collaborator */
+        $collaborator = $this->projectUserRepository
+            ->find($collaboratorId);
+
+        if (is_null($collaborator)) {
+            return (string)false;
+        }
+
+        return (string)$collaborator->fill(\Request::all())
+            ->save();
+    }
+
+    public function destroy($collaboratorId)
+    {
+        /** @var Projectuser|null $collaborator */
+        $collaborator = $this->projectUserRepository
+            ->find($collaboratorId);
+
+        if (is_null($collaborator)) {
+            return (string)false;
+        }
+
+        return (string)$collaborator->delete();
     }
     
     /**
@@ -89,6 +122,5 @@ class CollaboratorsController extends Controller
                 'status' => Projectuser::STATUS_ACTIVE,
                 'role' => Projectuser::ROLE_DEFAULT,
             ]);
-
     }
 }
