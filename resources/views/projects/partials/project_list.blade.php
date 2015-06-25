@@ -4,8 +4,8 @@
 
 @if(count($projects) == 0)
   <div class="alert alert-info">
-    <p class="bold">No projects were found.</p>
-    <p>Try changing your filter or create a <a href="/projects/create" class="btn btn-success btn-xs bold"><span class="glyphicon glyphicon-plus"></span> New Project</a> to get started.</p>
+    <p class="bold"><span class="glyphicon glyphicon-warning-sign"></span> No projects were found.</p>
+    <p>Try changing your filter or create a <a href="/projects/create" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span> New Project</a> to get started.</p>
   </div>
 @else
   <div class="panel panel-default">

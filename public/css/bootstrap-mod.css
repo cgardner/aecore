@@ -212,6 +212,11 @@ fieldset[disabled] .btn-link-light {
     margin-bottom:15px;
 }
 
+/* Tables */
+table {
+    font-size:1em;
+}
+
 /* Main content wrapper */
 .page-wrapper {
     position:absolute;
@@ -774,5 +779,8 @@ a.task_project:hover {
     line-height:22px;
 }
 
-/* Margin, must be last! */
+
+
+/* Must be last to override all css! */
+.no-padding { padding:0; }
 .no-margin { margin:0; }

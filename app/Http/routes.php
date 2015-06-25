@@ -37,12 +37,20 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
     Route::get('collaborators/add', 'CollaboratorsController@addModal');
     Route::get('collaborators/help', 'CollaboratorsController@helpModal');
     Route::resource('collaborators', 'CollaboratorsController');
+    
+    /* RFI's */
+    Route::resource('rfis', 'RfisController');
+    
+    /* PDF's */
+    Route::get('pdf/log/{view}', 'PdfsController@pdfModal');
+    Route::get('pdf/{type}', 'PdfsController@pdf');
+    
 });
 
 // These routes don't require a user to join a company
 Route::group(['middleware'=>'userstatus'], function(){
 
-  // Welcome
+  /* Welcome */
   Route::get('welcome/company', function() {
     return View::make('welcome.company');
   }); 

@@ -7,7 +7,7 @@
                 <a class="btn btn-default btn-sm pull-right btn-spacer-left" href="/collaborators/help" data-target="#modal" data-toggle="modal" title="How does this work?">Help</a>
                 <a class="btn btn-success btn-sm pull-right" href="/collaborators/add" data-target="#modal" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Add Collaborators</a>
                 <h1>Collaborators</h1>
-                <p class="text-muted no-margin">Add your project team.</p>
+                <p class="text-muted no-margin">Add your entire project team.</p>
             </div>
         </div>
       
