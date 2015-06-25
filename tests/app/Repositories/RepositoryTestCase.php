@@ -26,7 +26,7 @@ abstract class RepositoryTestCase extends \TestCase
             'key2' => uniqid()
         ];
         $this->model
-            ->shouldReceive('save')
+            ->shouldReceive('create')
             ->once()
             ->with($attributes)
             ->andReturnSelf();
