@@ -4,6 +4,8 @@ use App\Models\Projectuser;
 use App\Models\User;
 use App\Repositories\ProjectUserRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Session;
 
@@ -41,9 +43,18 @@ class CollaboratorsController extends Controller
     public function index()
     {
         $project = \Session::get('project');
+        /** @var Model[] $collaborators */
         $collaborators = $this->projectUserRepository
-            ->findActiveByProject($project->id);
-        return view('collaborators.index')->with(['collaborators' => $collaborators, 'project' => $project]);
+            ->findActiveByProject($project->id, array('name'));
+
+        if (count($collaborators)) {
+            usort($collaborators, function($a, $b) {
+                return strcasecmp($a->user->name, $b->user->name);
+            });
+        }
+
+        return view('collaborators.index')
+            ->with(['collaborators' => $collaborators, 'project' => $project]);
     }
 
     public function store()
