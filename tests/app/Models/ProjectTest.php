@@ -21,7 +21,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $finish = new \DateTime('2015-07-30');
         $this->project->finish = $finish->format('m/d/Y');
 
-        $this->assertEquals(42, $this->project->daysLeft);
+        $this->assertEquals(43, $this->project->daysLeft);
     }
 
     public function testGetProgressAttribute()
@@ -34,7 +34,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase
         $this->project->finish = $finish->format('m/d/Y');
         $this->project->start = $start->format('m/d/Y');
 
-        $this->assertEquals(86.49, $this->project->progress);
+        $this->assertEquals(83.78, $this->project->progress);
     }
 
     protected function setUp()

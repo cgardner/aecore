@@ -10,6 +10,9 @@ class Projectuser extends Model
     const STATUS_INACTIVE = 'inactive';
 
     const ACCESS_ADMIN = 'admin';
+    const ACCESS_USER = 'user';
+
+    const ROLE_DEFAULT = 'default';
 
     protected $table = 'projectusers';
     protected $fillable = ['project_id', 'user_id', 'access', 'role', 'status'];
@@ -31,5 +34,4 @@ class Projectuser extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
-
 }

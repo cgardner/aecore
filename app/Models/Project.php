@@ -4,8 +4,8 @@ use Auth;
 use Carbon;
 use DateTime;
 use DateTimeZone;
-use Timezone;
 use Illuminate\Database\Eloquent\Model;
+use Timezone;
 
 class Project extends Model
 {
@@ -42,25 +42,24 @@ class Project extends Model
     function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
-        $this->now = new DateTime();
+        $this->now = $this->createDateTime(Carbon::now());
     }
 
     public function getProgressAttribute()
     {
-               
-        $startTime = new DateTime($this->start,  new DateTimeZone(Auth::user()->timezone));
-        $finishTime = new DateTime($this->finish,  new DateTimeZone(Auth::user()->timezone));
-        
+        $startTime = $this->createDateTime($this->start);
+        $finishTime = $this->createDateTime($this->finish);
+
         $totalTime = $finishTime
             ->diff($startTime)
             ->days;
-                
+
         $currentProgress = $this->getNow()
             ->diff($startTime)
             ->days;
-        
+
         $progress = ($currentProgress / $totalTime) * 100;
-        
+
         if ($progress > 100) {
             return 100;
         }
@@ -72,7 +71,17 @@ class Project extends Model
      */
     public function getNow()
     {
-        return new DateTime(Carbon::now(),  new DateTimeZone(Auth::user()->timezone));
+        return $this->now;
+    }
+
+    /**
+     * @param DateTime $now
+     * @return Project
+     */
+    public function setNow($now)
+    {
+        $this->now = $now;
+        return $this;
     }
 
     /**
@@ -81,14 +90,13 @@ class Project extends Model
     public function getDaysLeftAttribute()
     {
         $daysLeft = $this->getNow()
-            ->diff(new DateTime($this->finish,  new DateTimeZone(Auth::user()->timezone)))
+            ->diff($this->createDateTime($this->finish))
             ->format('%r%a');
-        
-        if($daysLeft <= 0) {
+
+        if ($daysLeft <= 0) {
             return $daysLeft;
-        } elseif($daysLeft > 0) {
-            return $daysLeft + 1;
         }
+        return (int)$daysLeft + 1;
     }
 
     /**
@@ -107,5 +115,10 @@ class Project extends Model
     public function projectuser()
     {
         return $this->hasMany('App\Models\Projectuser');
+    }
+
+    private function createDateTime($dateTime)
+    {
+        return new DateTime($dateTime, new DateTimeZone(Auth::user()->timezone));
     }
 }

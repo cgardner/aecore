@@ -14,7 +14,7 @@
         <div class="container-fluid">
             <div class="row">
                 @foreach($collaborators as $collaborator)
-                <div class="col-sm-6 col-md-5 col-lg-3">
+                <div class="col-sm-6 col-md-5 col-lg-3" data-collaborator-id="{{ $collaborator->id }}">
                     <div class="panel panel-default">
                         <div class="panel-body team-tile">
                             <img src="{{ $collaborator->user->gravatar }}" class="avatar_lg" />
@@ -43,18 +43,18 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
                                         @if($collaborator->access != \App\Models\Projectuser::ACCESS_ADMIN)
-                                            <a href="#" class="small">
+                                            <a href="#" class="small make-admin">
                                                 <span class="glyphicon glyphicon-tower"></span> Make Admin
                                             </a>
                                         @else
-                                            <a href="#" class="small">
+                                            <a href="#" class="small remove-admin">
                                                 <span class="glyphicon glyphicon-tower"></span> Remove Admin
                                             </a>
                                         @endif
                                     </li>
                                     @if ($collaborator->status == \App\Models\Projectuser::STATUS_ACTIVE)
                                     <li>
-                                        <a href="#" class="small">
+                                        <a href="#" class="small remove-collaborator">
                                             <span class="glyphicon glyphicon-trash"></span> Remove
                                         </a>
                                     </li>
@@ -73,4 +73,56 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('endbody')
+    <script>
+        (function($, location) {
+            'use strict';
+            $('.make-admin').click(function() {
+                updateCollaboratorAccess(this, "{!! \App\Models\Projectuser::ACCESS_ADMIN !!}");
+            });
+
+            $('.remove-admin').click(function() {
+                updateCollaboratorAccess(this, "{!! \App\Models\Projectuser::ACCESS_USER !!}");
+            });
+
+            $('.remove-collaborator').click(function() {
+                removeCollaboratorAccess(this);
+            });
+
+            function findCollaboratorId(context) {
+                return $(context).parents('[data-collaborator-id]').attr('data-collaborator-id');
+            }
+
+            function updateCollaboratorAccess(context, access) {
+                $.ajax({
+                    url: "/collaborators/" + findCollaboratorId(context),
+                    method: "PUT",
+                    data: {
+                        access: access,
+                        "_token": token
+                    },
+                    success: reload
+                });
+            }
+
+            function removeCollaboratorAccess(context) {
+                $.ajax({
+                    url: "/collaborators/" + findCollaboratorId(context),
+                    method: "DELETE",
+                    data: {
+                        "_token": token
+                    },
+                    success: reload
+                });
+            }
+
+            function reload() {
+                location.reload();
+            }
+
+            var token = "{{ \Session::token() }}";
+        })(jQuery, location);
+    </script>
 @endsection

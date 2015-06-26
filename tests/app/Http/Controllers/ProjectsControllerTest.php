@@ -7,11 +7,22 @@ use App\Models\User;
  */
 class ProjectsControllerTest extends \TestCase
 {
+    /**
+     * @var User
+     */
+    private $user;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->user = new User(
+            ['company_id' => 1, 'company_user_status' => 'active', 'timezone' => 'America/Los_Angeles']
+        );
+    }
+
     public function testStoreSavesNewProject()
     {
-        $user = new User(['company_id' => 1, 'company_user_status' => 'active']);
-
-        $this->be($user);
+        $this->be($this->user);
 
         $project = new Project(['id' => 123]);
 
@@ -30,9 +41,7 @@ class ProjectsControllerTest extends \TestCase
 
     public function testProjectShowRedirectsToDashboard()
     {
-        $user = new User(['id' => 1, 'company_id' => 1, 'company_user_status' => 'active']);
-
-        $this->be($user);
+        $this->be($this->user);
 
         $project = new Project(['company_id' => 1]);
 
@@ -51,9 +60,7 @@ class ProjectsControllerTest extends \TestCase
 
     public function testProjectShowRedirectsToProjectListWhenNoProjectFound()
     {
-        $user = new User(['id' => 1, 'company_id' => 1, 'company_user_status' => 'active']);
-
-        $this->be($user);
+        $this->be($this->user);
 
         $projectRepository = Mockery::mock('\App\Repositories\AbstractRepository, \App\Repositories\ProjectRepository');
         $this->app

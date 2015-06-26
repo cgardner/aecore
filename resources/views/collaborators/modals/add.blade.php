@@ -73,7 +73,7 @@
 </div>
 <!-- Add collaborator form -->
 <div id="collab_form">
-    {!! Form::open(array('url' => 'collaborators/add', 'method' => 'post', 'class' => 'form-horizontal no-margin')) !!}
+    {!! Form::open(array('url' => 'collaborators', 'method' => 'post', 'class' => 'form-horizontal no-margin')) !!}
         <div class="modal-body">
             <div class="form-group" style="margin-bottom:10px;">
                 <div class="col-lg-12">
