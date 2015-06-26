@@ -59,11 +59,19 @@
                                             @endif
                                         </li>
                                         @if ($collaborator->status == \App\Models\Projectuser::STATUS_ACTIVE)
-                                        <li>
-                                            <a href="#" class="small remove-collaborator">
-                                                <span class="glyphicon glyphicon-trash small"></span> Remove from project
-                                            </a>
-                                        </li>
+                                            <li>
+                                                <a href="#" class="small remove-collaborator">
+                                                    <span class="glyphicon glyphicon-trash small"></span> Remove from project
+                                                </a>
+                                            </li>
+                                        @else
+                                            <li>
+                                                <a href="#" class="small readd-collaborator">
+                                                    <span class="glyphicon glyphicon-trash small"></span>
+                                                    Re-Add to project
+                                                </a>
+                                            </li>
+
                                         @endif
                                     </ul>
                                 </div>
@@ -78,43 +86,33 @@
 
 @section('endbody')
     <script>
-        (function($, location) {
+        (function ($, location) {
             'use strict';
-            $('.make-admin').click(function() {
-                updateCollaboratorAccess(this, "{!! \App\Models\Projectuser::ACCESS_ADMIN !!}");
+            $('.make-admin').click(function () {
+                updateCollaboratorAccess(this, {access: "{!! \App\Models\Projectuser::ACCESS_ADMIN !!}"});
             });
 
-            $('.remove-admin').click(function() {
-                updateCollaboratorAccess(this, "{!! \App\Models\Projectuser::ACCESS_USER !!}");
+            $('.remove-admin').click(function () {
+                updateCollaboratorAccess(this, {access: "{!! \App\Models\Projectuser::ACCESS_USER !!}"});
             });
 
-            $('.remove-collaborator').click(function() {
-                removeCollaboratorAccess(this);
+            $('.remove-collaborator').click(function () {
+                updateCollaboratorAccess(this, {status: "{!! \App\Models\Projectuser::STATUS_DISABLED !!}"});
+            });
+            $('.readd-collaborator').click(function () {
+                updateCollaboratorAccess(this, {status: "{!! \App\Models\Projectuser::STATUS_ACTIVE !!}"});
             });
 
             function findCollaboratorId(context) {
                 return $(context).parents('[data-collaborator-id]').attr('data-collaborator-id');
             }
 
-            function updateCollaboratorAccess(context, access) {
+            function updateCollaboratorAccess(context, newData) {
+                var data = $.extend({_token: token}, newData);
                 $.ajax({
                     url: "/collaborators/" + findCollaboratorId(context),
                     method: "PUT",
-                    data: {
-                        access: access,
-                        "_token": token
-                    },
-                    success: reload
-                });
-            }
-
-            function removeCollaboratorAccess(context) {
-                $.ajax({
-                    url: "/collaborators/" + findCollaboratorId(context),
-                    method: "DELETE",
-                    data: {
-                        "_token": token
-                    },
+                    data: data,
                     success: reload
                 });
             }
