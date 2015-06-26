@@ -113,8 +113,8 @@ class CollaboratorsController extends Controller
         $project = \Session::get('project');
 
         $collaborator = $this->projectUserRepository
-            ->findByUserId($user->id);
-
+            ->findByUserId($user->id, $project->id);
+        
         if (is_null($collaborator)) {
             $this->projectUserRepository
                 ->create([
@@ -125,8 +125,14 @@ class CollaboratorsController extends Controller
                     'role' => Projectuser::ROLE_DEFAULT,
                 ]);
             return;
+        } else {
+            $this->projectUserRepository
+                ->update([
+                    'access' => Projectuser::ACCESS_USER,
+                    'status' => Projectuser::STATUS_ACTIVE,
+                    'role' => Projectuser::ROLE_DEFAULT,
+                ]);
         }
-
-
+        
     }
 }
