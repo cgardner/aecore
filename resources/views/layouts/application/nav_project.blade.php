@@ -10,6 +10,9 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu sidebar-project-list-dropdown" role="menu">
+            @if(count($projects) <= 1)
+                <span style="margin-left:12px;" class="glyphicon glyphicon-warning-sign small text-muted"></span><span class="text-danger btn-spacer-left bold">No projects found.</span>
+            @endif
             @foreach($projects as $project)
                 @if($activeProject->id != $project->id)
                     <li>
@@ -17,6 +20,8 @@
                     </li>
                 @endif
             @endforeach
+            <li class="divider"></li>
+            <li><a href="/projects/create"><span class="glyphicon glyphicon-plus small"></span> New Project</a></li>
         </ul>
     </div>
     
