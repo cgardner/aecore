@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Projectuser extends Model
 {
     const STATUS_ACTIVE = 'active';
-    const STATUS_INACTIVE = 'inactive';
+    const STATUS_INVITED = 'invited';
+    const STATUS_DISABLED = 'disabled';
 
     const ACCESS_ADMIN = 'admin';
     const ACCESS_USER = 'user';
@@ -15,7 +16,13 @@ class Projectuser extends Model
     const ROLE_DEFAULT = 'default';
 
     protected $table = 'projectusers';
-    protected $fillable = ['project_id', 'user_id', 'access', 'role', 'status'];
+    protected $fillable = [
+                    'project_id',
+                    'user_id',
+                    'access', // standard, admin
+                    'role',
+                    'status' // active, invited, disabled
+                ];
 
     /**
      * Relationship with the Project model.

@@ -43,6 +43,13 @@ class CollaboratorsController extends Controller
         $project = \Session::get('project');
         $collaborators = $this->projectUserRepository
             ->findActiveByProject($project->id);
+        
+        foreach($collaborators as $collaborator) {
+            if($collaborator->user->userphone != null && $collaborator->user->userphone->mobile == "") {
+                $collaborator->user->userphone->mobile = "Not provided";
+            }
+        }
+    
         return view('collaborators.index')->with(['collaborators' => $collaborators, 'project' => $project]);
     }
 
