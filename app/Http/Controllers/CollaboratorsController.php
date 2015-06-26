@@ -70,7 +70,7 @@ class CollaboratorsController extends Controller
         $collaborator = $this->projectUserRepository
             ->find($collaboratorId);
 
-        if (is_null($collaborator)) {
+        if (is_null($collaborator) || count($collaborator) == 0) {
             return (string)false;
         }
 
@@ -78,19 +78,6 @@ class CollaboratorsController extends Controller
             ->save();
     }
 
-    public function destroy($collaboratorId)
-    {
-        /** @var Projectuser|null $collaborator */
-        $collaborator = $this->projectUserRepository
-            ->find($collaboratorId);
-
-        if (is_null($collaborator)) {
-            return (string)false;
-        }
-
-        return (string)$collaborator->delete();
-    }
-    
     /**
      * Open the add collaborators modal
      *
@@ -114,13 +101,21 @@ class CollaboratorsController extends Controller
         /** @var \App\Models\Project $project */
         $project = \Session::get('project');
 
-        $this->projectUserRepository
-            ->create([
-                'project_id' => $project->id,
-                'user_id' => $user->id,
-                'access' => Projectuser::ACCESS_USER,
-                'status' => Projectuser::STATUS_ACTIVE,
-                'role' => Projectuser::ROLE_DEFAULT,
-            ]);
+        $collaborator = $this->projectUserRepository
+            ->findByUserId($user->id);
+
+        if (is_null($collaborator)) {
+            $this->projectUserRepository
+                ->create([
+                    'project_id' => $project->id,
+                    'user_id' => $user->id,
+                    'access' => Projectuser::ACCESS_USER,
+                    'status' => Projectuser::STATUS_ACTIVE,
+                    'role' => Projectuser::ROLE_DEFAULT,
+                ]);
+            return;
+        }
+
+
     }
 }
