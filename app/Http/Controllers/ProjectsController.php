@@ -101,9 +101,12 @@ class ProjectsController extends Controller
     {
         $project = $this->projectRepository
             ->find($projectId);
-
         Session::set('project', $project);
 
+        $projectUser = $this->projectUserRepository
+            ->find(Auth::User()->id);
+        Session::set('projectUser', $projectUser);
+        
         return redirect('dashboard');
     }
 
