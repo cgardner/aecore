@@ -29,7 +29,7 @@
                                 <p style="font-size:1.2em;">{{ $collaborator->user->name }}</p>
                                 <p class="text-muted small">
                                     {{ $collaborator->user->title }}
-                                    {{ $collaborator->user->title . !empty($collaborator->user->company->name) ? ' at ' . $collaborator->user->company->name : '' }}
+                                    {{ $collaborator->user->title . (!empty($collaborator->user->company->name) && !empty( $collaborator->user->title)) ? ' at ' . $collaborator->user->company->name : @$collaborator->user->company->name }}
                                 </p>
                                 <p class="text-muted small">
                                     <span class="glyphicon glyphicon-envelope" style="top:2px;margin-right:3px;"></span>
