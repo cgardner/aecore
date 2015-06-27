@@ -102,11 +102,13 @@ class ProjectsController extends Controller
         $project = $this->projectRepository
             ->find($projectId);
         Session::set('project', $project);
-        
-        $projectUser = \App\Models\User::find(Auth::User()->id)->Projectuser()
-            ->where('project_id', '=', $projectId)->first();
+
+        $projectUser = Auth::User()->Projectuser()
+            ->where('project_id', '=', $projectId)
+            ->first();
+
         Session::set('projectUser', $projectUser);
-        
+
         return redirect('dashboard');
     }
 
