@@ -5,6 +5,7 @@
         <div class="pagehead">
             <div class="container-fluid">
                 <a class="btn btn-default btn-sm pull-right btn-spacer-left" href="/collaborators/help" data-target="#modal" data-toggle="modal" title="How does this work?">Help</a>
+                <a class="btn btn-warning btn-sm pull-right btn-spacer-left" href="/collaborators/invite" data-target="#modal" data-toggle="modal" title="Invite a person to Aecore."><span class="glyphicon glyphicon-bullhorn" style="margin-right:2px;top:2px;"></span> Invite to Aecore</a>
                 @if(Session::get('projectUser')->access == \App\Models\Projectuser::ACCESS_ADMIN)
                     <a class="btn btn-success btn-sm pull-right" href="/collaborators/add" data-target="#modal" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Add Collaborators</a>
                 @endif
@@ -29,7 +30,9 @@
                                 <p style="font-size:1.2em;">{{ $collaborator->user->name }}</p>
                                 <p class="text-muted small">
                                     {{ $collaborator->user->title }}
-                                    {{ $collaborator->user->title . (!empty($collaborator->user->company->name) && !empty( $collaborator->user->title)) ? ' at ' . $collaborator->user->company->name : @$collaborator->user->company->name }}
+                                    @if($collaborator->user->company_user_status != 'disabled')
+                                        {{ (!empty($collaborator->user->company->name) && !empty( $collaborator->user->title)) ? ' at ' . $collaborator->user->company->name : @$collaborator->user->company->name }}
+                                    @endif
                                 </p>
                                 <p class="text-muted small">
                                     <span class="glyphicon glyphicon-envelope" style="top:2px;margin-right:3px;"></span>

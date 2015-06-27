@@ -77,14 +77,13 @@
         <div class="modal-body">
             <div class="form-group" style="margin-bottom:10px;">
                 <div class="col-lg-12">
-                    {!! Form::text('term', null, array('id'=>'term', 'class'=>'form-control', 'placeholder'=>'Add collaborators...', 'autofocus')) !!}
+                    {!! Form::text('term', null, array('id'=>'term', 'class'=>'form-control', 'placeholder'=>'Add collaborators...', 'autofocus'=>'true')) !!}
                 </div>
             </div>
             <div class="panel panel-default no-margin" style="display:none;max-height:260px;overflow-y:auto;">
                 <div class="panel-body" id="collaborator-list" style="padding:5px 10px 10px 10px;"></div>
                 <div id="collaborator-list-data"></div>
             </div>
-            <p style="font-size:1em;margin:5px 0 0 0;" class="text-muted small">Can't find who you're looking for? <span class="btn-link" onClick="toggle_collab();">Invite to Aecore</span></p>
         </div>
         <div class="modal-footer">
             {!! Form::submit('Add Collaborators', array('class' => 'btn btn-success')) !!}

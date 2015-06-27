@@ -90,21 +90,11 @@ class CollaboratorsController extends Controller
     }
 
     /**
-     * Open the add collaborators modal
-     *
+     * Open collaborator modals
      */
-    public function addModal()
+    public function collabModal($type)
     {
-        return view('collaborators.modals.add');
-    }
-
-    /**
-     * Open the help modal
-     *
-     */
-    public function helpModal()
-    {
-        return view('collaborators.modals.help');
+        return view('collaborators.modals.' . $type);
     }
 
     private function addUserToProject(User $user)
