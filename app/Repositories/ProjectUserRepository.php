@@ -59,6 +59,6 @@ class ProjectUserRepository extends AbstractRepository implements RepositoryInte
             ->newQuery()
             ->where('user_id', '=', $userId)
             ->where('project_id', '=', $projectId);
-        return $query->getModel();
+        return $query->getModels();
     }
 }
