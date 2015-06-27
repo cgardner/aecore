@@ -36,7 +36,7 @@ class ProjectRepository extends AbstractRepository
                 'projectuser',
                 function (Builder $query) use ($userId) {
                     $query->has('user')
-                        ->where('projectusers.status', '=', Projectuser::STATUS_ACTIVE)
+                        ->where('projectusers.status', '!=', Projectuser::STATUS_DISABLED)
                         ->where('projectusers.user_id', '=', $userId);
                 }
             );

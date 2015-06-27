@@ -4,7 +4,9 @@
     <div class="page-wrapper">
         <div class="pagehead">
             <div class="container-fluid">
-                <a href="{!! URL::route('projects.edit', ['project' => $project->id]) !!}" class="btn btn-sm btn-default pull-right btn-spacer-left"><span class="glyphicon glyphicon-pencil"></span> Edit Project</a>
+                @if(Session::get('projectUser')->access == \App\Models\Projectuser::ACCESS_ADMIN)
+                    <a href="{!! URL::route('projects.edit', ['project' => $project->id]) !!}" class="btn btn-sm btn-default pull-right btn-spacer-left"><span class="glyphicon glyphicon-pencil"></span> Edit Project</a>
+                @endif
                 <h1>{!! '#' . $project->number . ' ' . $project->name !!}</h1>
                 <p class="text-muted no-margin">Your project at a glance.</p>
             </div>

@@ -5,7 +5,9 @@
         <div class="pagehead">
             <div class="container-fluid">
                 <a class="btn btn-default btn-sm pull-right btn-spacer-left" href="/collaborators/help" data-target="#modal" data-toggle="modal" title="How does this work?">Help</a>
-                <a class="btn btn-success btn-sm pull-right" href="/collaborators/add" data-target="#modal" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Add Collaborators</a>
+                @if(Session::get('projectUser')->access == \App\Models\Projectuser::ACCESS_ADMIN)
+                    <a class="btn btn-success btn-sm pull-right" href="/collaborators/add" data-target="#modal" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Add Collaborators</a>
+                @endif
                 <h1>Collaborators</h1>
                 <p class="text-muted no-margin">Add your entire project team.</p>
             </div>
@@ -36,45 +38,47 @@
                                 @if($collaborator->user->userphone)
                                     <p class="text-muted small">
                                         <span class="glyphicon glyphicon-phone" style="top:2px;margin-right:3px;"></span>
-                                        {{ $collaborator->user->userphone->mobile }}
+                                        {{ $collaborator->user->userphone->mobile == null ? 'Not provided' : $collaborator->user->userphone->mobile }}
                                     </p>
                                 @endif
                             </div>
                             <div class="panel-footer team-tile-footer">
                                 <span class="bold small text-muted">{!! @$collaborator->user->company->type !!}</span>
-                                <div class="btn-group pull-right btn-spacer-left">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        <span class="glyphicon glyphicon-user"></span> Manage <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li>
-                                            @if($collaborator->access != \App\Models\Projectuser::ACCESS_ADMIN)
-                                                <a href="#" class="small make-admin">
-                                                    <span class="glyphicon glyphicon-tower small"></span> Make admin
-                                                </a>
+                                @if(Session::get('projectUser')->access == \App\Models\Projectuser::ACCESS_ADMIN)
+                                    <div class="btn-group pull-right btn-spacer-left">
+                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                            <span class="glyphicon glyphicon-user"></span> Manage <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li>
+                                                @if($collaborator->access != \App\Models\Projectuser::ACCESS_ADMIN)
+                                                    <a href="#" class="small make-admin">
+                                                        <span class="glyphicon glyphicon-tower small"></span> Make admin
+                                                    </a>
+                                                @else
+                                                    <a href="#" class="small remove-admin">
+                                                        <span class="glyphicon glyphicon-tower small"></span> Revoke admin
+                                                    </a>
+                                                @endif
+                                            </li>
+                                            @if ($collaborator->status == \App\Models\Projectuser::STATUS_ACTIVE)
+                                                <li>
+                                                    <a href="#" class="small remove-collaborator">
+                                                        <span class="glyphicon glyphicon-trash small"></span> Remove from project
+                                                    </a>
+                                                </li>
                                             @else
-                                                <a href="#" class="small remove-admin">
-                                                    <span class="glyphicon glyphicon-tower small"></span> Revoke admin
-                                                </a>
-                                            @endif
-                                        </li>
-                                        @if ($collaborator->status == \App\Models\Projectuser::STATUS_ACTIVE)
-                                            <li>
-                                                <a href="#" class="small remove-collaborator">
-                                                    <span class="glyphicon glyphicon-trash small"></span> Remove from project
-                                                </a>
-                                            </li>
-                                        @else
-                                            <li>
-                                                <a href="#" class="small readd-collaborator">
-                                                    <span class="glyphicon glyphicon-trash small"></span>
-                                                    Re-Add to project
-                                                </a>
-                                            </li>
+                                                <li>
+                                                    <a href="#" class="small readd-collaborator">
+                                                        <span class="glyphicon glyphicon-trash small"></span>
+                                                        Re-Add to project
+                                                    </a>
+                                                </li>
 
-                                        @endif
-                                    </ul>
-                                </div>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
