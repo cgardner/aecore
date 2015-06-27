@@ -5,7 +5,6 @@ use App\Models\User;
 use App\Repositories\ProjectUserRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Session;
 
@@ -45,16 +44,22 @@ class CollaboratorsController extends Controller
         $project = \Session::get('project');
         /** @var Model[] $collaborators */
         $collaborators = $this->projectUserRepository
-            ->findActiveByProject($project->id, array('name'));
+            ->findActiveByProject($project->id);
+
+        $user = $this->projectUserRepository
+            ->findByUserId(\Auth::user()->id, $project->id);
 
         if (count($collaborators)) {
-            usort($collaborators, function($a, $b) {
-                return strcasecmp($a->user->name, $b->user->name);
-            });
+            usort(
+                $collaborators,
+                function ($a, $b) {
+                    return strcasecmp($a->user->name, $b->user->name);
+                }
+            );
         }
 
         return view('collaborators.index')
-            ->with(['collaborators' => $collaborators, 'project' => $project]);
+            ->with(['collaborators' => $collaborators, 'project' => $project, 'projectUser' => $user]);
     }
 
     public function store()
@@ -104,25 +109,32 @@ class CollaboratorsController extends Controller
 
         $collaborator = $this->projectUserRepository
             ->findByUserId($user->id, $project->id);
-        
+
+        $role = Projectuser::ROLE_DEFAULT;
+
+        if ($user->company) {
+            $role = $user->company->type;
+        }
+
         if (is_null($collaborator)) {
             $this->projectUserRepository
-                ->create([
-                    'project_id' => $project->id,
-                    'user_id' => $user->id,
-                    'access' => Projectuser::ACCESS_USER,
-                    'status' => Projectuser::STATUS_ACTIVE,
-                    'role' => Projectuser::ROLE_DEFAULT,
-                ]);
+                ->create(
+                    [
+                        'project_id' => $project->id,
+                        'user_id' => $user->id,
+                        'access' => Projectuser::ACCESS_USER,
+                        'status' => Projectuser::STATUS_ACTIVE,
+                        'role' => $role,
+                    ]
+                );
             return;
-        } else {
-            $this->projectUserRepository
-                ->update([
-                    'access' => Projectuser::ACCESS_USER,
-                    'status' => Projectuser::STATUS_ACTIVE,
-                    'role' => Projectuser::ROLE_DEFAULT,
-                ]);
         }
-        
+        $collaborator->fill(
+            [
+                'access' => Projectuser::ACCESS_USER,
+                'status' => Projectuser::STATUS_ACTIVE
+            ]
+        )
+            ->save();;
     }
 }

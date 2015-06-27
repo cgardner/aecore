@@ -51,7 +51,7 @@ class ProjectUserRepository extends AbstractRepository implements RepositoryInte
     /**
      * Find current project user
      * @param $userId
-     * @return \Illuminate\Database\Eloquent\Model[]
+     * @return Projectuser
      */
     public function findByUserId($userId, $projectId)
     {
@@ -59,6 +59,6 @@ class ProjectUserRepository extends AbstractRepository implements RepositoryInte
             ->newQuery()
             ->where('user_id', '=', $userId)
             ->where('project_id', '=', $projectId);
-        return $query->getModels();
+        return $query->first();
     }
 }

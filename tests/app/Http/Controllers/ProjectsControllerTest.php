@@ -39,25 +39,6 @@ class ProjectsControllerTest extends \TestCase
         $this->assertRedirectedToRoute('projects.index');
     }
 
-    public function testProjectShowRedirectsToDashboard()
-    {
-        $this->be($this->user);
-
-        $project = new Project(['company_id' => 1]);
-
-        $projectRepository = Mockery::mock('\App\Repositories\AbstractRepository, \App\Repositories\ProjectRepository');
-        $this->app
-            ->instance('App\Repositories\ProjectRepository', $projectRepository);
-
-        $projectRepository->shouldReceive('find')
-            ->with(1)
-            ->andReturn($project);
-
-        $this->call('GET', 'projects/1');
-
-        $this->assertRedirectedTo('dashboard', ['project' => $project]);
-    }
-
     public function testProjectShowRedirectsToProjectListWhenNoProjectFound()
     {
         $this->be($this->user);
