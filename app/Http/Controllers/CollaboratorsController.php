@@ -46,9 +46,6 @@ class CollaboratorsController extends Controller
         $collaborators = $this->projectUserRepository
             ->findActiveByProject($project->id);
 
-        $user = $this->projectUserRepository
-            ->findByUserId(\Auth::user()->id, $project->id);
-
         if (count($collaborators)) {
             usort(
                 $collaborators,
@@ -59,7 +56,13 @@ class CollaboratorsController extends Controller
         }
 
         return view('collaborators.index')
-            ->with(['collaborators' => $collaborators, 'project' => $project, 'projectUser' => $user]);
+            ->with(
+                [
+                    'collaborators' => $collaborators,
+                    'project' => $project,
+                    'projectUser' => Session::get('projectUser')
+                ]
+            );
     }
 
     public function store()
