@@ -1,6 +1,5 @@
 @extends('layouts.application.main')
 @section('content')
-
     <script type="text/javascript" src="{!! asset('/js/countries.js') !!}"></script>
     <script type="text/javascript" src="{!! asset('/js/jquery.currency.js') !!}"></script>
 
@@ -211,4 +210,4 @@
             </div>
         </div>
   {!! Form::close() !!}
-@stop
+@endsection

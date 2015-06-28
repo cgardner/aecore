@@ -1,23 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dba7a041602eb52043f28e76d5285f99",
+    "hash": "de5cb6b4e2728720ec33332c4fc73822",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "2.8.10",
+            "version": "2.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2ee053239be2ad4cf020f3b5998f29b5302d82c9"
+                "reference": "69cf65438b99051ce4d599f1611dea5d50551b3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2ee053239be2ad4cf020f3b5998f29b5302d82c9",
-                "reference": "2ee053239be2ad4cf020f3b5998f29b5302d82c9",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/69cf65438b99051ce4d599f1611dea5d50551b3f",
+                "reference": "69cf65438b99051ce4d599f1611dea5d50551b3f",
                 "shasum": ""
             },
             "require": {
@@ -67,7 +67,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2015-06-11 23:48:44"
+            "time": "2015-06-24 21:23:21"
         },
         {
             "name": "aws/aws-sdk-php-laravel",
@@ -378,6 +378,56 @@
                 "string"
             ],
             "time": "2014-12-20 21:24:13"
+        },
+        {
+            "name": "fenos/notifynder",
+            "version": "3.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fenos/Notifynder.git",
+                "reference": "fc77abef3681bd9afc7ce25768091913fed87002"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fenos/Notifynder/zipball/fc77abef3681bd9afc7ce25768091913fed87002",
+                "reference": "fc77abef3681bd9afc7ce25768091913fed87002",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.*",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "laracasts/testdummy": "~2.0",
+                "laravel/framework": "5.0.*",
+                "orchestra/testbench": "3.0.*",
+                "phpspec/phpspec": "~2.1",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [],
+                "psr-4": {
+                    "Fenos\\Notifynder\\": "src/Notifynder"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabrizio Fenoglio",
+                    "email": "fabri_feno@yahoo.it",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Management system of internal notifications for Laravel 5.*",
+            "keywords": [
+                "laravel",
+                "notifications"
+            ],
+            "time": "2015-06-10 14:45:29"
         },
         {
             "name": "guzzle/guzzle",
@@ -1248,21 +1298,21 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.19.0",
+            "version": "1.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "68868e0b02d2d803d0052a59d4e5003cccf87320"
+                "reference": "bfd3eaba109c9a2405c92174c8e17f20c2b9caf3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/68868e0b02d2d803d0052a59d4e5003cccf87320",
-                "reference": "68868e0b02d2d803d0052a59d4e5003cccf87320",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/bfd3eaba109c9a2405c92174c8e17f20c2b9caf3",
+                "reference": "bfd3eaba109c9a2405c92174c8e17f20c2b9caf3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "symfony/translation": "~2.6"
+                "symfony/translation": "~2.6|~3.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.0"
@@ -1291,7 +1341,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2015-05-09 03:23:44"
+            "time": "2015-06-25 04:19:39"
         },
         {
             "name": "nikic/php-parser",
@@ -2411,12 +2461,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/padraic/mockery.git",
-                "reference": "a4817105ee32b8a05056986ad23ce3a54781f693"
+                "reference": "6566f313837fa1074c34457bfdce1cfdc8dc50ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/a4817105ee32b8a05056986ad23ce3a54781f693",
-                "reference": "a4817105ee32b8a05056986ad23ce3a54781f693",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/6566f313837fa1074c34457bfdce1cfdc8dc50ce",
+                "reference": "6566f313837fa1074c34457bfdce1cfdc8dc50ce",
                 "shasum": ""
             },
             "require": {
@@ -2468,7 +2518,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2015-05-12 15:28:09"
+            "time": "2015-06-26 15:01:58"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -3493,4 +3543,3 @@
     },
     "platform-dev": []
 }
-

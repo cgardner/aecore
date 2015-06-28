@@ -5,11 +5,13 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
+use Fenos\Notifynder\Notifable;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
 
     use Authenticatable, CanResetPassword;
+    use Notifable;
 
     /**
      * The database table used by the model.
@@ -87,5 +89,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         // Defaulting to gravatar
         $hash = md5(strtolower(trim($this->attributes['email'])));
         return 'http://www.gravatar.com/avatar/' . $hash . '?d=identicon';
+    }
+    
+    public function getNotifications() {
+        return \Notifynder::getNotRead(\Auth::User()->id, '10');
     }
 }

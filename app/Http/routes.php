@@ -54,6 +54,9 @@ Route::group(['middleware'=>'userstatus'], function(){
     return View::make('welcome.company');
   }); 
   
+  /* Notifications */
+  Route::post('notifications/read/{id}', 'NotificationsController@readNotificaton');
+  
   /* Tasks */
   Route::post('tasks/create', 'TasksController@createTask');
   Route::post('tasks/update', 'TasksController@updateTask');

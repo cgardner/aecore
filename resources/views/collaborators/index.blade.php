@@ -88,7 +88,7 @@
                                                 </li>
                                             @else
                                                 <li>
-                                                    <a href="#" class="small readd-collaborator">
+                                                    <a href="#" class="small read-collaborator">
                                                         <span class="glyphicon glyphicon-trash small"></span>
                                                         Re-Add to project
                                                     </a>
@@ -122,7 +122,7 @@
             $('.remove-collaborator').click(function () {
                 updateCollaboratorAccess(this, {status: "{!! \App\Models\Projectuser::STATUS_DISABLED !!}"});
             });
-            $('.readd-collaborator').click(function () {
+            $('.read-collaborator').click(function () {
                 updateCollaboratorAccess(this, {status: "{!! \App\Models\Projectuser::STATUS_ACTIVE !!}"});
             });
 

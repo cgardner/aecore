@@ -146,14 +146,15 @@ return [
 		'App\Providers\RouteServiceProvider',
 		'App\Providers\ViewServiceProvider',
 
-		// Added services
-    'Aws\Laravel\AwsServiceProvider',
-    'Illuminate\Html\HtmlServiceProvider',
-    'Intervention\Image\ImageServiceProvider',
-    'Intervention\Image\ImageServiceProvider',
-    'Monarobase\CountryList\CountryListServiceProvider',
-    'Morrislaptop\LaravelFivePackageBridges\ConfigServiceProvider', //bridge
-    'Morrislaptop\LaravelFivePackageBridges\Bridges\TimezoneServiceProvider',
+        // Added services
+        'Aws\Laravel\AwsServiceProvider',
+        'Fenos\Notifynder\NotifynderServiceProvider',
+        'Illuminate\Html\HtmlServiceProvider',
+        'Intervention\Image\ImageServiceProvider',
+        'Intervention\Image\ImageServiceProvider',
+        'Monarobase\CountryList\CountryListServiceProvider',
+        'Morrislaptop\LaravelFivePackageBridges\ConfigServiceProvider', //bridge
+        'Morrislaptop\LaravelFivePackageBridges\Bridges\TimezoneServiceProvider',
       
 	],
 
@@ -204,13 +205,14 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 
 		//Added aliases
-    'AWS'       => 'Aws\Laravel\AwsFacade',
-    'Carbon'    => 'Carbon\Carbon',
-    'Countries' => 'Monarobase\CountryList\CountryListFacade',
-    'Debugbar'  => 'Barryvdh\Debugbar\Facade',
-    'Form'      => 'Illuminate\Html\FormFacade',
-    'Html'      => 'Illuminate\Html\HtmlFacade',
-    'Image'     => 'Intervention\Image\Facades\Image',
+        'AWS'       => 'Aws\Laravel\AwsFacade',
+        'Carbon'    => 'Carbon\Carbon',
+        'Countries' => 'Monarobase\CountryList\CountryListFacade',
+        'Debugbar'  => 'Barryvdh\Debugbar\Facade',
+        'Form'      => 'Illuminate\Html\FormFacade',
+        'Html'      => 'Illuminate\Html\HtmlFacade',
+        'Image'     => 'Intervention\Image\Facades\Image',
+        'Notifynder'    => 'Fenos\Notifynder\Facades\Notifynder',
       
 	],
 

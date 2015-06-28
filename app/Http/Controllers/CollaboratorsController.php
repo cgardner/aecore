@@ -76,6 +76,8 @@ class CollaboratorsController extends Controller
         $users = array_map(array($this->userRepository, 'findByUserCode'), $userCodes);
 
         array_walk($users, array($this, 'addUserToProject'));
+        array_walk($users, array($this, 'sendNotification'));
+        
         return redirect('collaborators');
     }
 
@@ -105,6 +107,16 @@ class CollaboratorsController extends Controller
         return view('collaborators.modals.' . $type);
     }
 
+    private function sendNotification(User $user)
+    {
+        // Issue user notification
+        \Notifynder::category('collaborators.add')
+            ->from(\Auth::User()->id)
+            ->to($user->id)
+            ->url('/projects/'.Session::get('project')->id)
+            ->send();
+    }
+    
     private function addUserToProject(User $user)
     {
         /** @var \App\Models\Project $project */

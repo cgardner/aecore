@@ -295,7 +295,7 @@ class TasksController extends Controller {
       $list_id = "0";
     }
     
-		$task = Task::create([
+    $task = Task::create([
       'user_id'     => Auth::User()->id,
       'assigned_by' => Auth::User()->id,
       'tasklist_id' => $list_id,
@@ -312,14 +312,14 @@ class TasksController extends Controller {
 
 	public function updateTask(UpdateTaskRequest $request)
 	{
-    // Get task id
-    $task = Task::where('tasks.taskcode', '=', $request->get('taskcode'))->first(array('id'));
-    
-    if($request->get('type') != 'date_due') { //exclude some updates on task table
-      Task::where('taskcode', $request->get('taskcode'))
-            ->update([
-              $request->get('type') => $request->get('data')
-            ]);
+        // Get task id
+        $task = Task::where('tasks.taskcode', '=', $request->get('taskcode'))->first(array('id'));
+
+        if($request->get('type') != 'date_due') { //exclude some updates on task table
+          Task::where('taskcode', $request->get('taskcode'))
+                ->update([
+                  $request->get('type') => $request->get('data')
+                ]);
     }
     
     if($request->get('data') == 'open') {
@@ -339,34 +339,41 @@ class TasksController extends Controller {
     }
     
     if($request->get('type') == 'user_id') {
-      Task::where('taskcode', $request->get('taskcode'))
-          ->update([
-            'assigned_by' => Auth::User()->id
-          ]);
+        Task::where('taskcode', $request->get('taskcode'))
+            ->update([
+              'assigned_by' => Auth::User()->id
+            ]);
+
+        $user = User::where('id', $request->get('data'))->first();
       
-      $user = User::where('id', $request->get('data'))->first(['name']);
+        // Add task comment
+        $comment_text = '<span class="glyphicon glyphicon-user small"></span> assigned this task to <strong>' . $user->name . '</strong>';
+        $this->taskComment($task->id, 'activity', $comment_text);
+        
+        // Issue user notification
+        \Notifynder::category('tasks.assign')
+            ->from(Auth::User()->id)
+            ->to($user->id)
+            ->url('/tasks')
+            ->send();
       
-      // Add task comment
-      $comment_text = '<span class="glyphicon glyphicon-user small"></span> assigned this task to <strong>' . $user->name . '</strong>';
-      $this->taskComment($task->id, 'activity', $comment_text);
-    
       if($request->get('data') != Auth::User()->id) {
-        // Check if user is already assigned and update status
-        $taskfollower = Taskfollower::where('task_id', $task->id)
-            ->where('user_id', Auth::User()->id)
-            ->first();
+            // Check if user is already assigned and update status
+            $taskfollower = Taskfollower::where('task_id', $task->id)
+                ->where('user_id', Auth::User()->id)
+                ->first();
       
         if(count($taskfollower) > 0) {
-          // Update status
-          Taskfollower::where(['task_id'=>$task->id])
-              ->where('user_id', Auth::User()->id)
-              ->update(['status' => 'active']);
+            // Update status
+            Taskfollower::where(['task_id'=>$task->id])
+                ->where('user_id', Auth::User()->id)
+                ->update(['status' => 'active']);
         } else {
-          // Create new entry
-          Taskfollower::create([
-              'task_id' => $task->id,
-              'user_id' => Auth::User()->id,
-              'status'  => 'active'
+            // Create new entry
+            Taskfollower::create([
+                'task_id' => $task->id,
+                'user_id' => Auth::User()->id,
+                'status'  => 'active'
           ]);
         }
       }
