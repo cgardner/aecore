@@ -29,6 +29,7 @@ class ProjectRepository extends AbstractRepository
      */
     public function findActiveProjectsForUser($userId)
     {
+        
         $query = $this->model
             ->newQuery()
             ->where('projects.status', '!=', Project::STATUS_ARCHIVED)

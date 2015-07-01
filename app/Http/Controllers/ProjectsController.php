@@ -41,8 +41,12 @@ class ProjectsController extends Controller
      */
     public function index()
     {
+        // Get filter and set session
+        Session::put('projectFilter', (\Input::get('s') == "") ? "All Active" : \Input::get('s'));
+        
+        // Get projects for current user
         $projectUsers = $this->projectUserRepository
-            ->findActiveForUser(Auth::User()->id);
+            ->findActiveForUser(Auth::User()->id, Session::get('projectFilter'));
 
         return view('projects.index')
             ->with('projectUsers', $projectUsers);
