@@ -7,7 +7,7 @@
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ Session::get('projectFilter') }} <span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">
             <li role="presentation" class="dropdown-header">My Projects</li>
-            <li>{!! link_to('projects?s=All', 'All Active') !!}</li>
+            <li>{!! link_to('projects?s=All+Active', 'All Active') !!}</li>
             <li>{!! link_to('projects?s=Pre-construction', 'Pre-construction') !!}</li>
             <li>{!! link_to('projects?s=Bid', 'Bid') !!}</li>
             <li>{!! link_to('projects?s=Under+Construction', 'Under Construction') !!}</li>
