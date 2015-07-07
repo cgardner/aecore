@@ -3,8 +3,6 @@ namespace App\Repositories;
 
 use App\Models\Project;
 use App\Models\Projectuser;
-use App\Models\User;
-use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 

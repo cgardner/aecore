@@ -39,7 +39,7 @@ class ProjectUserRepository extends AbstractRepository implements RepositoryInte
      * @param $userId
      * @return \Illuminate\Database\Eloquent\Model[]
      */
-    public function findActiveForUser($userId)
+    public function findActiveForUser($userId, $projectStatus)
     {
         $query = $this->model
             ->newQuery()
