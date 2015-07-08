@@ -41,11 +41,3 @@ return [
 
     ],
 ];
-
-/** SCRIPTS TO RUN **
-//Tasks
-php artisan notifynder:create:category "tasks.assign" "{from.name} assigned you to a task."
-    
-//Collaborators
-php artisan notifynder:create:category "collaborators.add" "{from.name} added you to a project."
-*/

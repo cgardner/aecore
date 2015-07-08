@@ -18,7 +18,9 @@
     "morrislaptop/laravel-five-package-bridges": "~1.0",
     "camroncade/timezone": "dev-master",
     "ext-gd": "*",
-    "fenos/notifynder": "3.*"
+    "fenos/notifynder": "3.*",
+    "league/flysystem": "^1.0",
+    "league/flysystem-dropbox": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0",

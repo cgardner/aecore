@@ -24,7 +24,7 @@
         var height = comments[0].scrollHeight;
         comments.scrollTop(height);
     });
-  
+    
     //Find assign users
     var NoResultsLabel = "No results found.";
     $('#term').autocomplete({
