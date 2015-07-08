@@ -130,7 +130,7 @@ class CollaboratorsController extends Controller
         if ($user->company) {
             $role = $user->company->type;
         }
-
+        
         if (is_null($collaborator)) {
             $this->projectUserRepository
                 ->create(
@@ -143,13 +143,13 @@ class CollaboratorsController extends Controller
                     ]
                 );
             return;
+        } elseif ($collaborator->status != 'active') {
+            $collaborator->fill(
+                [
+                    'access' => Projectuser::ACCESS_USER,
+                    'status' => Projectuser::STATUS_ACTIVE
+                ]
+            )->save();
         }
-        $collaborator->fill(
-            [
-                'access' => Projectuser::ACCESS_USER,
-                'status' => Projectuser::STATUS_ACTIVE
-            ]
-        )
-            ->save();;
     }
 }

@@ -66,7 +66,6 @@ class AutocompleteController extends Controller {
     // Run query
     $result = User::where('users.name', 'ILIKE', '%'.trim($term).'%')
               ->where('users.status', '=', 'active')
-              ->where('users.id', '!=', Auth::User()->id)
               ->orderBy('users.name', 'asc')
               ->get(array(
                   'users.id',
