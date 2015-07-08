@@ -27,6 +27,7 @@ Route::controllers([
 |--------------------------------------------------------------------------
 */
 
+// User must be linked to a company
 Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], function(){
 
     /* Projects */
@@ -55,7 +56,8 @@ Route::group(['middleware'=>'userstatus'], function(){
   }); 
   
   /* Notifications */
-  Route::post('notifications/read/{id}', 'NotificationsController@readNotificaton');
+  Route::post('notifications/read/all', 'NotificationsController@readAll');
+  Route::post('notifications/read/{id}', 'NotificationsController@readNotification');
   
   /* Tasks */
   Route::post('tasks/create', 'TasksController@createTask');
