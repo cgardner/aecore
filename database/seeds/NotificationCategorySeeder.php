@@ -16,7 +16,7 @@ class NotificationCategorySeeder extends Seeder {
             ],
             [
                 'name' => 'collaborators.add',
-                'text' => '{from.name} assigned you to a task.'
+                'text' => '{from.name} added you to a project.'
             ],
         ];
         

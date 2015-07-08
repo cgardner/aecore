@@ -1,7 +1,7 @@
 @extends('projects.partials.form')
 
 @section('form-open')
-{!! Form::open(array('url' => 'projects', 'method' => 'post', 'class' => 'form-horizontal')) !!}
+    {!! Form::open(array('url' => 'projects', 'method' => 'post', 'class' => 'form-horizontal')) !!}
 @endsection
 
 @section('form-buttons')

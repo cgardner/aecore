@@ -25,7 +25,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
             <span class="glyphicon glyphicon-bell" style="top:3px;"></span>
             @if(count($notifications) > 0)
-                <span class="label label-sm label-danger">{{ $notificationCount }}</span>
+                <span class="label label-sm label-danger">{{ count($notifications) }}</span>
             @endif
         </a>
         <ul class="dropdown-menu" role="menu" style="width:350px;padding:0;">

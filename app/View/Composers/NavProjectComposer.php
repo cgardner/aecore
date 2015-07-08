@@ -70,12 +70,12 @@ class NavProjectComposer
                 'title' => 'Requests For Information',
                 'url' => url('rfis'),
                 'icon' => 'glyphicon-question-sign'
-            ],            
-            [
-                'title' => 'Submittals',
-                'url' => url('submittals'),
-                'icon' => 'glyphicon-tags'
-            ],
+            ],  
+//            [
+//                'title' => 'Submittals',
+//                'url' => url('submittals'),
+//                'icon' => 'glyphicon-tags'
+//            ],
 //            [
 //                'title' => 'Meeting Minutes',
 //                'url' => url('minutes'),
