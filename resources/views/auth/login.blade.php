@@ -46,7 +46,7 @@
                             <span class="input-group-addon" id="addon-password"><span class="glyphicon glyphicon-lock"></span></span>
                             {!!Form::password('password',array('class' => 'form-control input-lg', 'placeholder' => 'Password', 'aria-describedby' => 'addon-password'))!!}
                         </div>
-                        <p class="text-muted no-margin small">Did you forget your password? {!! link_to('password', 'Reset Password') !!}</p>
+                        <p class="text-muted small" style="margin:5px 0 0 0;">Did you forget your password? {!! link_to('password', 'Reset Password') !!}</p>
                     </div>
                     
                     <div class="form-group no-margin">
