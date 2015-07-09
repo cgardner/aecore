@@ -22,9 +22,9 @@ class ChangePasswordRequest extends Request {
 	public function rules()
 	{
 		return [
-      'old_password' => 'required',
-      'new_password' => 'required|min:6',
-      'confirm_new_password' => 'required|same:new_password'
+            'old_password' => 'required',
+            'new_password' => 'required|min:6',
+            'confirm_new_password' => 'required|same:new_password'
 		];
 	}
 
