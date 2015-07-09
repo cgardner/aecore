@@ -25,12 +25,13 @@ class CreateRfisTable extends Migration
                 $table->text('question');
                 $table->tinyInteger('priority');
                 $table->string('originated_from');
-                $table->boolean('schedule_impact_flag');
+                $table->enum('schedule_impact_flag', ['Yes', 'No', 'Unknown']);
                 $table->integer('schedule_impact')
                     ->nullable();
-                $table->boolean('cost_impact_flag');
+                $table->enum('cost_impact_flag', ['Yes', 'No', 'Unknown']);
                 $table->integer('cost_impact')
                     ->nullable();
+                $table->boolean('create_pco');
                 $table->date('due_date');
                 $table->timestamps();
                 $table->softDeletes();
