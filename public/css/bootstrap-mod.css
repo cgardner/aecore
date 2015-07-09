@@ -72,6 +72,48 @@ fieldset[disabled] .btn-link-light {
         display:inline-block;
     }
 }
+
+/* Notifcations window */
+.notification-tile {
+  width:100%;
+  padding:7px 12px;
+  margin:0;
+  font-size:0.9em;
+  display:block;
+  overflow:auto;
+  cursor:pointer;
+  border-top:1px solid #e5e5e5;
+}
+.notification-tile.unread {
+  background:#EBF2FB;
+}
+.notification-tile:hover {
+  background:#F4F7F9;
+}
+.notification-tile .user_avatar {
+  width:35px;
+  height:35px;
+  border-radius:3px;
+  padding:0;
+  margin:0; 
+  float:left;
+}
+.notification-dismiss {
+  width:14px;
+  height:15px;
+  margin-left:4px;
+  color:#999;
+  float:right;
+  text-shadow:1px 1px #FFF;
+}
+.notification-dismiss:hover {
+  color:#d9534f;
+}
+.notification-tile p {
+  margin:0 0 0 43px;
+  padding:0;
+}
+
 /* Modals */
 .modal-body {
     background:#F4F7F9;
@@ -247,6 +289,12 @@ table {
     padding: 5px 7px;
     font-size:1em;
     font-weight:normal;
+}
+.label-sm {
+    padding:1px 5px;
+    font-size:0.75em;
+    font-weight:normal;
+    border-radius:8px;
 }
 
 /* Loaders */

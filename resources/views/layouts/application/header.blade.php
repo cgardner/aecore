@@ -17,11 +17,8 @@
     <li>{!! link_to('tasks', 'Tasks', array('class' => Request::is('tasks*') ? 'navbar-link-active' : 'navbar-link')) !!}</li>
   </ul>
   <ul class="nav navbar-nav navbar-right">
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-bell" style="top:3px;"></span> <span class="caret"></span></a>
-      <ul class="dropdown-menu" role="menu" style="width:350px;">
-        <li role="presentation" class="dropdown-header">Notifications</li>
-      </ul>
+    <li class="dropdown" id="mynotifications">
+        @include('layouts.application.notifications')
     </li>
     <li class="dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img src="{!! Auth::user()->gravatar !!}" class="avatar_navbar" />{!! Auth::user()->username !!} <span class="caret"></span></a>
@@ -36,5 +33,5 @@
         <li><a href="/auth/logout" title="Log out of Aecore."><span class="glyphicon glyphicon-off small"></span> Log Out</a></li>
       </ul>
     </li>
-  </ul>              
+  </ul>
 </div>

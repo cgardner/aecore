@@ -1,10 +1,27 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use Session;
+use App\Repositories\ProjectUserRepository;
 
 class RfisController extends Controller
 {
+    /**
+     * @var ProjectUserRepository
+     */
+    private $projectUserRepository;
+    
+    /**
+     * Create a new controller instance.
+     * @param ProjectUserRepository $projectUserRepository
+     */
+    public function __construct(ProjectUserRepository $projectUserRepository)
+    {
+        $this->middleware('auth');
+        $this->middleware('project.permissions');
+
+        $this->projectUserRepository = $projectUserRepository;
+    }
+    
     /**
      * Show the rfi list to the user.
      *
@@ -12,7 +29,7 @@ class RfisController extends Controller
      */    
     public function index()
     {
-        $project = Session::get('project');
+        $project = \Session::get('project');
                 
         return view('rfis.index')
             ->with('project', $project);
@@ -25,6 +42,14 @@ class RfisController extends Controller
      */    
     public function create()
     {
-        return view('rfis.create');
+        /** Get active project info */
+        $project = \Session::get('project');
+        
+        /** @var Model[] $collaborators */
+        $collaborators = $this->projectUserRepository
+            ->findActiveByProject($project->id);
+        
+        return view('rfis.create')
+                ->with('collaborators', $collaborators);
     }
 }

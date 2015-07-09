@@ -3,8 +3,6 @@ namespace App\Repositories;
 
 use App\Models\Project;
 use App\Models\Projectuser;
-use App\Models\User;
-use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -29,6 +27,7 @@ class ProjectRepository extends AbstractRepository
      */
     public function findActiveProjectsForUser($userId)
     {
+        
         $query = $this->model
             ->newQuery()
             ->where('projects.status', '!=', Project::STATUS_ARCHIVED)

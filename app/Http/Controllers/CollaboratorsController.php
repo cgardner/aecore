@@ -74,8 +74,8 @@ class CollaboratorsController extends Controller
         }
 
         $users = array_map(array($this->userRepository, 'findByUserCode'), $userCodes);
-
         array_walk($users, array($this, 'addUserToProject'));
+        
         return redirect('collaborators');
     }
 
@@ -104,7 +104,7 @@ class CollaboratorsController extends Controller
     {
         return view('collaborators.modals.' . $type);
     }
-
+    
     private function addUserToProject(User $user)
     {
         /** @var \App\Models\Project $project */
@@ -118,7 +118,7 @@ class CollaboratorsController extends Controller
         if ($user->company) {
             $role = $user->company->type;
         }
-
+        
         if (is_null($collaborator)) {
             $this->projectUserRepository
                 ->create(
@@ -130,14 +130,32 @@ class CollaboratorsController extends Controller
                         'role' => $role,
                     ]
                 );
+            
+            // Issue user notification
+            \Notifynder::category('collaborators.add')
+                ->from(\Auth::User()->id)
+                ->to($user->id)
+                ->url('/projects/'.$project->id)
+                ->send();
+            
             return;
+            
+        } elseif ($collaborator->status != 'active') {
+            
+            $collaborator->fill(
+                [
+                    'access' => Projectuser::ACCESS_USER,
+                    'status' => Projectuser::STATUS_ACTIVE
+                ]
+            )
+            ->save();
+            
+            // Issue user notification
+            \Notifynder::category('collaborators.add')
+                ->from(\Auth::User()->id)
+                ->to($user->id)
+                ->url('/projects/'.$project->id)
+                ->send();
         }
-        $collaborator->fill(
-            [
-                'access' => Projectuser::ACCESS_USER,
-                'status' => Projectuser::STATUS_ACTIVE
-            ]
-        )
-            ->save();;
     }
 }

@@ -56,6 +56,12 @@ return [
 			'bucket' => 'your-bucket',
 		],
 
+        'dropbox' => [
+            'driver'    => 'dropbox',
+            'key'     => env('DROPBOX_KEY'),
+            'secret'    => env('DROPBOX_SECRET')
+        ],
+        
 		'rackspace' => [
 			'driver'    => 'rackspace',
 			'username'  => 'your-username',
