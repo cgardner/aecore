@@ -13,6 +13,15 @@ body {
     text-align:center;
 }
 
+/* Form adjustments */
+.form-inline .form-group {
+    margin:0 0 15px 0;
+    width:100%;
+}
+.form-inline .form-group .form-control {
+    width:100%;
+}
+
 /* Buttons & Links */
 .btn-link-light {
     font-weight: normal;
