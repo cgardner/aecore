@@ -125,7 +125,7 @@ class CollaboratorsController extends Controller
                     [
                         'project_id' => $project->id,
                         'user_id' => $user->id,
-                        'access' => Projectuser::ACCESS_USER,
+                        'access' => Projectuser::ACCESS_COLLAB,
                         'status' => Projectuser::STATUS_ACTIVE,
                         'role' => $role,
                     ]
@@ -144,7 +144,7 @@ class CollaboratorsController extends Controller
             
             $collaborator->fill(
                 [
-                    'access' => Projectuser::ACCESS_USER,
+                    'access' => Projectuser::ACCESS_COLLAB,
                     'status' => Projectuser::STATUS_ACTIVE
                 ]
             )

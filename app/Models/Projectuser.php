@@ -11,7 +11,8 @@ class Projectuser extends Model
     const STATUS_DISABLED = 'disabled';
 
     const ACCESS_ADMIN = 'admin';
-    const ACCESS_USER = 'user';
+    const ACCESS_COLLAB = 'collab';
+    const ACCESS_LIMITED = 'limited';
 
     const ROLE_DEFAULT = 'default';
 
@@ -19,7 +20,7 @@ class Projectuser extends Model
     protected $fillable = [
                     'project_id',
                     'user_id',
-                    'access', // standard, admin
+                    'access', // admin, collab, limited
                     'role',
                     'status' // active, invited, disabled
                 ];
