@@ -42,7 +42,7 @@ class ProjectsController extends Controller
     public function index()
     {
         // Get filter and set session
-        Session::put('projectFilter', (\Input::get('s') == "") ? "All Active" : \Input::get('s'));
+        Session::put('projectFilter', (\Input::get('filter') == "") ? "All Active" : \Input::get('filter'));
         
         // Get projects for current user
         $projectUsers = $this->projectUserRepository
@@ -58,11 +58,14 @@ class ProjectsController extends Controller
         }
         
         foreach($projectUsers as $projectUser) {
+            
             // Format size unites
             $projectUser->project->size_unit = ($projectUser->project->size_unit == 'feet') ? 'SF' : 'SM';
             
+            // Count collaborators
             $projectUser->project->collabCount = count($this->projectUserRepository
                 ->findActiveByProject($projectUser->project->id));
+            
         }
                 
         return view('projects.index')

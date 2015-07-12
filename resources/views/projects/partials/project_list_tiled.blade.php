@@ -4,10 +4,11 @@
     });
 </script>
 
-@if(count($projectUsers) == 0)
+
+@if(empty($projectUsers))
     <div class="alert alert-info">
-        <p class="bold">No projects were found.</p>
-        <p>Try changing your filter or create a <a href="/projects/create" class="btn btn-success btn-xs bold"><span class="glyphicon glyphicon-plus"></span> New Project</a> to get started.</p>
+        <p class="bold">No projects were found using filter "{{ Session::get('projectFilter') }}".</p>
+        <p>Try changing your filter or <a href="/projects/create" class="bold">Create a New Project</a> to get started.</p>
     </div>
 @else
     <div class="row">
@@ -65,29 +66,31 @@
     </div>
 @endif
 
-@section('endbody')
-    <script>
-        (function ($, location) {
-            'use strict';
-            $('.remove-collaborator').click(function () {
-                updateCollaboratorAccess(this, {status: "{!! \App\Models\Projectuser::STATUS_DISABLED !!}"});
-            });
-            
-            function updateCollaboratorAccess(context, newData) {
-                var data = $.extend({_token: token}, newData);
-                $.ajax({
-                    url: "/collaborators/" + {{ $projectUser->user->id }},
-                    method: "PUT",
-                    data: data,
-                    success: reload
+@if(!empty($projectUsers))
+    @section('endbody')
+        <script>
+            (function ($, location) {
+                'use strict';
+                $('.remove-collaborator').click(function () {
+                    updateCollaboratorAccess(this, {status: "{!! \App\Models\Projectuser::STATUS_DISABLED !!}"});
                 });
-            }
 
-            function reload() {
-                location.reload();
-            }
+                function updateCollaboratorAccess(context, newData) {
+                    var data = $.extend({_token: token}, newData);
+                    $.ajax({
+                        url: "/collaborators/" + {{ $projectUser->user->id }},
+                        method: "PUT",
+                        data: data,
+                        success: reload
+                    });
+                }
 
-            var token = "{{ \Session::token() }}";
-        })(jQuery, location);
-    </script>
-@endsection
+                function reload() {
+                    location.reload();
+                }
+
+                var token = "{{ \Session::token() }}";
+            })(jQuery, location);
+        </script>
+    @endsection
+@endif
