@@ -1,6 +1,7 @@
 <div class="form-inline table-filters">
     <a href="/projects/create" type="button" class="btn btn-success pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Project</a>
-    {!! Form::text('search', null, array('id'=>'search', 'class' => 'form-control mobile-hide', 'style'=>'min-width:250px;', 'placeholder' => 'Search...' )) !!}
+    
+    {!! Form::text('search', null, array('id'=>'search', 'class' => 'form-control mobile-hide', 'style'=>'min-width:250px;', 'placeholder' => 'Quick Search', 'autofocus' => 'true' )) !!}
     <div class="btn-group btn-spacer-left">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">{{ Session::get('projectFilter') }} <span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu">

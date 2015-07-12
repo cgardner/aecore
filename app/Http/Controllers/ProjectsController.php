@@ -47,7 +47,24 @@ class ProjectsController extends Controller
         // Get projects for current user
         $projectUsers = $this->projectUserRepository
             ->findActiveForUser(Auth::User()->id, Session::get('projectFilter'));
-
+        
+        if (count($projectUsers)) {
+            usort(
+                $projectUsers,
+                function ($a, $b) {
+                    return strcasecmp($a->project->number, $b->project->number);
+                }
+            );
+        }
+        
+        foreach($projectUsers as $projectUser) {
+            // Format size unites
+            $projectUser->project->size_unit = ($projectUser->project->size_unit == 'feet') ? 'SF' : 'SM';
+            
+            $projectUser->project->collabCount = count($this->projectUserRepository
+                ->findActiveByProject($projectUser->project->id));
+        }
+                
         return view('projects.index')
             ->with('projectUsers', $projectUsers);
     }
