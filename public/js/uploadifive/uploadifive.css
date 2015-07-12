@@ -27,9 +27,8 @@ Copyright (c) 2012 Reactive Apps, Ronnie Garcia
 .queue {
   min-height:20px;
   width:100%;
-  max-width:300px;
   margin:10px 0 5px 0;
-  padding:5px 7px;
+  padding:7px;
   border:1px dashed #CCC;
   border-radius:3px;
 }
@@ -37,9 +36,9 @@ Copyright (c) 2012 Reactive Apps, Ronnie Garcia
 .uploadifive-queue-item {
 	background-color: #F5F5F5;
 	border-bottom: 1px dotted #D5D5D5;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 	font: 12px Arial, Helvetica, Sans-serif;
 	margin-top: 3px;
 	padding:5px 8px;

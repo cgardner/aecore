@@ -93,23 +93,6 @@
                                 <label class="radio-inline text-info"><input type="radio" name="priority" value="1" onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-info');"> Low</label>
                             </div>
                         </div>
-                        
-                        <div class="form-group" style="margin-bottom:0;">
-                            <div class="form-inline">
-                                <!-- References -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        {!! Form::text('references', null, array('class' => 'form-control', 'placeholder' => 'References (ex. 7/A9.01)' )) !!}
-                                    </div>
-                                </div>
-                                <!-- Origin -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        {!! Form::text('origin', null, array('class' => 'form-control', 'placeholder' => 'Origin (ex. Paint Tech RFI #01)', 'required'=>'true' )) !!}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <!-- Cost Impact Select -->
@@ -153,6 +136,54 @@
                                         {!! Form::text('schedule_impact_qty', null, array('id' => 'schedule_impact_qty', 'class' => 'form-control', 'placeholder' => 'Estimated days...' )) !!}
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:0;">
+                            <div class="form-inline">
+                                <!-- References -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {!! Form::text('references', null, array('class' => 'form-control', 'placeholder' => 'References (ex. 7/A9.01)' )) !!}
+                                    </div>
+                                </div>
+                                <!-- Origin -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {!! Form::text('origin', null, array('class' => 'form-control', 'placeholder' => 'Origin (ex. Paint Tech RFI #01)', 'required'=>'true' )) !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Attachments -->
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <div class="file_upload">
+                                    <script type="text/javascript">
+                                        $(function() {
+                                            $('#file').uploadifive({
+                                                'multi'       : true,
+                                                'width'       : 95,
+                                                'height'      : 34,
+                                                'buttonCursor' : 'pointer',
+                                                'formData'    : {
+                                                    'timestamp' : '<?php echo time();?>',
+                                                    '_token': '<?php echo csrf_token(); ?>'
+                                                },
+                                                'queueID'           : 'queue',
+                                                'uploadScript'      : '/attachment/upload',
+                                                'onUploadComplete'  : function(file, data) {
+                                                    console.log(data);
+                                                    $("#file_id_list").append('<input type="hidden" id="file_id_' + data + '" name="file_id[]" value="' + data + '"/>');
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                    {!! Form::file("file", ["id" => "file"]) !!}
+                                    <div id="file_id_list"></div>
+                                </div>
+                                <div id="queue" class="queue"><span class="text-muted"><span class="glyphicon glyphicon-cloud-upload"></span> Drag & drop files here.</span></div>
                             </div>
                         </div>
                         
