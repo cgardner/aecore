@@ -1,6 +1,9 @@
 @extends('projects.partials.form')
 
 @section('form-open')
+    <div class="pagehead">
+        <h1>Create a New Project</h1>
+    </div>
     {!! Form::open(array('url' => 'projects', 'method' => 'post', 'class' => 'form-horizontal')) !!}
 @endsection
 

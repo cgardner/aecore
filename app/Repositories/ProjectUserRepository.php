@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 
+use App\Models\Project;
 use App\Models\Projectuser;
 
 class ProjectUserRepository extends AbstractRepository implements RepositoryInterface
@@ -48,7 +49,9 @@ class ProjectUserRepository extends AbstractRepository implements RepositoryInte
             ->whereHas(
                 'project',
                 function ($query) use ($projectFilter) {
-                    if($projectFilter != 'All Active') {
+                    if($projectFilter == 'All Active') {
+                        $query->where('projects.status', '!=', Project::STATUS_ARCHIVED);
+                    } else {
                         $query->where('projects.status', '=', $projectFilter);
                     }
                 }

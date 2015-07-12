@@ -9,7 +9,7 @@ use Timezone;
 
 class Project extends Model
 {
-    const STATUS_ARCHIVED = 'archived';
+    const STATUS_ARCHIVED = 'Archived';
 
     protected $table = 'projects';
 

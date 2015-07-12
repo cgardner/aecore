@@ -7,7 +7,7 @@
 
 @if(empty($projectUsers))
     <div class="alert alert-info">
-        <p class="bold">No projects were found using filter "{{ Session::get('projectFilter') }}".</p>
+        <p><span class="glyphicon glyphicon-exclamation-sign"></span> <strong>No projects were found using the "{{ Session::get('projectFilter') }}" filter.</strong></p>
         <p>Try changing your filter or <a href="/projects/create" class="bold">Create a New Project</a> to get started.</p>
     </div>
 @else
