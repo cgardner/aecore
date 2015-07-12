@@ -118,9 +118,8 @@
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                     <span id="size_unit_button_text">SQ FT</span> <span class="caret"></span></button>
                                 <ul class="dropdown-menu pull-right">
-                                    <li><span id="feet" onclick="update_size_unit('feet');">Square Feet</span></li>
-                                    <li><span id="meters" onclick="update_size_unit('meters');">Square Meters</span>
-                                    </li>
+                                    <li><a href="#" id="feet" onclick="update_size_unit('feet');">Square Feet</a></li>
+                                    <li><a href="#" id="meters" onclick="update_size_unit('meters');">Square Meters</a></li>
                                 </ul>
                             </div>
                             <!-- /btn-group -->
