@@ -29,6 +29,7 @@ class Project extends Model
         'street',
         'city',
         'state',
+        'country',
         'zip_code',
         'status',
         'submittal_code'

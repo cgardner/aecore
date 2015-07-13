@@ -24,7 +24,8 @@
                                 <div class="col-xs-12">
                                     <span class="text-muted">Address</span><br/>
                                     {!! $project->street !!}<br/>
-                                    {!! $project->city !!} {!! $project->state !!}, {!! $project->zip !!}
+                                    {!! $project->city !!}, {!! $project->state !!} {!! $project->zip_code !!}<br/>
+                                    {!! @$project->country !!}
                                 </div>
                             </div>
                             <div class="row">
@@ -47,7 +48,7 @@
                                     {!! $project->value ? '$' . number_format($project->value, 0, '.', ',') : 'N/A' !!}
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" style="padding-bottom:0;">
                                 <div class="col-xs-12">
                                     <span class="text-muted">Description</span><br/>
                                     {!! $project->description !!}

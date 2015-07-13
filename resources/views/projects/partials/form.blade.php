@@ -11,9 +11,6 @@
             $('#size').blur(function () {
                 $('#size').currency();
             });
-            //Insert country & state
-            print_country("country", "state", "United States", "");
-
             //Date selectors
             $("#start").datepicker({
                 changeMonth: true,
