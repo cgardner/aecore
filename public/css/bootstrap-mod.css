@@ -883,6 +883,7 @@ a.task_project:hover {
 .team-tile-footer {
     height:42px;
     line-height:22px;
+    border-top-width:2px;
 }
 
 

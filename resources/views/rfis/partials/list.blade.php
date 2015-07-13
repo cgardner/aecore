@@ -25,5 +25,9 @@
 
 <div class="alert alert-info">
     <p class="bold"><span class="glyphicon glyphicon-warning-sign"></span> No {filter} RFIs were found.</p>
-    <p>Try changing your filter or create a <a href="/rfis/create" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span> New RFI</a> to get started.</p>
+    <p>Try changing your filter
+        @if($projectUser->access != \App\Models\Projectuser::ACCESS_LIMITED)
+            or <a href="/rfis/create" class="bold">Create a New RFI</a> to get started.
+        @endif
+    </p>
 </div>

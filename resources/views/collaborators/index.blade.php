@@ -50,18 +50,15 @@
                                        title="{!! $collaborator->user->email !!}">{!! $collaborator->user->email !!}</a>
                                 </p>
                                 @if($collaborator->user->userphone)
-                                    <p class="text-muted small">
-                                        <span class="glyphicon glyphicon-phone"
-                                              style="top:2px;margin-right:3px;"></span>
+                                    <p class="small">
+                                        <span class="glyphicon glyphicon-phone text-muted" style="top:2px;margin-right:3px;"></span>
                                         {{ $collaborator->user->userphone->mobile == null ? 'Not provided' : $collaborator->user->userphone->mobile }}
                                     </p>
                                 @endif
                             </div>
-                            <div class="panel-footer team-tile-footer">
-                                <span class="bold small text-muted">{!! @$collaborator->user->company->type !!}</span>
-                                
+                            <div class="panel-footer {{ $collaborator->panelColor }} team-tile-footer">
+                                <span class="text-muted small bold">{!! @$collaborator->user->company->type !!}</span>
                                 @if($projectUser->access == \App\Models\Projectuser::ACCESS_ADMIN)
-                                
                                     <div class="btn-group pull-right btn-spacer-left">
                                         
                                         <button type="button" class="btn btn-default btn-xs dropdown-toggle"data-toggle="dropdown">
@@ -99,8 +96,8 @@
                                                 <li class="divider"></li>
                                                 <li>
                                                     <a href="#" class="small remove-collaborator">
-                                                        <span class="glyphicon glyphicon-trash small"></span> Remove
-                                                        from project
+                                                        <span class="glyphicon glyphicon-trash small"></span>
+                                                        Remove from project
                                                     </a>
                                                 </li>
                                             @else

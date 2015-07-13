@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Repositories\ProjectUserRepository;
+use Session;
 
 class RfisController extends Controller
 {
@@ -32,7 +33,10 @@ class RfisController extends Controller
         $project = \Session::get('project');
                 
         return view('rfis.index')
-            ->with('project', $project);
+            ->with([
+                'project', $project,
+                'projectUser' => Session::get('projectUser')
+            ]);
     }
     
     /**

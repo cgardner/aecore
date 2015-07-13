@@ -42,10 +42,22 @@ class CollaboratorsController extends Controller
     public function index()
     {
         $project = \Session::get('project');
+        
         /** @var Model[] $collaborators */
         $collaborators = $this->projectUserRepository
             ->findActiveByProject($project->id);
 
+        // Change color of panel based on access
+        foreach($collaborators as $collaborator) {
+            if($collaborator->access == \App\Models\Projectuser::ACCESS_ADMIN) {
+                $collaborator->panelColor = "panel-warning";
+            } elseif($collaborator->access == \App\Models\Projectuser::ACCESS_COLLAB) {
+                $collaborator->panelColor = "panel-info";
+            } else {
+                $collaborator->panelColor = "panel-default";
+            }
+        }
+        
         if (count($collaborators)) {
             usort(
                 $collaborators,
