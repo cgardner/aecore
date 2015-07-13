@@ -15,6 +15,13 @@
             </div>
         @endif
         
+        @if(session('error'))
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-warning-sign"></span>
+                {!! session('error') !!}
+            </div>
+        @endif
+         
         <div class="panel panel-default">
             <div class="panel-body" style="padding:20px;">
                 
@@ -23,6 +30,8 @@
                 
                 {!! Form::open(array('url' => 'password/reset', 'method' => 'post')) !!}
 
+                    <input type="hidden" name="token" value="{{ $token }}">
+                    
                     <div class="form-group">
                         <span class="text-danger">{!! $errors->first('email') !!}</span>
                         <div class="input-group">

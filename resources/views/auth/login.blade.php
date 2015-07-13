@@ -17,6 +17,15 @@
             </script>
             <div class="alert alert-success" id="deleteerror"><span class="glyphicon glyphicon-check"></span> {!! Session::get('accountDeleted') !!}</div>
         @endif
+        
+        @if(Session::has('passSuccess'))
+            <script type="text/javascript" charset="utf-8">
+                setTimeout(function () {
+                    $("#deletesuccess").fadeOut("slow");
+                }, 3500);
+            </script>
+            <div class="alert alert-success" id="deletesuccess"><span class="glyphicon glyphicon-check"></span> {!! Session::get('passSuccess') !!}</div>
+        @endif
 
         @if (Session::has('dangerMessage'))
             <div class="alert alert-danger"><span class="glyphicon glyphicon-alert"></span> {!! Session::get('dangerMessage') !!} <br> {!! link_to('reset', 'Forgot Password?', array('class'=>'btn-link btn-spacer-left')) !!}</div>
