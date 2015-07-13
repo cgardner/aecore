@@ -168,6 +168,11 @@ class CollaboratorsController extends Controller
                 ->to($user->id)
                 ->url('/projects/'.$project->id)
                 ->send();
+            
+            //Send to Slack
+            // TESTING, WILL BE UPDATED TO BE CUSTOM
+            \Slack::to('#aecoretesting')->send(\Auth::User()->name . ' added ' . $user->name . ' as a collaborator on project #' . $project->number . ' ' . $project->name);
+        
         }
     }
 }

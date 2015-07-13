@@ -11,7 +11,6 @@
     
     <div class="pagehead">
         <h1>Edit Project</h1>
-        {{ $project->country }}
     </div>
     {!! Form::model($project, array('url' => 'projects', 'method' => 'post', 'class' => 'form-horizontal')) !!}
     {!! Form::hidden('id', $project->id) !!}

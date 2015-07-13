@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+
 use Session;
 
 class ProjectsController extends Controller
@@ -97,7 +98,8 @@ class ProjectsController extends Controller
         $input['size'] = filter_var(Request::get('size'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $input['company_id'] = $user->company_id;
 
-        $this->saveProject($input);
+        $this->saveProject($input);      
+        
         return new RedirectResponse(route('projects.index'));
     }
 
@@ -118,6 +120,11 @@ class ProjectsController extends Controller
             ->find(Request::get('id'));
         $project->fill($input);
         $project->save();
+        
+        //Send to Slack
+        // TESTING, WILL BE UPDATED TO BE CUSTOM
+        \Slack::to('#aecoretesting')->send('Updated information for project #' . $project->number . ' ' . $project->name);
+        
         return $project;
     }
 
@@ -140,7 +147,7 @@ class ProjectsController extends Controller
     {
         $project = $this->projectRepository
             ->find($projectId);
-
+        
         return view('projects.edit')
             ->with('project', $project);
     }
