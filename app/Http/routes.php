@@ -21,6 +21,9 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
+/* Help */
+Route::get('help/slack', function() { return view('help.slack'); });
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -44,6 +47,10 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
     /* PDF's */
     Route::get('pdf/log/{view}', 'PdfsController@pdfModal');
     Route::get('pdf/{type}', 'PdfsController@pdf');
+    
+    /* Integrations */
+    Route::get('integrations/slack/{projectId}', 'IntegrationsController@slackModal');
+    Route::post('integrations/slack', 'IntegrationsController@addSlackProject');
     
 });
 

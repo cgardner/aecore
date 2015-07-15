@@ -2,9 +2,13 @@
 
 use App\Models\Projectuser;
 use App\Models\User;
+
 use App\Repositories\ProjectUserRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\SlackIntegrationRepository;
+
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Session;
 
@@ -25,13 +29,18 @@ class CollaboratorsController extends Controller
      * @param ProjectUserRepository $projectUserRepository
      * @param UserRepository $userRepository
      */
-    public function __construct(ProjectUserRepository $projectUserRepository, UserRepository $userRepository)
+    public function __construct(
+                        ProjectUserRepository $projectUserRepository,
+                        UserRepository $userRepository,
+                        SlackIntegrationRepository $slackIntegrationRepository
+                    )
     {
         $this->middleware('auth');
         $this->middleware('project.permissions');
 
         $this->projectUserRepository = $projectUserRepository;
         $this->userRepository = $userRepository;
+        $this->slackIntegrationRepository = $slackIntegrationRepository;
     }
 
     /**
@@ -168,11 +177,18 @@ class CollaboratorsController extends Controller
                 ->to($user->id)
                 ->url('/projects/'.$project->id)
                 ->send();
-            
-            //Send to Slack
-            // TESTING, WILL BE UPDATED TO BE CUSTOM
-            \Slack::to('#aecoretesting')->send(\Auth::User()->name . ' added ' . $user->name . ' as a collaborator on project #' . $project->number . ' ' . $project->name);
         
+        }
+        
+        // Send to Slack
+        $slack = $this->slackIntegrationRepository
+            ->findSlackProject($project->id);
+
+        if(count($slack) > 0) {
+            $this->slackIntegrationRepository
+                ->sendSlackNotification( $slack->webhook, $slack->channel, $slack->username,
+                    ':busts_in_silhouette: ' . Auth::User()->name . ' added *' . $user->name . '* as a collaborator on project *#' . $project->number . ' ' . $project->name . '*'
+                );
         }
     }
 }

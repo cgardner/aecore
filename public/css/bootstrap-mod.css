@@ -886,7 +886,14 @@ a.task_project:hover {
     border-top-width:2px;
 }
 
-
+/* Integration Logos */
+.slack_rgb {
+    height:30px;
+    width:103px;
+    padding:0;
+    background:url('img/logos/slack_rgb.png') 0 0 no-repeat;
+    display:block;
+}
 
 /* Must be last to override all css! */
 .no-padding { padding:0; }

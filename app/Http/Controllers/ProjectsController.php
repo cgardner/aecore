@@ -2,6 +2,8 @@
 
 use App\Repositories\ProjectRepository;
 use App\Repositories\ProjectUserRepository;
+use App\Repositories\SlackIntegrationRepository;
+
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
@@ -27,12 +29,18 @@ class ProjectsController extends Controller
      * @param ProjectRepository $projectRepository Project Repository.
      * @param ProjectUserRepository $projectUserRepository Project/User Repository
      */
-    public function __construct(ProjectRepository $projectRepository, ProjectUserRepository $projectUserRepository)
+    public function __construct(
+                        ProjectRepository $projectRepository,
+                        ProjectUserRepository $projectUserRepository,
+                        SlackIntegrationRepository $slackIntegrationRepository
+                    )
     {
         $this->middleware('auth');
         $this->middleware('project.permissions');
+        
         $this->projectRepository = $projectRepository;
         $this->projectUserRepository = $projectUserRepository;
+        $this->slackIntegrationRepository = $slackIntegrationRepository;
     }
 
     /**
@@ -98,7 +106,7 @@ class ProjectsController extends Controller
         $input['size'] = filter_var(Request::get('size'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $input['company_id'] = $user->company_id;
 
-        $this->saveProject($input);      
+        $this->saveProject($input);
         
         return new RedirectResponse(route('projects.index'));
     }
@@ -122,8 +130,15 @@ class ProjectsController extends Controller
         $project->save();
         
         //Send to Slack
-        // TESTING, WILL BE UPDATED TO BE CUSTOM
-        \Slack::to('#aecoretesting')->send('Updated information for project #' . $project->number . ' ' . $project->name);
+        $slack = $this->slackIntegrationRepository
+            ->findSlackProject($project->id);
+        
+        if(count($slack) > 0) {
+            $this->slackIntegrationRepository
+                ->sendSlackNotification( $slack->webhook, $slack->channel, $slack->username,
+                    ':pencil: ' . Auth::User()->name . ' edited project *#' . $project->number . ' ' . $project->name . '*'
+                );
+        }
         
         return $project;
     }

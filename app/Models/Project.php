@@ -118,6 +118,15 @@ class Project extends Model
         return $this->hasMany('App\Models\Projectuser');
     }
 
+    /**
+     * Relationship with the Slackintegrations model.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function slackintegration()
+    {
+        return $this->hasMany('App\Models\Slackintegration');
+    }
+    
     private function createDateTime($dateTime)
     {
         return new DateTime($dateTime, new DateTimeZone(Auth::user()->timezone));

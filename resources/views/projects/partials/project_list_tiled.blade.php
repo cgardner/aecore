@@ -22,13 +22,19 @@
                                 @if($projectUser->access == App\Models\Projectuser::ACCESS_ADMIN)
                                     <li>
                                         <a href="{!! URL::route('projects.edit', ['project' => $projectUser->project->id]) !!}" class="small">
-                                            <span class="glyphicon glyphicon-pencil small"></span> Edit project
+                                            <i class="fa fa-pencil-square-o fa-fw"></i> Edit project
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="small" href="/integrations/slack/{{ $projectUser->project->id }}" data-target="#modal" data-toggle="modal">
+                                            <i class="fa fa-slack fa-fw"></i> Slack integration
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
                                 @endif
                                 <li>
                                     <a href="#" class="small remove-collaborator">
-                                        <span class="glyphicon glyphicon-trash small"></span> Leave project
+                                        <i class="fa fa-sign-out fa-fw"></i> Leave project
                                     </a>
                                 </li>
                             </ul>
