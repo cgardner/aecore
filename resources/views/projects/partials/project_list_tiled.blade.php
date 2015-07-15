@@ -25,13 +25,13 @@
                                             <i class="fa fa-pencil-square-o fa-fw"></i> Edit project
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="small" href="/integrations/slack/{{ $projectUser->project->id }}" data-target="#modal" data-toggle="modal">
-                                            <i class="fa fa-slack fa-fw"></i> Slack integration
-                                        </a>
-                                    </li>
-                                    <li class="divider"></li>
                                 @endif
+                                <li>
+                                    <a class="small" href="/integrations/slack/{{ $projectUser->project->id }}" data-target="#modal" data-toggle="modal">
+                                        <i class="fa fa-slack fa-fw"></i> Slack integration
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
                                 <li>
                                     <a href="#" class="small remove-collaborator">
                                         <i class="fa fa-sign-out fa-fw"></i> Leave project
