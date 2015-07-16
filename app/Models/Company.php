@@ -28,6 +28,11 @@ class Company extends Model
     {
         return $this->hasMany('App\Models\Project');
     }
+
+    public function csicodes()
+    {
+        return $this->hasMany('App\Models\Csicode');
+    }
     
     /**
      * Relationship with the Slackintegrations model.

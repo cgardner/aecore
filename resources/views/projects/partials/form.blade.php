@@ -180,10 +180,10 @@
             <div class="panel-heading">Project Settings</div>
             <div class="panel-body">
                 <div class="form-group">
-                    {!! Form::label('submittal_code', 'Submittal Numbers', array('class' => 'col-sm-2 control-label')) !!}
+                    {!! Form::label('submittal_code', 'Submittal Numbering', array('class' => 'col-sm-2 control-label')) !!}
                     <div class="col-sm-4">
                         {!! Form::select('submittal_code', array(
-                            'csicode' => 'CSI Master Format 2004',
+                            'csicode' => 'CSI Master Format 2014',
                             'costcode' => 'Cost Codes'
                             ), null, array('class'=>'form-control', 'required'=>'true'))
                         !!}
