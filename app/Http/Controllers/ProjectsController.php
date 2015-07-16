@@ -68,7 +68,7 @@ class ProjectsController extends Controller
         
         foreach($projectUsers as $projectUser) {
             
-            // Format size unites
+            // Format size units
             $projectUser->project->size_unit = ($projectUser->project->size_unit == 'feet') ? 'SF' : 'SM';
             
             // Count collaborators

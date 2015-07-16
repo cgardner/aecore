@@ -27,7 +27,16 @@ class NavProjectComposer
     {
         $userProjects = $this->projectRepository
             ->findActiveProjectsForUser(Auth::user()->id);
-
+        
+        if (count($userProjects)) {
+            usort(
+                $userProjects,
+                function ($a, $b) {
+                    return strcasecmp($a->number, $b->number);
+                }
+            );
+        }
+        
         $navigation = $this->getNavigation();
 
         $view->with('projects', $userProjects)
