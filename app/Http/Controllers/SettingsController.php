@@ -19,6 +19,7 @@ use App\Http\Requests\UpdateCompanyRequest;
 use App\Http\Requests\JoinCompanyRequest;
 use App\Http\Requests\LeaveCompanyRequest;
 use App\Http\Requests\RemoveUserRequest;
+use App\Http\Requests\CostCodeRequest;
 
 // Models
 use App\Models\User;
@@ -26,6 +27,7 @@ use App\Models\Userphone;
 use App\Models\Company;
 use App\Models\Companylocation;
 use App\Models\Companylogo;
+use App\Models\Costcode;
 
 class SettingsController extends Controller {
 
@@ -95,35 +97,35 @@ class SettingsController extends Controller {
   // Update user settings
 	public function deleteAccount(DeleteAccountRequest $request)
 	{
-    Auth::user()->update(['status' => 'disabled']);
-    return Redirect::to('auth/logout');
+        Auth::user()->update(['status' => 'disabled']);
+        return Redirect::to('auth/logout');
 	}
   
   public function createCompany(CreateCompanyRequest $request) {
         
     $company = Company::create([
-      'companycode'  => Str::random(10),
-      'name'        => $request->get('name'),
-      'type'        => $request->get('type'),
-      'labor'       => $request->get('labor')
+        'companycode'  => Str::random(10),
+        'name'        => $request->get('name'),
+        'type'        => $request->get('type'),
+        'labor'       => $request->get('labor')
     ]);
     
     Companylocation::create([
-      'company_id'  => $company->id,
-      'street'      => $request->get('street'),
-      'city'        => $request->get('city'),
-      'country'     => $request->get('country'),
-      'state'       => $request->get('state'),
-      'zipcode'     => $request->get('zipcode'),
-      'phone'       => $request->get('phone'),
-      'fax'         => $request->get('fax'),
-      'website'     => $request->get('website')
+        'company_id'  => $company->id,
+        'street'      => $request->get('street'),
+        'city'        => $request->get('city'),
+        'country'     => $request->get('country'),
+        'state'       => $request->get('state'),
+        'zipcode'     => $request->get('zipcode'),
+        'phone'       => $request->get('phone'),
+        'fax'         => $request->get('fax'),
+        'website'     => $request->get('website')
     ]);
     
     Auth::User()->update([
-      'company_id' => $company->id,
-      'company_user_access' => 'admin',
-      'company_user_status' => 'active'
+        'company_id' => $company->id,
+        'company_user_access' => 'admin',
+        'company_user_status' => 'active'
     ]);
     
     Session::put('company_id', $company->id);
@@ -241,8 +243,108 @@ class SettingsController extends Controller {
       'company_user_access' => 'admin'
     ]);
     
-    return Redirect::to('settings/company/users');
-            
+    return Redirect::to('settings/company/users');         
   }
+  
+  public function costcodeModal($action) {
+      
+    $codes = null;
+    if($action == 'list') {
+        
+        $codes = Costcode::where('company_id', '=', Auth::User()->company->id)
+                ->where('status', '=', 'active')
+                ->orderBy('code', 'asc')
+                ->get();
+    }
+    
+    // Return to the modal view
+    return view('settings.company.modals.costcode_'.$action)
+            ->with('codes', $codes);
+  }
+  
+    public function updateCostcode(CostCodeRequest $request) {
+        $qty = count($request->get('code'));
+        for ($i=0; $i < $qty; $i++) {
+            if($request->get('code')[$i] != "" && $request->get('description')[$i] != "") {
+                Costcode::updateOrCreate(['company_id' => Auth::User()->company->id, 'code' => $request->get('code')[$i]], [
+                    'company_id'    => Auth::User()->company->id,
+                    'code'          => $request->get('code')[$i],
+                    'description'   => $request->get('description')[$i],
+                    'status'        => 'active'
+                ]);
+            }
+        }
+
+        return Redirect::to('settings/company/preferences')
+            ->with('UpdateSuccess', '<strong>Success!</strong> Your cost codes were successfully updated.');
+    }
+  
+    public function deleteCostcode() {
+        $codeId = Input::get('codeId');
+        Costcode::where('id', $codeId)
+            ->where('company_id', '=', Auth::User()->company->id)
+            ->update([
+                'status' => 'disabled'
+            ]);
+    }
+  
+    public function uploadCostcode() {
+        //Read uploaded file and extract value pairs.
+        $handle = @fopen($_FILES['uploadedfile']['tmp_name'], "r");
+        if ($handle) {
+            while (($buffer = fgets($handle, 4096)) !== false) {
+                //Take each line, split at first space and trim whitespace from the ends of it.
+                $buffer = trim($buffer);
+
+                $buffer = explode(' ', $buffer, 2);
+                $buffer[0] = trim($buffer[0], chr(173));
+                $buffer[1] = trim($buffer[1], chr(173));
+
+                //Check that code is ok, ie length greater than zero and less than one more than max..
+                if(strlen($buffer[0]) > 0 && strlen($buffer[0]) < 21 && strlen($buffer[1]) > 0){
+                    $codes[] = $buffer;
+                }
+            }
+            if (!feof($handle)) {
+                return Redirect::to('settings/company/preferences')
+                    ->with('UpdateError', '<strong>Houston, we\'ve got a problem!</strong> Your file wasn\'t properly formatted.');
+            }
+            fclose($handle);
+        }
+
+        //Construct insert segment of sql statement.
+        $sql_values = array();
+        $sql_update_values = array();
+        foreach($codes as $code) {
+            Costcode::updateOrCreate(['company_id' => Auth::User()->company->id, 'code' => $code[0]], [
+                'company_id'    => Auth::User()->company->id,
+                'code'          => $code[0],
+                'description'   => $code[1],
+                'status'        => 'active'
+            ]);
+        }
+        
+        return Redirect::to('settings/company/preferences')
+            ->with('UpdateSuccess', '<strong>Success!</strong> Your cost codes were successfully uploaded.');
+    }
+    
+    public function downloadCostcode() {
+        //Get existing cost codes and format for outuput
+        $codes = Costcode::where('company_id', '=', Auth::User()->company->id)
+                ->where('status', '=', 'active')
+                ->orderBy('code', 'asc')
+                ->get();
+
+        $filename = \Timezone::convertFromUTC(\Carbon::now(), Auth::user()->timezone, 'Y-m-d') . ' Cost Codes.txt';
+
+        header('Content-disposition: attachment; filename=' . $filename);
+        header('Content-type: text');
+
+        foreach($codes as $code){
+            if(strlen($code->code) > 0){
+                echo $code->code . ' ' . $code->description, "\r\n";
+            }
+        }
+    }
  
 }
