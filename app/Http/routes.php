@@ -50,10 +50,6 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
         Route::post('settings/company/costcodes/delete', 'SettingsController@deleteCostcode');
         Route::post('settings/company/costcodes/upload', 'SettingsController@uploadCostcode');
     });
-    Route::get('settings/create-company', function() {
-      return view('settings.company.create');
-    });
-    Route::post('settings/create-company', 'SettingsController@createCompany');
   
     /* Projects */
     Route::resource('projects', 'ProjectsController');
@@ -79,14 +75,19 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
 // These routes don't require a user to join a company
 Route::group(['middleware'=>'userstatus'], function(){
 
-  /* Welcome */
-  Route::get('welcome/company', function() {
-    return View::make('welcome.company');
-  }); 
+    /* Welcome */
+    Route::get('welcome/company', function() {
+        return view('welcome.company');
+    });
   
-  /* Notifications */
-  Route::post('notifications/read/all', 'NotificationsController@readAll');
-  Route::post('notifications/read/{id}', 'NotificationsController@readNotification');
+    Route::get('settings/create-company', function() {
+      return view('settings.company.create');
+    });
+    Route::post('settings/create-company', 'SettingsController@createCompany');
+    
+    /* Notifications */
+    Route::post('notifications/read/all', 'NotificationsController@readAll');
+    Route::post('notifications/read/{id}', 'NotificationsController@readNotification');
   
   /* Tasks */
   Route::post('tasks/create', 'TasksController@createTask');
