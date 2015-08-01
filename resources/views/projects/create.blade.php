@@ -1,6 +1,17 @@
 @extends('projects.partials.form')
 
 @section('form-open')
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //Insert country & state
+            print_country("country", "state", "United States", "");
+        });
+    </script>
+    
+    <div class="pagehead">
+        <h1>Create a New Project</h1>
+    </div>
     {!! Form::open(array('url' => 'projects', 'method' => 'post', 'class' => 'form-horizontal')) !!}
 @endsection
 

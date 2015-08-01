@@ -2,9 +2,13 @@
 
 use App\Models\Projectuser;
 use App\Models\User;
+
 use App\Repositories\ProjectUserRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\SlackIntegrationRepository;
+
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Session;
 
@@ -25,13 +29,18 @@ class CollaboratorsController extends Controller
      * @param ProjectUserRepository $projectUserRepository
      * @param UserRepository $userRepository
      */
-    public function __construct(ProjectUserRepository $projectUserRepository, UserRepository $userRepository)
+    public function __construct(
+                        ProjectUserRepository $projectUserRepository,
+                        UserRepository $userRepository,
+                        SlackIntegrationRepository $slackIntegrationRepository
+                    )
     {
         $this->middleware('auth');
         $this->middleware('project.permissions');
 
         $this->projectUserRepository = $projectUserRepository;
         $this->userRepository = $userRepository;
+        $this->slackIntegrationRepository = $slackIntegrationRepository;
     }
 
     /**
@@ -42,10 +51,22 @@ class CollaboratorsController extends Controller
     public function index()
     {
         $project = \Session::get('project');
+        
         /** @var Model[] $collaborators */
         $collaborators = $this->projectUserRepository
             ->findActiveByProject($project->id);
 
+        // Change color of panel based on access
+        foreach($collaborators as $collaborator) {
+            if($collaborator->access == \App\Models\Projectuser::ACCESS_ADMIN) {
+                $collaborator->panelColor = "panel-warning";
+            } elseif($collaborator->access == \App\Models\Projectuser::ACCESS_COLLAB) {
+                $collaborator->panelColor = "panel-info";
+            } else {
+                $collaborator->panelColor = "panel-default";
+            }
+        }
+        
         if (count($collaborators)) {
             usort(
                 $collaborators,
@@ -125,7 +146,7 @@ class CollaboratorsController extends Controller
                     [
                         'project_id' => $project->id,
                         'user_id' => $user->id,
-                        'access' => Projectuser::ACCESS_USER,
+                        'access' => Projectuser::ACCESS_COLLAB,
                         'status' => Projectuser::STATUS_ACTIVE,
                         'role' => $role,
                     ]
@@ -144,7 +165,7 @@ class CollaboratorsController extends Controller
             
             $collaborator->fill(
                 [
-                    'access' => Projectuser::ACCESS_USER,
+                    'access' => Projectuser::ACCESS_COLLAB,
                     'status' => Projectuser::STATUS_ACTIVE
                 ]
             )
@@ -156,6 +177,18 @@ class CollaboratorsController extends Controller
                 ->to($user->id)
                 ->url('/projects/'.$project->id)
                 ->send();
+        
+        }
+        
+        // Send to Slack
+        $slack = $this->slackIntegrationRepository
+            ->findSlackProject($project->id);
+
+        if(count($slack) > 0) {
+            $this->slackIntegrationRepository
+                ->sendSlackNotification( $slack->webhook, $slack->channel, $slack->username,
+                    ':busts_in_silhouette: ' . Auth::User()->name . ' added *' . $user->name . '* as a collaborator on project *#' . $project->number . ' ' . $project->name . '*'
+                );
         }
     }
 }

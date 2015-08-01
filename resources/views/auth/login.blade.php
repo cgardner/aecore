@@ -7,7 +7,7 @@
         });
     </script>
     
-    <div class="col-md-4 col-md-offset-4" style="padding-top:16%;">
+    <div class="col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4" style="padding-top:16%;">
         
         @if (Session::has('accountDeleted'))
             <script type="text/javascript" charset="utf-8">
@@ -16,6 +16,15 @@
                 }, 3000);
             </script>
             <div class="alert alert-success" id="deleteerror"><span class="glyphicon glyphicon-check"></span> {!! Session::get('accountDeleted') !!}</div>
+        @endif
+        
+        @if(Session::has('passSuccess'))
+            <script type="text/javascript" charset="utf-8">
+                setTimeout(function () {
+                    $("#deletesuccess").fadeOut("slow");
+                }, 3500);
+            </script>
+            <div class="alert alert-success" id="deletesuccess"><span class="glyphicon glyphicon-check"></span> {!! Session::get('passSuccess') !!}</div>
         @endif
 
         @if (Session::has('dangerMessage'))
@@ -46,7 +55,7 @@
                             <span class="input-group-addon" id="addon-password"><span class="glyphicon glyphicon-lock"></span></span>
                             {!!Form::password('password',array('class' => 'form-control input-lg', 'placeholder' => 'Password', 'aria-describedby' => 'addon-password'))!!}
                         </div>
-                        <p class="text-muted no-margin small">Did you forget your password? {!! link_to('password', 'Reset Password') !!}</p>
+                        <p class="text-muted small" style="margin:5px 0 0 0;">Did you forget your password? {!! link_to('password', 'Reset Password') !!}</p>
                     </div>
                     
                     <div class="form-group no-margin">

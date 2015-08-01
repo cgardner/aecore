@@ -152,6 +152,7 @@ return [
         'Illuminate\Html\HtmlServiceProvider',
         'Intervention\Image\ImageServiceProvider',
         'Intervention\Image\ImageServiceProvider',
+        'Maknz\Slack\SlackServiceProvider',
         'Monarobase\CountryList\CountryListServiceProvider',
         'Morrislaptop\LaravelFivePackageBridges\ConfigServiceProvider', //bridge
         'Morrislaptop\LaravelFivePackageBridges\Bridges\TimezoneServiceProvider',
@@ -213,6 +214,7 @@ return [
         'Html'      => 'Illuminate\Html\HtmlFacade',
         'Image'     => 'Intervention\Image\Facades\Image',
         'Notifynder'    => 'Fenos\Notifynder\Facades\Notifynder',
+        'Slack' => 'Maknz\Slack\Facades\Slack',
       
 	],
 

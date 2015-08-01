@@ -128,7 +128,7 @@
     </div>
   </div>
 
-  <div class="form-group no-margin">
+  <div class="form-group">
     <div class="col-md-offset-3 col-md-9 col-lg-offset-2 col-lg-8">
       {!! Form::submit('Create Company', array('class' => 'btn btn-success')) !!}
     </div>

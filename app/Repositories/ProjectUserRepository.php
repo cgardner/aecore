@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories;
 
+use App\Models\Project;
 use App\Models\Projectuser;
 
 class ProjectUserRepository extends AbstractRepository implements RepositoryInterface
@@ -39,12 +40,22 @@ class ProjectUserRepository extends AbstractRepository implements RepositoryInte
      * @param $userId
      * @return \Illuminate\Database\Eloquent\Model[]
      */
-    public function findActiveForUser($userId, $projectStatus)
+    public function findActiveForUser($userId, $projectFilter)
     {
         $query = $this->model
             ->newQuery()
-            ->where('user_id', '=', $userId)
-            ->where('status', '=', Projectuser::STATUS_ACTIVE);
+            ->where('projectusers.user_id', '=', $userId)
+            ->where('projectusers.status', '=', Projectuser::STATUS_ACTIVE)
+            ->whereHas(
+                'project',
+                function ($query) use ($projectFilter) {
+                    if($projectFilter == 'All Active') {
+                        $query->where('projects.status', '!=', Project::STATUS_ARCHIVED);
+                    } else {
+                        $query->where('projects.status', '=', $projectFilter);
+                    }
+                }
+            );
         return $query->getModels();
     }
 

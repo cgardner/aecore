@@ -50,40 +50,54 @@
                                        title="{!! $collaborator->user->email !!}">{!! $collaborator->user->email !!}</a>
                                 </p>
                                 @if($collaborator->user->userphone)
-                                    <p class="text-muted small">
-                                        <span class="glyphicon glyphicon-phone"
-                                              style="top:2px;margin-right:3px;"></span>
+                                    <p class="small">
+                                        <span class="glyphicon glyphicon-phone text-muted" style="top:2px;margin-right:3px;"></span>
                                         {{ $collaborator->user->userphone->mobile == null ? 'Not provided' : $collaborator->user->userphone->mobile }}
                                     </p>
                                 @endif
                             </div>
-                            <div class="panel-footer team-tile-footer">
-                                <span class="bold small text-muted">{!! @$collaborator->user->company->type !!}</span>
+                            <div class="panel-footer {{ $collaborator->panelColor }} team-tile-footer">
+                                <span class="text-muted small bold">{!! @$collaborator->user->company->type !!}</span>
                                 @if($projectUser->access == \App\Models\Projectuser::ACCESS_ADMIN)
                                     <div class="btn-group pull-right btn-spacer-left">
-                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"
-                                                data-toggle="dropdown">
-                                            <span class="glyphicon glyphicon-user"></span> Manage <span
-                                                    class="caret"></span>
+                                        
+                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle"data-toggle="dropdown">
+                                            Manage <span class="caret"></span>
                                         </button>
+                                        
                                         <ul class="dropdown-menu" role="menu">
+                                            <li class="dropdown-header" role="presentation">User Roles</li>
                                             <li>
-                                                @if($collaborator->access != \App\Models\Projectuser::ACCESS_ADMIN)
-                                                    <a href="#" class="small make-admin">
-                                                        <span class="glyphicon glyphicon-tower small"></span> Make admin
-                                                    </a>
-                                                @else
-                                                    <a href="#" class="small remove-admin">
-                                                        <span class="glyphicon glyphicon-tower small"></span> Revoke
-                                                        admin
-                                                    </a>
-                                                @endif
+                                                <a href="#" class="make-admin small">
+                                                    Administrator
+                                                    @if($collaborator->access == \App\Models\Projectuser::ACCESS_ADMIN)
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    @endif
+                                                </a>
                                             </li>
+                                            <li>
+                                                <a href="#" class="make-collab small">
+                                                    Collaborator
+                                                    @if($collaborator->access == \App\Models\Projectuser::ACCESS_COLLAB)
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    @endif
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="make-limited small">
+                                                    Limited
+                                                    @if($collaborator->access == \App\Models\Projectuser::ACCESS_LIMITED)
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    @endif
+                                                </a>
+                                            </li>
+                                            
                                             @if ($collaborator->status == \App\Models\Projectuser::STATUS_ACTIVE)
+                                                <li class="divider"></li>
                                                 <li>
                                                     <a href="#" class="small remove-collaborator">
-                                                        <span class="glyphicon glyphicon-trash small"></span> Remove
-                                                        from project
+                                                        <span class="glyphicon glyphicon-trash small"></span>
+                                                        Remove from project
                                                     </a>
                                                 </li>
                                             @else
@@ -93,7 +107,6 @@
                                                         Re-Add to project
                                                     </a>
                                                 </li>
-
                                             @endif
                                         </ul>
                                     </div>
@@ -114,9 +127,11 @@
             $('.make-admin').click(function () {
                 updateCollaboratorAccess(this, {access: "{!! \App\Models\Projectuser::ACCESS_ADMIN !!}"});
             });
-
-            $('.remove-admin').click(function () {
-                updateCollaboratorAccess(this, {access: "{!! \App\Models\Projectuser::ACCESS_USER !!}"});
+            $('.make-collab').click(function () {
+                updateCollaboratorAccess(this, {access: "{!! \App\Models\Projectuser::ACCESS_COLLAB !!}"});
+            });
+            $('.make-limited').click(function () {
+                updateCollaboratorAccess(this, {access: "{!! \App\Models\Projectuser::ACCESS_LIMITED !!}"});
             });
 
             $('.remove-collaborator').click(function () {

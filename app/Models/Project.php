@@ -9,7 +9,7 @@ use Timezone;
 
 class Project extends Model
 {
-    const STATUS_ARCHIVED = 'archived';
+    const STATUS_ARCHIVED = 'Archived';
 
     protected $table = 'projects';
 
@@ -29,6 +29,7 @@ class Project extends Model
         'street',
         'city',
         'state',
+        'country',
         'zip_code',
         'status',
         'submittal_code'
@@ -117,6 +118,15 @@ class Project extends Model
         return $this->hasMany('App\Models\Projectuser');
     }
 
+    /**
+     * Relationship with the Slackintegrations model.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function slackintegration()
+    {
+        return $this->hasMany('App\Models\Slackintegration');
+    }
+    
     private function createDateTime($dateTime)
     {
         return new DateTime($dateTime, new DateTimeZone(Auth::user()->timezone));

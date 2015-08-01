@@ -7,7 +7,7 @@
         });
     </script>
  
-    <div class="col-md-4 col-md-offset-4" style="padding-top:16%;">
+    <div class="col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4" style="padding-top:16%;">
         
         @if (Session::has('signupFailed'))
             <div class="alert alert-danger"><span class="glyphicon glyphicon-alert"></span> {!! Session::get('signupFailed') !!}</div>

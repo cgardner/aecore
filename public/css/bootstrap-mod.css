@@ -13,6 +13,15 @@ body {
     text-align:center;
 }
 
+/* Form adjustments */
+.form-inline .form-group {
+    margin:0 0 15px 0;
+    width:100%;
+}
+.form-inline .form-group .form-control {
+    width:100%;
+}
+
 /* Buttons & Links */
 .btn-link-light {
     font-weight: normal;
@@ -295,6 +304,55 @@ table {
     font-size:0.75em;
     font-weight:normal;
     border-radius:8px;
+}
+
+/* Sub-menus */
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
 }
 
 /* Loaders */
@@ -825,9 +883,17 @@ a.task_project:hover {
 .team-tile-footer {
     height:42px;
     line-height:22px;
+    border-top-width:2px;
 }
 
-
+/* Integration Logos */
+.slack_rgb {
+    height:30px;
+    width:103px;
+    padding:0;
+    background:url('img/logos/slack_rgb.png') 0 0 no-repeat;
+    display:block;
+}
 
 /* Must be last to override all css! */
 .no-padding { padding:0; }

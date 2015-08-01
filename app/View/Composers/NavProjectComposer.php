@@ -27,7 +27,16 @@ class NavProjectComposer
     {
         $userProjects = $this->projectRepository
             ->findActiveProjectsForUser(Auth::user()->id);
-
+        
+        if (count($userProjects)) {
+            usort(
+                $userProjects,
+                function ($a, $b) {
+                    return strcasecmp($a->number, $b->number);
+                }
+            );
+        }
+        
         $navigation = $this->getNavigation();
 
         $view->with('projects', $userProjects)
@@ -44,52 +53,52 @@ class NavProjectComposer
             [
                 'title' => 'Dashboard',
                 'url' => url('dashboard'),
-                'icon' => 'glyphicon-stats'
+                'icon' => 'fa-dashboard'
             ],
             [
                 'title' => 'Collaborators',
                 'url' => route('collaborators.index'),
-                'icon' => 'glyphicon-user'
+                'icon' => 'fa-user'
             ],
 //            [
 //                'title' => 'Bidding',
 //                'url' => url('bidding'),
-//                'icon' => 'glyphicon-bullhorn'
+//                'icon' => ''
 //            ],            
 //            [
 //                'title' => 'Documents',
 //                'url' => url('documents'),
-//                'icon' => 'glyphicon-folder-open'
+//                'icon' => ''
 //            ],
 //            [
 //                'title' => 'Plan Room',
 //                'url' => url('planroom'),
-//                'icon' => 'glyphicon-th-large'
+//                'icon' => ''
 //            ],
             [
                 'title' => 'Requests For Information',
                 'url' => url('rfis'),
-                'icon' => 'glyphicon-question-sign'
+                'icon' => 'fa-info-circle'
             ],  
 //            [
 //                'title' => 'Submittals',
 //                'url' => url('submittals'),
-//                'icon' => 'glyphicon-tags'
+//                'icon' => ''
 //            ],
 //            [
 //                'title' => 'Meeting Minutes',
 //                'url' => url('minutes'),
-//                'icon' => 'glyphicon-pencil'
+//                'icon' => ''
 //            ],
 //            [
 //                'title' => 'Daily Reports',
 //                'url' => url('dailyreports'),
-//                'icon' => 'glyphicon-book'
+//                'icon' => ''
 //            ],
 //            [
 //                'title' => 'Punchlist',
 //                'url' => url('punchlist'),
-//                'icon' => 'glyphicon-star'
+//                'icon' => ''
 //            ]
         ];
         return $navigation;

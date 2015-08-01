@@ -304,7 +304,7 @@ Released under the UploadiFive Standard License <http://www.uploadify.com/upload
                     if (!delay) delay = 0;
                     var fadeTime = instant ? 0 : 500;
                     if (file.queueItem) {
-                        if (file.queueItem.find('.fileinfo').html() != ' - Completed') {
+                        if (file.queueItem.find('.fileinfo').html() != ' - Complete') {
                             file.queueItem.find('.fileinfo').html(' - Cancelled');
                         }
                         file.queueItem.find('.progress-bar').width(0);
@@ -554,7 +554,7 @@ Released under the UploadiFive Standard License <http://www.uploadify.com/upload
                 $data.uploadComplete = function(e, file, uploadAll) {
                     if ($.inArray('onUploadComplete', settings.overrideEvents) < 0) {
                         file.queueItem.find('.progress-bar').css('width', '100%');
-                        file.queueItem.find('.fileinfo').html(' - Completed');
+                        file.queueItem.find('.fileinfo').html(' - Complete');
                         file.queueItem.find('.progress').slideUp(250);
                         file.queueItem.addClass('complete');
                     }

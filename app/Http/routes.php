@@ -21,6 +21,9 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
+/* Help */
+Route::get('help/slack', function() { return view('help.slack'); });
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -30,6 +33,24 @@ Route::controllers([
 // User must be linked to a company
 Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], function(){
 
+    /* Company Settings */
+    Route::group(['middleware'=>'admincheck'], function(){
+        Route::get('settings/company/users', 'SettingsController@showUsers');
+        Route::get('settings/company/{view}', 'SettingsController@show');
+        Route::post('settings/company/update', 'SettingsController@updateCompany');
+        Route::post('settings/company/uploadlogo', 'UploadsController@uploadLogoCompany');
+        Route::post('settings/company/savelogo', 'SettingsController@saveLogoCompany');
+        Route::get('settings/company/remove/{usercode}', 'SettingsController@removeUserModal');
+        Route::post('settings/company/remove', 'SettingsController@removeUser');
+        Route::get('settings/company/admin/{usercode}', 'SettingsController@makeUserAdmin');
+        
+        Route::get('settings/company/costcodes/download', 'SettingsController@downloadCostcode');
+        Route::get('settings/company/costcodes/{action}', 'SettingsController@costcodeModal');
+        Route::post('settings/company/costcodes/update', 'SettingsController@updateCostcode');
+        Route::post('settings/company/costcodes/delete', 'SettingsController@deleteCostcode');
+        Route::post('settings/company/costcodes/upload', 'SettingsController@uploadCostcode');
+    });
+  
     /* Projects */
     Route::resource('projects', 'ProjectsController');
     Route::get('dashboard', 'DashboardController@showDashboard');
@@ -45,19 +66,28 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
     Route::get('pdf/log/{view}', 'PdfsController@pdfModal');
     Route::get('pdf/{type}', 'PdfsController@pdf');
     
+    /* Integrations */
+    Route::get('integrations/slack/{projectId}', 'IntegrationsController@slackModal');
+    Route::post('integrations/slack', 'IntegrationsController@addSlackProject');
+    
 });
 
 // These routes don't require a user to join a company
 Route::group(['middleware'=>'userstatus'], function(){
 
-  /* Welcome */
-  Route::get('welcome/company', function() {
-    return View::make('welcome.company');
-  }); 
+    /* Welcome */
+    Route::get('welcome/company', function() {
+        return view('welcome.company');
+    });
   
-  /* Notifications */
-  Route::post('notifications/read/all', 'NotificationsController@readAll');
-  Route::post('notifications/read/{id}', 'NotificationsController@readNotification');
+    Route::get('settings/create-company', function() {
+      return view('settings.company.create');
+    });
+    Route::post('settings/create-company', 'SettingsController@createCompany');
+    
+    /* Notifications */
+    Route::post('notifications/read/all', 'NotificationsController@readAll');
+    Route::post('notifications/read/{id}', 'NotificationsController@readNotification');
   
   /* Tasks */
   Route::post('tasks/create', 'TasksController@createTask');
@@ -75,23 +105,7 @@ Route::group(['middleware'=>'userstatus'], function(){
   
   /* Task Lists */
   Route::post('tasks/list/create', 'TasksController@createList');
-  Route::post('tasks/list/remove', 'TasksController@removeList');  
-  
-  /* Company Settings */
-  Route::group(['middleware'=>'admincheck'], function(){
-    Route::get('settings/company/users', 'SettingsController@showUsers');
-    Route::get('settings/company/{view}', 'SettingsController@show');
-    Route::post('settings/company/update', 'SettingsController@updateCompany');
-    Route::post('settings/company/uploadlogo', 'UploadsController@uploadLogoCompany');
-    Route::post('settings/company/savelogo', 'SettingsController@saveLogoCompany');
-    Route::get('settings/company/remove/{usercode}', 'SettingsController@removeUserModal');
-    Route::post('settings/company/remove', 'SettingsController@removeUser');
-    Route::get('settings/company/admin/{usercode}', 'SettingsController@makeUserAdmin'); 
-  });
-  Route::get('settings/create-company', function() {
-    return view('settings.company.create');
-  });
-  Route::post('settings/create-company', 'SettingsController@createCompany');     
+  Route::post('tasks/list/remove', 'TasksController@removeList');    
   
   /* Personal Settings */
   Route::get('settings/{view}', 'SettingsController@show');

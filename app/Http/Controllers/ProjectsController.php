@@ -2,11 +2,14 @@
 
 use App\Repositories\ProjectRepository;
 use App\Repositories\ProjectUserRepository;
+use App\Repositories\SlackIntegrationRepository;
+
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+
 use Session;
 
 class ProjectsController extends Controller
@@ -26,12 +29,18 @@ class ProjectsController extends Controller
      * @param ProjectRepository $projectRepository Project Repository.
      * @param ProjectUserRepository $projectUserRepository Project/User Repository
      */
-    public function __construct(ProjectRepository $projectRepository, ProjectUserRepository $projectUserRepository)
+    public function __construct(
+                        ProjectRepository $projectRepository,
+                        ProjectUserRepository $projectUserRepository,
+                        SlackIntegrationRepository $slackIntegrationRepository
+                    )
     {
         $this->middleware('auth');
         $this->middleware('project.permissions');
+        
         $this->projectRepository = $projectRepository;
         $this->projectUserRepository = $projectUserRepository;
+        $this->slackIntegrationRepository = $slackIntegrationRepository;
     }
 
     /**
@@ -42,12 +51,32 @@ class ProjectsController extends Controller
     public function index()
     {
         // Get filter and set session
-        Session::put('projectFilter', (\Input::get('s') == "") ? "All Active" : \Input::get('s'));
+        Session::put('projectFilter', (\Input::get('filter') == "") ? "All Active" : \Input::get('filter'));
         
         // Get projects for current user
         $projectUsers = $this->projectUserRepository
             ->findActiveForUser(Auth::User()->id, Session::get('projectFilter'));
-
+        
+        if (count($projectUsers)) {
+            usort(
+                $projectUsers,
+                function ($a, $b) {
+                    return strcasecmp($a->project->number, $b->project->number);
+                }
+            );
+        }
+        
+        foreach($projectUsers as $projectUser) {
+            
+            // Format size units
+            $projectUser->project->size_unit = ($projectUser->project->size_unit == 'feet') ? 'SF' : 'SM';
+            
+            // Count collaborators
+            $projectUser->project->collabCount = count($this->projectUserRepository
+                ->findActiveByProject($projectUser->project->id));
+            
+        }
+                
         return view('projects.index')
             ->with('projectUsers', $projectUsers);
     }
@@ -78,6 +107,7 @@ class ProjectsController extends Controller
         $input['company_id'] = $user->company_id;
 
         $this->saveProject($input);
+        
         return new RedirectResponse(route('projects.index'));
     }
 
@@ -98,6 +128,18 @@ class ProjectsController extends Controller
             ->find(Request::get('id'));
         $project->fill($input);
         $project->save();
+        
+        //Send to Slack
+        $slack = $this->slackIntegrationRepository
+            ->findSlackProject($project->id);
+        
+        if(count($slack) > 0) {
+            $this->slackIntegrationRepository
+                ->sendSlackNotification( $slack->webhook, $slack->channel, $slack->username,
+                    ':pencil: ' . Auth::User()->name . ' edited project *#' . $project->number . ' ' . $project->name . '*'
+                );
+        }
+        
         return $project;
     }
 
@@ -120,7 +162,7 @@ class ProjectsController extends Controller
     {
         $project = $this->projectRepository
             ->find($projectId);
-
+        
         return view('projects.edit')
             ->with('project', $project);
     }

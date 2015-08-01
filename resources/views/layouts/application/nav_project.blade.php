@@ -30,7 +30,7 @@
         @foreach($navigation as $link)
             <li>
                 <a href="{!! $link['url'] !!}" class="{{ \Request::url() == $link['url'] ? 'active' : null }}">
-                    <span class="glyphicon {{ $link['icon'] }}"></span> {{ $link['title'] }}
+                    <span class="fa fa-fw {{ $link['icon'] }}"></span> {{ $link['title'] }}
                 </a>
             </li>
         @endforeach

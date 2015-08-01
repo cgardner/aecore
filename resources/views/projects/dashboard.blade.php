@@ -5,7 +5,7 @@
         <div class="pagehead">
             <div class="container-fluid">
                 @if(Session::get('projectUser')->access == \App\Models\Projectuser::ACCESS_ADMIN)
-                    <a href="{!! URL::route('projects.edit', ['project' => $project->id]) !!}" class="btn btn-sm btn-default pull-right btn-spacer-left"><span class="glyphicon glyphicon-pencil"></span> Edit Project</a>
+                    <a href="{!! URL::route('projects.edit', ['project' => $project->id]) !!}" class="btn btn-sm btn-default pull-right btn-spacer-left"><i class="fa fa-pencil-square-o fa-fw"></i> Edit Project</a>
                 @endif
                 <h1>{!! '#' . $project->number . ' ' . $project->name !!}</h1>
                 <p class="text-muted no-margin">Your project at a glance.</p>
@@ -24,7 +24,8 @@
                                 <div class="col-xs-12">
                                     <span class="text-muted">Address</span><br/>
                                     {!! $project->street !!}<br/>
-                                    {!! $project->city !!} {!! $project->state !!}, {!! $project->zip !!}
+                                    {!! $project->city !!}, {!! $project->state !!} {!! $project->zip_code !!}<br/>
+                                    {!! @$project->country !!}
                                 </div>
                             </div>
                             <div class="row">
@@ -47,7 +48,7 @@
                                     {!! $project->value ? '$' . number_format($project->value, 0, '.', ',') : 'N/A' !!}
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" style="padding-bottom:0;">
                                 <div class="col-xs-12">
                                     <span class="text-muted">Description</span><br/>
                                     {!! $project->description !!}
