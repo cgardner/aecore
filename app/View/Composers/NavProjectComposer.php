@@ -53,7 +53,7 @@ class NavProjectComposer
             [
                 'title' => 'Dashboard',
                 'url' => url('dashboard'),
-                'icon' => 'fa-dashboard'
+                'icon' => 'fa-bar-chart'
             ],
             [
                 'title' => 'Collaborators',
@@ -78,8 +78,13 @@ class NavProjectComposer
             [
                 'title' => 'Requests For Information',
                 'url' => url('rfis'),
-                'icon' => 'fa-info-circle'
-            ],  
+                'icon' => 'fa-question-circle'
+            ],
+//            [
+//                'title' => 'Potential Change Orders',
+//                'url' => url('pcos'),
+//                'icon' => 'fa-dollar'
+//            ],  
 //            [
 //                'title' => 'Submittals',
 //                'url' => url('submittals'),
