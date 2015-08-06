@@ -95,11 +95,11 @@ class NavProjectComposer
 //                'url' => url('minutes'),
 //                'icon' => ''
 //            ],
-//            [
-//                'title' => 'Daily Reports',
-//                'url' => url('dailyreports'),
-//                'icon' => ''
-//            ],
+            [
+                'title' => 'Daily Reports',
+                'url' => url('dcrs'),
+                'icon' => 'fa-book'
+            ],
 //            [
 //                'title' => 'Punchlist',
 //                'url' => url('punchlist'),

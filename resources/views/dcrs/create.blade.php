@@ -10,10 +10,6 @@
                  changeMonth: true,
                  changeYear: true
              });
-             // Currency format
-             $('#cost_impact_qty').blur(function () {
-                $('#cost_impact_qty').currency({decimals: 2});
-            });
         });
     </script>
     
@@ -21,8 +17,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-7 col-lg-offset-2">
-                    <h3 class="text-muted" style="margin-bottom:15px;">Create a New RFI</h3>
-                    {!! Form::open(array('url'=>'rfis', 'method'=>'post', 'class'=>'form-horizontal')) !!}
+                    <h3 class="text-muted" style="margin-bottom:15px;">Create a New DCR</h3>
+                    {!! Form::open(array('url'=>'dcrs', 'method'=>'post', 'class'=>'form-horizontal')) !!}
                         
                         <!-- Subject -->
                         <div class="form-group">

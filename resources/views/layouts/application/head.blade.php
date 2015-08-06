@@ -23,8 +23,10 @@
 
     <!-- load css -->
     <link rel="shortcut icon" href="{!! asset('/css/img/appicons/favicon.ico') !!}">
+<!--
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato:300,400,700">
+-->
     <link rel="stylesheet" type="text/css" href="{!! asset('/css/bootstrap.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('/css/font-awesome.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('/css/bootstrap-mod.css') !!}">
