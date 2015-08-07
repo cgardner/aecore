@@ -6,7 +6,7 @@
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', 'StorefrontController@index');
+Route::get('/', 'LandingController@comingSoon');
 Route::get('home', 'StorefrontController@index');
 
 // Custom Auth Routes
