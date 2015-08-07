@@ -28,7 +28,7 @@
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <span class="text-danger">{!! $errors->first('subject') !!}</span>
-                                {!! Form::text('subject', null, array('class' => 'form-control input-lg', 'placeholder' => 'Subject...', 'autofocus' => 'true', 'required'=>'true' )) !!}               
+                                {!! Form::text('subject', null, array('class' => 'form-control', 'placeholder' => 'Subject...', 'autofocus' => 'true', 'required'=>'true' )) !!}               
                             </div>
                         </div>
                                                 

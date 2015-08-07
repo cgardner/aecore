@@ -152,6 +152,7 @@ return [
         'Illuminate\Html\HtmlServiceProvider',
         'Intervention\Image\ImageServiceProvider',
         'Intervention\Image\ImageServiceProvider',
+        'Jcf\Geocode\GeocodeServiceProvider',
         'Maknz\Slack\SlackServiceProvider',
         'Monarobase\CountryList\CountryListServiceProvider',
         'Morrislaptop\LaravelFivePackageBridges\ConfigServiceProvider', //bridge
@@ -212,9 +213,10 @@ return [
         'Debugbar'  => 'Barryvdh\Debugbar\Facade',
         'Form'      => 'Illuminate\Html\FormFacade',
         'Html'      => 'Illuminate\Html\HtmlFacade',
+        'Geocode'   => 'Jcf\Geocode\Facades\Geocode',
         'Image'     => 'Intervention\Image\Facades\Image',
         'Notifynder'    => 'Fenos\Notifynder\Facades\Notifynder',
-        'Slack' => 'Maknz\Slack\Facades\Slack',
+        'Slack'     => 'Maknz\Slack\Facades\Slack',
       
 	],
 

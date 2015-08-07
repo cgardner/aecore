@@ -16,145 +16,90 @@
     <div class="page-wrapper">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-7 col-lg-offset-2">
+                <div class="col-md-8">
                     <h3 class="text-muted" style="margin-bottom:15px;">Create a New DCR</h3>
                     {!! Form::open(array('url'=>'dcrs', 'method'=>'post', 'class'=>'form-horizontal')) !!}
                         
-                        <!-- Subject -->
+                        <!-- Date -->
                         <div class="form-group">
-                            <div class="col-sm-12">
-                                <span class="text-danger">{!! $errors->first('subject') !!}</span>
-                                {!! Form::text('subject', null, array('class' => 'form-control input-lg', 'placeholder' => 'Subject...', 'autofocus' => 'true', 'required'=>'true' )) !!}               
-                            </div>
-                        </div>
-                                                
-                        <!-- Assign To -->
-                        <div class="form-group">
-                            <div class="col-md-6">
-                                <span class="text-danger">{!! $errors->first('assign_to') !!}</span>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-user"></span>
-                                    </span>
-                                    <div class="input-group-btn" style="width:99%;">
-                                        <button class="btn btn-default btn-block" data-toggle="dropdown" style="text-align:left;padding:6px 11px;">
-                                            <span class="text-muted">
-                                                Assign to
-                                                <span class="caret"></span>
-                                            </span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu" style="width:100%;">
-                                            <!-- List Collaborators -->
-                                            @foreach($collaborators as $collaborator)
-                                                <li>
-                                                    <a href="#" onClick="$('#assign_to').val('{{ $collaborator->user->id }}');">
-                                                        <img src="{{ $collaborator->user->gravatar }}" class="avatar_sm"/>
-                                                        {{ $collaborator->user->name }}<br>
-                                                        <span class="small text-muted">{{ $collaborator->user->company->name }}</span>
-                                                    </a>
-                                                </li>
-                                            @endforeach
-                                            <li class="divider"></li>
-                                            <li><a href="/collaborators/add" data-target="#modal" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Add a Collaborator</a></li>
-                                        </ul>
-                                    </div>
-
-                                </div>
-                                {!! Form::hidden('assign_to', null, array('required'=>'true' )) !!}
-                            </div>
-                            <div class="col-md-6">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="assign_to_default" checked> <span class="text-muted">Set as default</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                            
-                        <div class="form-group">
-                            <!-- Date Due -->
-                            <div class="col-md-6">
-                                <span class="text-danger">{!! $errors->first('date_due') !!}</span>
+                            {!! Form::label('date', 'Report Date', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-4">
+                                <span class="text-danger">{!! $errors->first('date') !!}</span>
                                 <div class="input-group">
                                     <span class="input-group-addon" id="addon-date"><span class="glyphicon glyphicon-calendar"></span></span>
-                                    {!! Form::text('date', null, array('id' => 'date', 'class' => 'form-control', 'placeholder' => 'Date due', 'required'=>'true', 'aria-describedby' => 'addon-date' )) !!}
+                                    {!! Form::text('date', Timezone::convertFromUTC(Carbon::now(), Auth::user()->timezone, 'm/d/Y'), array('id' => 'date', 'class' => 'form-control', 'placeholder' => 'Report Date', 'required'=>'true', 'aria-describedby' => 'addon-date' )) !!}
                                 </div>
                             </div>
-                            
-                            <!-- Priority -->
-                            <div class="col-md-6">
-                                <label class="radio-inline text-muted no-padding"><span id="priorityFlame" class="glyphicon glyphicon-fire text-warning" title="Set priority."></span></label>
-                                <label class="radio-inline text-danger" style="margin-left:10px;"><input type="radio" name="priority" value="3" onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-danger');"> High</label>
-                                <label class="radio-inline text-warning"><input type="radio" name="priority" value="2" checked onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-warning');"> Medium</label>
-                                <label class="radio-inline text-info"><input type="radio" name="priority" value="1" onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-info');"> Low</label>
-                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <!-- Cost Impact Select -->
-                            <div class="col-md-6">
-                                <label class="radio-inline text-muted" style="padding-top:0;">Cost impact?</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="cost_impact" value="Yes" onChange="$('#cost').show();$('#cost_impact_qty').val('');$('#cost_impact_qty').focus();"> Yes</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="cost_impact" value="No" onChange="$('#cost').hide();$('#cost_impact_qty').val('');" checked> No</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="cost_impact" value="Unknown" onChange="$('#cost').show();$('#cost_impact_qty').val('Unknown');"> Unknown</label>
-                            </div>
-                            
-                            <!-- Schedule Impact Select -->
-                            <div class="col-md-6">
-                                <label class="radio-inline text-muted" style="padding-top:0;">Schedule impact?</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="schedule_impact" value="Yes" onChange="$('#schedule').show();$('#schedule_impact_qty').val('');$('#schedule_impact_qty').focus();"> Yes</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="schedule_impact" value="No" onChange="$('#schedule').hide();$('#schedule_impact_qty').val('');" checked> No</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="schedule_impact" value="Unknown" onChange="$('#schedule').show();$('#schedule_impact_qty').val('Unknown');"> Unknown</label>
-                            </div>
-                        </div>                        
                         
-                        <div class="form-group no-margin">
-                            <!-- Cost Impact -->
-                            <div class="col-md-6">
-                                <div id="cost" style="display:none;margin-bottom:15px;">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-usd"></span></span>
-                                        {!! Form::text('cost_impact_qty', null, array('id' => 'cost_impact_qty', 'class' => 'form-control', 'placeholder' => 'Estimated cost...' )) !!}
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="create_pco" checked> <span class="text-muted">Create a new PCO</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Schedule Impact -->
-                            <div class="col-md-6">
-                                <div id="schedule" style="display:none;margin-bottom:15px;">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                        {!! Form::text('schedule_impact_qty', null, array('id' => 'schedule_impact_qty', 'class' => 'form-control', 'placeholder' => 'Estimated days...' )) !!}
-                                    </div>
-                                </div>
+                        <!-- Weather -->
+                        <div class="form-group form-inline">
+                            {!! Form::label('weather', 'Weather', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10">
+                                {!! Form::select('weather', array(
+                                        'Clear'     => 'Clear',
+                                        'Partly Cloudy' => 'Partly Cloudy',
+                                        'Cloudy'    => 'Cloudy',
+                                        'Raining'   => 'Raining',
+                                        'Snowing'   => 'Snowing',
+                                        'Windy'     => 'Windy'
+                                    ), null, array('class' => 'form-control', 'required' => 'true'))
+                                !!}
+                                {!! Form::text('temperature', null, array('class' => 'form-control', 'style' => 'width:120px;', 'placeholder' => 'Temp', 'required'=>'true' )) !!}
+                                <select class="form-control" name="report_temperature_type">
+                                    <option value="Fahrenheit">&deg;F</option>
+                                    <option value="Celsius">&deg;C</option>
+                                </select>
                             </div>
                         </div>
-
-                        <div class="form-group" style="margin-bottom:0;">
-                            <div class="form-inline">
-                                <!-- References -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        {!! Form::text('references', null, array('class' => 'form-control', 'placeholder' => 'References (ex. 7/A9.01)' )) !!}
-                                    </div>
-                                </div>
-                                <!-- Origin -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        {!! Form::text('origin', null, array('class' => 'form-control', 'placeholder' => 'Origin (ex. Paint Tech RFI #01)', 'required'=>'true' )) !!}
-                                    </div>
-                                </div>
+                    
+                        <div class="form-group form-inline">
+                            {!! Form::label('inspection_agency', 'Inspections', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10" id="inspections">
+                                <input type="text" class="form-control" id="report_inspection_agency" name="report_inspection_agency[]" placeholder="Inspection Agency" value="" />
+                                <input type="text" class="form-control" id="report_inspection_type" name="report_inspection_type[]" placeholder="Type of Inspection" value=""/>
+                                <select class="form-control" id="report_inspection_status" name="report_inspection_status[]"  required="true">
+                                    <option value="Pass">Pass</option>
+                                    <option value="Fail">Fail</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-10 col-sm-offset-2" style="margin-top:5px;">
+                                <a href="javascript:void(0);" onClick="new_inspection_line();"><span class="glyphicon glyphicon-plus-sign"></span> Add Inspection</a>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            {!! Form::label('comments', 'Comments', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10">
+                                {!! Form::textarea('comments', null, array('class' => 'form-control', 'rows' => '3', 'placeholder' => 'General comments...' )) !!}
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            {!! Form::label('correspondence', 'Correspondence', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10">
+                                {!! Form::textarea('correspondence', null, array('class' => 'form-control', 'rows' => '3', 'placeholder' => 'Phone calls, meetings, etc...' )) !!}
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            {!! Form::label('issues', 'Critical Issues', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10">
+                                {!! Form::textarea('issues', null, array('class' => 'form-control', 'rows' => '3', 'placeholder' => 'Lead times, field issues, etc...' )) !!}
+                            </div>
+                        </div>
+                    
+                        <div class="form-group">
+                            {!! Form::label('safety', 'Safety Issues', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10">
+                                {!! Form::textarea('safety', null, array('class' => 'form-control', 'rows' => '3', 'placeholder' => 'Not tied off, frayed cords, etc...' )) !!}
                             </div>
                         </div>
                         
                         <!-- Attachments -->
                         <div class="form-group">
-                            <div class="col-md-6">
+                            {!! Form::label('file', 'Attachments', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-6">
                                 <div class="file_upload">
                                     <script type="text/javascript">
                                         $(function() {
@@ -182,21 +127,13 @@
                                 <div id="queue" class="queue"><span class="text-muted"><span class="glyphicon glyphicon-cloud-upload"></span> Drag & drop files here.</span></div>
                             </div>
                         </div>
-                        
-                        <!-- Question -->
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <span class="text-danger">{!! $errors->first('question') !!}</span>
-                                {!! Form::textarea('question', null, array('class' => 'form-control', 'rows' => '5', 'placeholder' => 'Define your problem & suggest a solution...', 'required'=>'true' )) !!}
-                            </div>
-                        </div>
-                        
+                                                                       
                         <!-- Buttons -->
                         <div class="form-group no-margin">
-                            <div class="col-sm-12">
+                            <div class="col-sm-10 col-sm-offset-2">
                                 {!! Form::submit('Submit', array('class' => 'btn btn-success')) !!}            
-                                {!! link_to('rfis', 'Save Draft', array('class' => 'btn btn-info btn-spacer-left')) !!}
-                                {!! link_to('rfis', 'Cancel', array('class' => 'btn btn-default btn-spacer-left')) !!}
+                                {!! link_to('dcrs', 'Save Draft', array('class' => 'btn btn-info btn-spacer-left')) !!}
+                                {!! link_to('dcrs', 'Cancel', array('class' => 'btn btn-default btn-spacer-left')) !!}
                             </div>
                         </div>
                     {!! Form::close() !!}

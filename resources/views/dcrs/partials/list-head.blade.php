@@ -4,7 +4,7 @@
         @if($projectUser->access != \App\Models\Projectuser::ACCESS_LIMITED)
             <a class="btn btn-success btn-sm pull-right" href="{{ URL::Route('dcrs.create') }}"><span class="glyphicon glyphicon-plus"></span> New DCR</a>
         @endif
-        <h1>Daily Construction Reports Log</h1>
+        <h1>Daily Construction Reports</h1>
         <p class="text-muted no-margin">Create & manage DCR's from here.</p>
     </div>
 </div>

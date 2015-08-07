@@ -13,7 +13,12 @@ class DashboardController extends Controller
         if($project->size_unit == "feet") { $project->size_unit = "SF"; }
         if($project->size_unit == "meters") { $project->size_unit = "SM"; }
                 
+        $location = \Geocode::make()->address($project->city . ',' . $project->state, $project->state);
+
         return view('projects.dashboard')
-            ->with('project', $project);
+            ->with([
+                'project' => $project,
+                'location' => $location
+            ]);
     }
 }
