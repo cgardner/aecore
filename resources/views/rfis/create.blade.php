@@ -20,21 +20,26 @@
     <div class="page-wrapper">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-7 col-lg-offset-2">
-                    <h3 class="text-muted" style="margin-bottom:15px;">Create a New RFI</h3>
+                <div class="col-lg-7 col-lg-offset-2">        
+                    <div class="pagehead">
+                        <h1><i class="fa fa-plus-circle text-success"></i> Create a New RFI</h1>
+                    </div>
+                    
                     {!! Form::open(array('url'=>'rfis', 'method'=>'post', 'class'=>'form-horizontal')) !!}
-                        
+                    
                         <!-- Subject -->
                         <div class="form-group">
-                            <div class="col-sm-12">
+                            {!! Form::label('subject', 'Subject', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10">
                                 <span class="text-danger">{!! $errors->first('subject') !!}</span>
-                                {!! Form::text('subject', null, array('class' => 'form-control', 'placeholder' => 'Subject...', 'autofocus' => 'true', 'required'=>'true' )) !!}               
+                                {!! Form::text('subject', null, array('class' => 'form-control', 'placeholder' => 'Enter a brief description of this RFI...', 'autofocus' => 'true', 'required'=>'true' )) !!}               
                             </div>
                         </div>
                                                 
                         <!-- Assign To -->
                         <div class="form-group">
-                            <div class="col-md-6">
+                            {!! Form::label('', 'Assign to', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-6 col-md-5">
                                 <span class="text-danger">{!! $errors->first('assign_to') !!}</span>
                                 <div class="input-group">
                                     <span class="input-group-addon">
@@ -43,7 +48,7 @@
                                     <div class="input-group-btn" style="width:99%;">
                                         <button class="btn btn-default btn-block" data-toggle="dropdown" style="text-align:left;padding:6px 11px;">
                                             <span class="text-muted">
-                                                Assign to
+                                                Select a collaborator
                                                 <span class="caret"></span>
                                             </span>
                                         </button>
@@ -53,7 +58,7 @@
                                                 <li>
                                                     <a href="#" onClick="$('#assign_to').val('{{ $collaborator->user->id }}');">
                                                         <img src="{{ $collaborator->user->gravatar }}" class="avatar_sm"/>
-                                                        {{ $collaborator->user->name }}<br>
+                                                        <span style="line-height:1.2em;">{{ $collaborator->user->name }}</span><br>
                                                         <span class="small text-muted">{{ $collaborator->user->company->name }}</span>
                                                     </a>
                                                 </li>
@@ -66,7 +71,7 @@
                                 </div>
                                 {!! Form::hidden('assign_to', null, array('required'=>'true' )) !!}
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-sm-4 col-md-5">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="assign_to_default" checked> <span class="text-muted">Set as default</span>
@@ -75,18 +80,22 @@
                             </div>
                         </div>
                             
+                        <!-- Date Due -->
                         <div class="form-group">
-                            <!-- Date Due -->
-                            <div class="col-md-6">
+                            {!! Form::label('date', 'Date due', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-6 col-md-5">
                                 <span class="text-danger">{!! $errors->first('date_due') !!}</span>
                                 <div class="input-group">
                                     <span class="input-group-addon" id="addon-date"><span class="glyphicon glyphicon-calendar"></span></span>
-                                    {!! Form::text('date', null, array('id' => 'date', 'class' => 'form-control', 'placeholder' => 'Date due', 'required'=>'true', 'aria-describedby' => 'addon-date' )) !!}
+                                    {!! Form::text('date', null, array('id' => 'date', 'class' => 'form-control', 'placeholder' => 'Select date', 'required'=>'true', 'aria-describedby' => 'addon-date' )) !!}
                                 </div>
                             </div>
-                            
-                            <!-- Priority -->
-                            <div class="col-md-6">
+                        </div>
+                        
+                        <!-- Priority -->
+                        <div class="form-group">
+                            {!! Form::label('priority', 'Priority', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-6 col-md-5">
                                 <label class="radio-inline text-muted no-padding"><span id="priorityFlame" class="glyphicon glyphicon-fire text-warning" title="Set priority."></span></label>
                                 <label class="radio-inline text-danger" style="margin-left:10px;"><input type="radio" name="priority" value="3" onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-danger');"> High</label>
                                 <label class="radio-inline text-warning"><input type="radio" name="priority" value="2" checked onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-warning');"> Medium</label>
@@ -96,26 +105,14 @@
 
                         <div class="form-group">
                             <!-- Cost Impact Select -->
-                            <div class="col-md-6">
-                                <label class="radio-inline text-muted" style="padding-top:0;">Cost impact?</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="cost_impact" value="Yes" onChange="$('#cost').show();$('#cost_impact_qty').val('');$('#cost_impact_qty').focus();"> Yes</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="cost_impact" value="No" onChange="$('#cost').hide();$('#cost_impact_qty').val('');" checked> No</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="cost_impact" value="Unknown" onChange="$('#cost').show();$('#cost_impact_qty').val('Unknown');"> Unknown</label>
-                            </div>
-                            
-                            <!-- Schedule Impact Select -->
-                            <div class="col-md-6">
-                                <label class="radio-inline text-muted" style="padding-top:0;">Schedule impact?</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="schedule_impact" value="Yes" onChange="$('#schedule').show();$('#schedule_impact_qty').val('');$('#schedule_impact_qty').focus();"> Yes</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="schedule_impact" value="No" onChange="$('#schedule').hide();$('#schedule_impact_qty').val('');" checked> No</label>
-                                <label class="radio-inline" style="padding-top:0;"><input type="radio" name="schedule_impact" value="Unknown" onChange="$('#schedule').show();$('#schedule_impact_qty').val('Unknown');"> Unknown</label>
-                            </div>
-                        </div>                        
-                        
-                        <div class="form-group no-margin">
-                            <!-- Cost Impact -->
-                            <div class="col-md-6">
-                                <div id="cost" style="display:none;margin-bottom:15px;">
+                            {!! Form::label('cost_impact', 'Cost impact', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10 col-md-5">
+                                <label class="radio-inline"><input type="radio" name="cost_impact" value="Yes" onChange="$('#cost').show();$('#cost_impact_qty').val('');$('#cost_impact_qty').focus();"> Yes</label>
+                                <label class="radio-inline"><input type="radio" name="cost_impact" value="No" onChange="$('#cost').hide();$('#cost_impact_qty').val('');" checked> No</label>
+                                <label class="radio-inline"><input type="radio" name="cost_impact" value="TBD" onChange="$('#cost').show();$('#cost_impact_qty').val('TBD');"> TBD</label>
+                                
+                                <!-- Cost Impact -->                        
+                                <div id="cost" style="display:none;margin-top:15px;">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-usd"></span></span>
                                         {!! Form::text('cost_impact_qty', null, array('id' => 'cost_impact_qty', 'class' => 'form-control', 'placeholder' => 'Estimated cost...' )) !!}
@@ -126,11 +123,19 @@
                                         </label>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <!-- Schedule Impact -->
-                            <div class="col-md-6">
-                                <div id="schedule" style="display:none;margin-bottom:15px;">
+                            </div>                            
+                        </div>
+                        
+                        <div class="form-group">
+                            <!-- Schedule Impact Select -->
+                            {!! Form::label('schedule_impact', 'Schedule impact', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10 col-md-5">
+                                <label class="radio-inline"><input type="radio" name="schedule_impact" value="Yes" onChange="$('#schedule').show();$('#schedule_impact_qty').val('');$('#schedule_impact_qty').focus();"> Yes</label>
+                                <label class="radio-inline"><input type="radio" name="schedule_impact" value="No" onChange="$('#schedule').hide();$('#schedule_impact_qty').val('');" checked> No</label>
+                                <label class="radio-inline"><input type="radio" name="schedule_impact" value="TBD" onChange="$('#schedule').show();$('#schedule_impact_qty').val('TBD');"> TBD</label>
+                                
+                                <!-- Schedule Impact -->
+                                <div id="schedule" style="display:none;margin-top:15px;">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                         {!! Form::text('schedule_impact_qty', null, array('id' => 'schedule_impact_qty', 'class' => 'form-control', 'placeholder' => 'Estimated days...' )) !!}
@@ -139,26 +144,26 @@
                             </div>
                         </div>
 
-                        <div class="form-group" style="margin-bottom:0;">
-                            <div class="form-inline">
-                                <!-- References -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        {!! Form::text('references', null, array('class' => 'form-control', 'placeholder' => 'References (ex. 7/A9.01)' )) !!}
-                                    </div>
-                                </div>
-                                <!-- Origin -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        {!! Form::text('origin', null, array('class' => 'form-control', 'placeholder' => 'Origin (ex. Paint Tech RFI #01)', 'required'=>'true' )) !!}
-                                    </div>
-                                </div>
+                        <!-- References -->
+                        <div class="form-group">
+                            {!! Form::label('references', 'References', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-8 col-md-6">
+                                {!! Form::text('references', null, array('class' => 'form-control', 'placeholder' => 'References (ex. 7/A9.01)' )) !!}
+                            </div>
+                        </div>    
+                            
+                        <!-- Origin -->
+                        <div class="form-group">
+                            {!! Form::label('origin', 'Origin', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-8 col-md-6">
+                                {!! Form::text('origin', null, array('class' => 'form-control', 'placeholder' => 'Origin (ex. Paint Tech RFI #01)', 'required'=>'true' )) !!}
                             </div>
                         </div>
                         
                         <!-- Attachments -->
                         <div class="form-group">
-                            <div class="col-md-6">
+                            {!! Form::label('file', 'Attachments', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-8 col-md-6">
                                 <div class="file_upload">
                                     <script type="text/javascript">
                                         $(function() {
@@ -189,7 +194,8 @@
                         
                         <!-- Question -->
                         <div class="form-group">
-                            <div class="col-sm-12">
+                            {!! Form::label('question', 'Question', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10">
                                 <span class="text-danger">{!! $errors->first('question') !!}</span>
                                 {!! Form::textarea('question', null, array('class' => 'form-control', 'rows' => '5', 'placeholder' => 'Define your problem & suggest a solution...', 'required'=>'true' )) !!}
                             </div>
@@ -197,7 +203,7 @@
                         
                         <!-- Buttons -->
                         <div class="form-group no-margin">
-                            <div class="col-sm-12">
+                            <div class="col-sm-10 col-sm-offset-2">
                                 {!! Form::submit('Submit', array('class' => 'btn btn-success')) !!}            
                                 {!! link_to('rfis', 'Save Draft', array('class' => 'btn btn-info btn-spacer-left')) !!}
                                 {!! link_to('rfis', 'Cancel', array('class' => 'btn btn-default btn-spacer-left')) !!}

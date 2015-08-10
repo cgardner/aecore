@@ -16,10 +16,11 @@
     <div class="page-wrapper">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-8">
-                    <h3 class="text-muted" style="margin-bottom:15px;">Create a New DCR</h3>
+                <div class="col-lg-7 col-lg-offset-2">
+                    <div class="pagehead">
+                        <h1><i class="fa fa-plus-circle text-success"></i> Create a New DCR</h1>
+                    </div>
                     {!! Form::open(array('url'=>'dcrs', 'method'=>'post', 'class'=>'form-horizontal')) !!}
-                        
                         <!-- Date -->
                         <div class="form-group">
                             {!! Form::label('date', 'Report Date', array('class' => 'col-sm-2 control-label')) !!}

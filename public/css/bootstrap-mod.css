@@ -288,6 +288,9 @@ table {
 .control-label {
     color:#666;
 }
+.control-label-static {
+    color:#666;
+}
 .control-label-lg {
     font-size:1.1em;
     padding-top:8px;
