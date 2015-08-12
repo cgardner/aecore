@@ -34,9 +34,9 @@
                         </div>
                         
                         <!-- Weather -->
-                        <div class="form-group form-inline">
+                        <div class="form-group">
                             {!! Form::label('weather', 'Weather', array('class' => 'col-sm-2 control-label')) !!}
-                            <div class="col-sm-10">
+                            <div class="col-sm-3">
                                 {!! Form::select('weather', array(
                                         'Clear'     => 'Clear',
                                         'Partly Cloudy' => 'Partly Cloudy',
@@ -44,25 +44,35 @@
                                         'Raining'   => 'Raining',
                                         'Snowing'   => 'Snowing',
                                         'Windy'     => 'Windy'
-                                    ), null, array('class' => 'form-control', 'required' => 'true'))
+                                    ), null, array('class' => 'form-control mobile-margin', 'required' => 'true'))
                                 !!}
-                                {!! Form::text('temperature', null, array('class' => 'form-control', 'style' => 'width:120px;', 'placeholder' => 'Temp', 'required'=>'true' )) !!}
+                            </div>
+                            <div class="col-sm-3 mobile-margin-end">
+                                {!! Form::text('temperature', null, array('class' => 'form-control mobile-margin', 'placeholder' => 'Temp', 'required'=>'true' )) !!}
+                            </div>
+                            <div class="col-sm-2 mobile-margin-end">
                                 <select class="form-control" name="report_temperature_type">
                                     <option value="Fahrenheit">&deg;F</option>
                                     <option value="Celsius">&deg;C</option>
                                 </select>
                             </div>
                         </div>
-                    
-                        <div class="form-group form-inline">
+                        
+                        <div class="form-group">
                             {!! Form::label('inspection_agency', 'Inspections', array('class' => 'col-sm-2 control-label')) !!}
-                            <div class="col-sm-10" id="inspections">
-                                <input type="text" class="form-control" id="report_inspection_agency" name="report_inspection_agency[]" placeholder="Inspection Agency" value="" />
-                                <input type="text" class="form-control" id="report_inspection_type" name="report_inspection_type[]" placeholder="Type of Inspection" value=""/>
-                                <select class="form-control" id="report_inspection_status" name="report_inspection_status[]"  required="true">
-                                    <option value="Pass">Pass</option>
-                                    <option value="Fail">Fail</option>
-                                </select>
+                            <div id="inspections">
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" id="report_inspection_agency" name="report_inspection_agency[]" placeholder="Inspection Agency" value="" />
+                                </div>
+                                <div class="col-sm-3 mobile-margin-end">
+                                    <input type="text" class="form-control" id="report_inspection_type" name="report_inspection_type[]" placeholder="Type of Inspection" value=""/>
+                                </div>
+                                <div class="col-sm-2 mobile-margin-end">
+                                    <select class="form-control" id="report_inspection_status" name="report_inspection_status[]"  required="true">
+                                        <option value="Pass">Pass</option>
+                                        <option value="Fail">Fail</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-sm-10 col-sm-offset-2" style="margin-top:5px;">
                                 <a href="javascript:void(0);" onClick="new_inspection_line();"><span class="glyphicon glyphicon-plus-sign"></span> Add Inspection</a>

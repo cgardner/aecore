@@ -83,7 +83,7 @@
                             {!! Form::text('start', null, array('id'=>'start', 'class' => 'form-control', 'placeholder' => 'Date Start', 'required'=>'true' )) !!}
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 mobile-margin-end">
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-star"></span></span>
                             {!! Form::text('finish', null, array('id'=>'finish', 'class' => 'form-control', 'placeholder' => 'Date Finish', 'required'=>'true' )) !!}

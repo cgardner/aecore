@@ -22,6 +22,20 @@ body {
     width:100%;
 }
 
+//Correcting inline form margin issues when scaling to mobile
+.mobile-margin { padding:0; }
+.mobile-margin-end { padding-left:0; }
+@media(max-width: 768px) {
+    .mobile-margin {
+        margin:12px 0;
+        padding:0 15px;
+    }
+    .mobile-margin-end {
+        margin-top:12px;
+        padding-left:15px;
+    }
+}
+
 /* Buttons & Links */
 .btn-link-light {
     font-weight: normal;
