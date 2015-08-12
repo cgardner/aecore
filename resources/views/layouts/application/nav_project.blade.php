@@ -29,7 +29,7 @@
         <li class="nav-header">Project Navigation</li>
         @foreach($navigation as $link)
             <li>
-                <a href="{!! $link['url'] !!}" class="{{ \Request::is($link['url'].'*') ? 'active' : null }}">
+                <a href="/{!! $link['url'] !!}" class="{{ \Request::is($link['url'].'*') ? 'active' : null }}">
                     <span class="fa fa-fw {{ $link['icon'] }}"></span> {{ $link['title'] }}
                 </a>
             </li>
