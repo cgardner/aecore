@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-lg-7 col-lg-offset-2">
                     <div class="pagehead">
-                        <h1><i class="fa fa-plus-circle text-success"></i> Create a New DCR</h1>
+                        <h1><i class="fa fa-plus-circle text-success"></i> Create a New Daily Report</h1>
                     </div>
                     {!! Form::open(array('url'=>'dcrs', 'method'=>'post', 'class'=>'form-horizontal')) !!}
                         <!-- Date -->
@@ -47,7 +47,7 @@
                                     ), null, array('class' => 'form-control mobile-margin', 'required' => 'true'))
                                 !!}
                             </div>
-                            <div class="col-sm-3 mobile-margin-end">
+                            <div class="col-sm-3 col-md-2 mobile-margin-end">
                                 {!! Form::text('temperature', null, array('class' => 'form-control mobile-margin', 'placeholder' => 'Temp', 'required'=>'true' )) !!}
                             </div>
                             <div class="col-sm-2 mobile-margin-end">
@@ -55,6 +55,46 @@
                                     <option value="Fahrenheit">&deg;F</option>
                                     <option value="Celsius">&deg;C</option>
                                 </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            {!! Form::label('work', 'Work Today', array('class' => 'col-sm-2 control-label')) !!}
+                            <div class="col-sm-10">
+                                <table class="table table-hover table-sortable no-margin">
+                                    <thead>
+                                        <th>Company</th>
+                                        <th>Crew</th>
+                                        <th class="tablet-hide">Hours</th>
+                                        <th>Work Performed</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="pointer">
+                                            <td>New Age Electric</td>
+                                            <td>14</td>
+                                            <td class="tablet-hide">8.0</td>
+                                            <td>This is a sample description of work performed...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-10 col-sm-offset-2" style="margin-top:5px;">
+                                <span class="btn-link-light" onClick="new_inspection_line();"><span class="glyphicon glyphicon-plus-sign"></span> Add Work Performed</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            {!! Form::label('equipment', 'Equipment', array('class' => 'col-sm-2 control-label')) !!}
+                            <div id="inspections">
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="equipment[]" placeholder="Type of equipment..." value="" />
+                                </div>
+                                <div class="col-sm-2 mobile-margin-end">
+                                    <input type="number" class="form-control" name="equipment_qty[]" placeholder="Qty" value=""/>
+                                </div>
+                            </div>
+                            <div class="col-sm-10 col-sm-offset-2" style="margin-top:5px;">
+                                <span class="btn-link-light" onClick="new_inspection_line();"><span class="glyphicon glyphicon-plus-sign"></span> Add Equipment</span>
                             </div>
                         </div>
                         
@@ -75,7 +115,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-10 col-sm-offset-2" style="margin-top:5px;">
-                                <a href="javascript:void(0);" onClick="new_inspection_line();"><span class="glyphicon glyphicon-plus-sign"></span> Add Inspection</a>
+                                <span class="btn-link-light" onClick="new_inspection_line();"><span class="glyphicon glyphicon-plus-sign"></span> Add Inspection</span>
                             </div>
                         </div>
                         
@@ -142,8 +182,7 @@
                         <!-- Buttons -->
                         <div class="form-group no-margin">
                             <div class="col-sm-10 col-sm-offset-2">
-                                {!! Form::submit('Submit', array('class' => 'btn btn-success')) !!}            
-                                {!! link_to('dcrs', 'Save Draft', array('class' => 'btn btn-info btn-spacer-left')) !!}
+                                {!! Form::submit('Save', array('class' => 'btn btn-success')) !!}
                                 {!! link_to('dcrs', 'Cancel', array('class' => 'btn btn-default btn-spacer-left')) !!}
                             </div>
                         </div>

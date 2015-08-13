@@ -24,10 +24,10 @@
 <!-- ELSE -->
 
 <div class="alert alert-info">
-    <p class="bold"><span class="glyphicon glyphicon-warning-sign"></span> No {filter} DCRs were found.</p>
+    <p class="bold"><span class="glyphicon glyphicon-warning-sign"></span> No {filter} Daily Reports were found.</p>
     <p>Try changing your filter
         @if($projectUser->access != \App\Models\Projectuser::ACCESS_LIMITED)
-            or <a href="/dcrs/create" class="bold">Create a New DCR</a> to get started.
+            or <a href="/dcrs/create" class="bold">Create a New Daily Report</a> to get started.
         @endif
     </p>
 </div>
