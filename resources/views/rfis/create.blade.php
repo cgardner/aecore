@@ -59,7 +59,7 @@
                                                     <a href="#" onClick="$('#assign_to').val('{{ $collaborator->user->id }}');">
                                                         <img src="{{ $collaborator->user->gravatar }}" class="avatar_sm"/>
                                                         <span style="line-height:1.2em;">{{ $collaborator->user->name }}</span><br>
-                                                        <span class="small text-muted">{{ $collaborator->user->company->name }}</span>
+                                                        <span class="small text-muted">{{ @$collaborator->user->company->name }}</span>
                                                     </a>
                                                 </li>
                                             @endforeach
