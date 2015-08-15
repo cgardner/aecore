@@ -14,14 +14,14 @@ class CreateCompanylogosTable extends Migration {
 	{
 		Schema::create('companylogos', function(Blueprint $table)
 		{
-      $table->increments('id');
-      $table->integer('company_id');
+            $table->increments('id');
+            $table->integer('company_id');
 			$table->integer('file_id_logo')->nullable();
 			$table->integer('file_id_sq_lg')->nullable();
 			$table->integer('file_id_sq_sm')->nullable();
 			$table->timestamps();
-      $table->dropPrimary('companylogos_pkey');
-      $table->primary('company_id');    
+            $table->dropPrimary('companylogos_pkey');
+            $table->primary('company_id');    
 		});
 	}
 

@@ -4,7 +4,7 @@ use Closure;
 use Auth;
 use Redirect;
 
-class AdminCheckMiddleware {
+class ProjectIdCheckMiddleware {
     
 	/**
 	 * Handle an incoming request.

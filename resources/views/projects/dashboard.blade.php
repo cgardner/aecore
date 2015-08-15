@@ -57,6 +57,15 @@
                         </div>
                     </div>{{-- /.panel --}}
 
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-cloud"></span><span class="btn-spacer-left">Weather</span>
+                        </div>
+                        <div class="panel-body">
+                            <iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat={!! $location->latitude() !!}&lon={!! $location->longitude() !!}&name={!! $project->city !!}"> </iframe>
+                        </div>
+                    </div>{{-- /.panel --}}
+                    
                     <div id="schedule" class="panel panel-default">
                         <div class="panel-heading">
                             <span class="glyphicon glyphicon-time"></span><span class="btn-spacer-left">Schedule</span>

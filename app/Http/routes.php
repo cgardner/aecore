@@ -62,6 +62,9 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
     /* RFI's */
     Route::resource('rfis', 'RfisController');
     
+    /* DCR's */
+    Route::resource('dcrs', 'DcrsController');
+    
     /* PDF's */
     Route::get('pdf/log/{view}', 'PdfsController@pdfModal');
     Route::get('pdf/{type}', 'PdfsController@pdf');

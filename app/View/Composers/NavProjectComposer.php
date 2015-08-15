@@ -52,52 +52,57 @@ class NavProjectComposer
         $navigation = [
             [
                 'title' => 'Dashboard',
-                'url' => url('dashboard'),
-                'icon' => 'fa-dashboard'
+                'url' => 'dashboard',
+                'icon' => 'fa-bar-chart'
             ],
             [
                 'title' => 'Collaborators',
-                'url' => route('collaborators.index'),
+                'url' => 'collaborators',
                 'icon' => 'fa-user'
             ],
 //            [
 //                'title' => 'Bidding',
-//                'url' => url('bidding'),
+//                'url' => 'bidding',
 //                'icon' => ''
 //            ],            
 //            [
 //                'title' => 'Documents',
-//                'url' => url('documents'),
+//                'url' => 'documents',
 //                'icon' => ''
 //            ],
 //            [
 //                'title' => 'Plan Room',
-//                'url' => url('planroom'),
+//                'url' => 'planroom',
 //                'icon' => ''
 //            ],
             [
                 'title' => 'Requests For Information',
-                'url' => url('rfis'),
+                'url' => 'rfis',
                 'icon' => 'fa-info-circle'
-            ],  
+            ],
+//            [
+//                'title' => 'Potential Change Orders',
+//                'url' => 'pcos',
+//                'icon' => 'fa-dollar'
+//            ],  
 //            [
 //                'title' => 'Submittals',
-//                'url' => url('submittals'),
+//                'url' => 'submittals',
 //                'icon' => ''
 //            ],
 //            [
 //                'title' => 'Meeting Minutes',
-//                'url' => url('minutes'),
+//                'url' => 'minutes',
 //                'icon' => ''
 //            ],
-//            [
-//                'title' => 'Daily Reports',
-//                'url' => url('dailyreports'),
-//                'icon' => ''
-//            ],
+            [
+                'title' => 'Daily Reports',
+                'url' => 'dcrs',
+                'icon' => 'fa-book'
+            ],
 //            [
 //                'title' => 'Punchlist',
-//                'url' => url('punchlist'),
+//                'url' => 'punchlist',
 //                'icon' => ''
 //            ]
         ];
