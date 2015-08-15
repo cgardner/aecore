@@ -86,7 +86,7 @@
                             <div class="col-sm-6 col-md-5">
                                 <span class="text-danger">{!! $errors->first('date_due') !!}</span>
                                 <div class="input-group">
-                                    <span class="input-group-addon" id="addon-date"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    <span class="input-group-addon" id="addon-date"><i class="fa fa-calendar"></i></span>
                                     {!! Form::text('date', null, array('id' => 'date', 'class' => 'form-control', 'placeholder' => 'Select date', 'required'=>'true', 'aria-describedby' => 'addon-date' )) !!}
                                 </div>
                             </div>
