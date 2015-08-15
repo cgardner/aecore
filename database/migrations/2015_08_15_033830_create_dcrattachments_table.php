@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateS3filesTable extends Migration {
+class CreateDcrattachmentsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,12 @@ class CreateS3filesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('s3files', function(Blueprint $table)
+		Schema::create('dcrattachments', function(Blueprint $table)
 		{
             $table->increments('id');
-            $table->integer('user_id');
-			$table->string('file_bucket');
-			$table->string('file_path');
-			$table->string('file_name');
-			$table->integer('file_size');
+            $table->integer('dcr_id');
+            $table->integer('file_id');
+            $table->string('status')->default('active'); //active, disabled
 			$table->timestamps();
 		});
 	}
@@ -31,7 +29,7 @@ class CreateS3filesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('s3files');
+        Schema::drop('dcrattachments');
 	}
 
 }

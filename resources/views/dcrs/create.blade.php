@@ -59,7 +59,7 @@
                                 {!! Form::text('temperature', null, array('class' => 'form-control mobile-margin', 'placeholder' => 'Temp', 'required'=>'true' )) !!}
                             </div>
                             <div class="col-sm-2 mobile-margin-end">
-                                <select class="form-control" name="report_temperature_type">
+                                <select class="form-control" name="temperature_type">
                                     <option value="Fahrenheit">&deg;F</option>
                                     <option value="Celsius">&deg;C</option>
                                 </select>
