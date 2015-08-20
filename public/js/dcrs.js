@@ -20,7 +20,7 @@ function addWork() {
     ) {
         i++;
         // delete form elements
-        var delButton = '<span class="btn-link-light pull-right" style="font-size:1.1em;padding-top:2px;" onClick="$(\'#work-row-' + i +'\').remove();" title="Remove equipment."><i class="fa fa-trash-o"></i></span>';
+        var delButton = '<span class="btn-link-light pull-right" style="font-size:1.1em;padding-top:2px;" onClick="$(\'#work-row-' + i +'\').remove();" title="Remove company."><i class="fa fa-trash-o"></i></span>';
     
         // Add row to table
         var addRow = '<tr id="work-row-' + i + '">\n\

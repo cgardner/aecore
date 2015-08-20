@@ -20,6 +20,12 @@
       });
     </script>
     
+    <script type="text/javascript">
+        $(document).ready(function(){
+             $.backstretch("{!! asset('/css/img/bg/onboarding-bg.jpg') !!}");
+        });
+    </script>
+    
     <!-- load css -->
     <link rel="shortcut icon" href="{!! asset('/css/img/appicons/favicon.ico') !!}">
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
