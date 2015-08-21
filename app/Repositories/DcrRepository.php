@@ -14,7 +14,7 @@ class DcrRepository extends AbstractRepository
 
     function __construct(Dcr $model)
     {
-        $this->model = $model->where('project_id', '=', \Session::get('project')->id);
+        $this->model = $model;
     }
 
     /**
@@ -33,4 +33,5 @@ class DcrRepository extends AbstractRepository
             ->orderBy('date', 'desc');
         return $query->getModels();
     }
+    
 }

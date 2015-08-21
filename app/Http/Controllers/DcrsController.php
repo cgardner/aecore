@@ -5,6 +5,9 @@ use App\Repositories\DcrRepository;
 use App\Repositories\ProjectUserRepository;
 use Session;
 
+// Models
+use App\Models\Dcrequipment;
+
 class DcrsController extends Controller
 {
     /**
@@ -54,12 +57,35 @@ class DcrsController extends Controller
     public function show($dcrId)
     {
         $dcr = $this->dcrRepository
-            ->find($dcrId);
+                ->find($dcrId)
+                ->where('id', '=', $dcrId)
+                ->where('project_id', '=', \Session::get('project')->id)
+                ->where('status', '=', 'active')
+                ->first();
         
         if(count($dcr) > 0) {
+            
+            // Previous DCR info
+            $dcr_previous = $this->dcrRepository
+                ->find($dcrId)
+                ->where('id', '<', $dcrId)
+                ->where('project_id', '=', \Session::get('project')->id)
+                ->where('status', '=', 'active')
+                ->first();
+            
+            // Next DCR info
+            $dcr_next = $this->dcrRepository
+                ->find($dcrId)
+                ->where('id', '>', $dcrId)
+                ->where('project_id', '=', \Session::get('project')->id)
+                ->where('status', '=', 'active')
+                ->first();
+            
             return view('dcrs.show')
                 ->with([
-                    'dcr'=> $dcr
+                    'dcr'=> $dcr,
+                    'dcr_next'=> $dcr_next,
+                    'dcr_previous'=> $dcr_previous
                 ]);
         } else {
             //Access denied or not found
@@ -74,15 +100,7 @@ class DcrsController extends Controller
      */    
     public function create()
     {
-        /** Get active project info */
-        $project = \Session::get('project');
-        
-        /** @var Model[] $collaborators */
-        $collaborators = $this->projectUserRepository
-            ->findActiveByProject($project->id);
-        
-        return view('dcrs.create')
-                ->with('collaborators', $collaborators);
+        return view('dcrs.create');
     }
     
     /**
@@ -116,14 +134,24 @@ class DcrsController extends Controller
     private function saveDcr(array $input)
     {
         if (!\Request::has('id')) {
-            return $this->dcrRepository
+            $dcr = $this->dcrRepository
                 ->create($input);
-        }
-
-        $dcr = $this->dcrRepository
-            ->find(Request::get('id'));
-        $dcr->fill($input);
-        $dcr->save();
+            
+            // Equipment
+            if (count(\Request::get('equipment_type')) > 0) {
+                for ($i = 0; $i < count(\Request::get('equipment_type')); $i++) {
+                    
+                    $eqp_type = \Request::get('equipment_type')[$i];
+                    $eqp_qty = \Request::get('equipment_qty')[$i];
+            
+                    Dcrequipment::create([
+                        'dcr_id'            => $dcr->id,
+                        'equipment_type'    => $eqp_type,
+                        'equipment_qty'     => $eqp_qty
+                      ]);
+                }
+            }
+            
         
 //        //Send to Slack
 //        $slack = $this->slackIntegrationRepository
@@ -135,7 +163,17 @@ class DcrsController extends Controller
 //                    ':pencil: ' . Auth::User()->name . ' edited project *#' . $project->number . ' ' . $project->name . '*'
 //                );
 //        }
+            
+            return $dcr;
+        } else {
+
+            $dcr = $this->dcrRepository
+                ->find(\Request::get('id'));
+            $dcr->fill($input);
+            $dcr->save();
+            
+            return $dcr;
+        }
         
-        return $dcr;
     }    
 }

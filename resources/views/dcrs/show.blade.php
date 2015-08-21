@@ -5,8 +5,12 @@
     <div class="container-fluid">
         <div class="pagehead">
             <a href="#" class="btn btn-default pull-right btn-spacer-left mobile-hide" title="Print"><i class="fa fa-print"></i> Print</a>
-            <a href="#" class="btn btn-default pull-right btn-spacer-left mobile-hide">Next <i class="fa fa-arrow-circle-right"></i></a>
-            <a href="#" class="btn btn-default pull-right mobile-hide"><i class="fa fa-arrow-circle-left"></i> Previous</a>
+            @if(@$dcr_next->id != NULL)
+                <a href="/dcrs/{!! $dcr_next->id !!}" class="btn btn-default pull-right btn-spacer-left mobile-hide">Next <i class="fa fa-arrow-circle-right"></i></a>
+            @endif
+            @if(@$dcr_previous->id != NULL)
+                <a href="/dcrs/{!! $dcr_previous->id !!}" class="btn btn-default pull-right mobile-hide"><i class="fa fa-arrow-circle-left"></i> Previous</a>
+            @endif
             <h1>Daily Construction Report</h1>
         </div>
         
