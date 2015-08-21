@@ -217,7 +217,7 @@
   
     <!-- DATE DUE -->
     <div class="form-group">
-      <label class="col-xs-1 control-label control-label-lg" for="date_due"><span class="glyphicon glyphicon-calendar"></span></label>
+      <label class="col-xs-1 control-label control-label-lg" for="date_due"><i class="fa fa-calendar"></i></label>
       <div class="col-xs-6">
         @if($taskdata->date_due != null)
           {!! Form::text('date_due', date('m/d/Y', strtotime($taskdata->date_due)), array('id'=>'date_due', 'class' => 'form-control', 'placeholder' => 'Date due...')) !!}
@@ -243,7 +243,7 @@
     
     <!-- LIST -->
     <div class="form-group">
-      <label class="col-xs-1 control-label control-label-lg"><span class="glyphicon glyphicon-list"></span></label>
+      <label class="col-xs-1 control-label control-label-lg"><i class="fa fa-list"></i></label>
       <div class="col-xs-11">
         @if(count($listdata) > 0)
           <div class="usertag" id="list-{!! $listdata->taskcode !!}">

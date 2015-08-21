@@ -3,7 +3,7 @@
 ?>
 
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-        <span class="glyphicon glyphicon-bell" style="top:3px;"></span>
+        <i class="fa fa-bell-o" style="line-height:20px;"></i>
         @if(count($notifications) > 0)
             <span class="label label-sm label-danger">{{ count($notifications) }}</span>
         @endif
@@ -24,7 +24,7 @@
                 </div>
             @endforeach
         @else
-            <p style="font-size:7em;line-height:1em;color:#ccc;" class="center"><span class="glyphicon glyphicon-bell"></span></p>
+        <p style="font-size:7em;line-height:1em;color:#ddd;" class="center"><i class="fa fa-bell-o"></i></p>
             <p style="padding:0 12px;" class="center text-muted">"The most important thing in communication<br>is hearing what isn't said"<br><i>-Peter Drucker</i></p>
         @endif
     </ul>

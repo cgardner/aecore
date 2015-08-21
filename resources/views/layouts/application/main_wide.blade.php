@@ -9,9 +9,7 @@
                 </div>
             </nav>
         </header>
-        <div class="container-fluid">
-            @yield('content')
-        </div>
+        @yield('content')
         <footer class="row"></footer>
 
         <!-- Initialize Modal -->

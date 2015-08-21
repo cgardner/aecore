@@ -4,9 +4,9 @@
     <body>
         <header class="row">
             <nav class="navbar navbar-fixed-top navbar-default">
-                  <div class="container">
-                      @include('layouts.application.header')
-                  </div>
+                <div class="container">
+                    @include('layouts.application.header')
+                </div>
             </nav>
         </header>
         <div class="container">
