@@ -24,6 +24,7 @@ class Rfi extends Model
     protected $table = 'rfis';
 
     protected $fillable = [
+        'subject',
         'project_id',
         'assigned_user_id',
         'due_date',
@@ -43,7 +44,7 @@ class Rfi extends Model
      */
     public function project()
     {
-        return $this->belongsTo('App\Model\Project');
+        return $this->belongsTo('\App\Models\Project');
     }
 
     /**
@@ -51,7 +52,7 @@ class Rfi extends Model
      */
     public function createdBy()
     {
-        return $this->belongsTo('App\Model\User', 'created_by');
+        return $this->belongsTo('\App\Models\User', 'created_by');
     }
 
     /**
@@ -59,7 +60,7 @@ class Rfi extends Model
      */
     public function updatedBy()
     {
-        return $this->belongsTo('App\Model\User', 'updated_by');
+        return $this->belongsTo('\App\Models\User', 'updated_by');
     }
 
     /**
@@ -67,7 +68,7 @@ class Rfi extends Model
      */
     public function assignedTo()
     {
-        return $this->belongsTo('App\Model\User', 'assigned_user_id');
+        return $this->belongsTo('\App\Models\User', 'assigned_user_id');
     }
 
     /**
@@ -75,6 +76,6 @@ class Rfi extends Model
      */
     public function files()
     {
-        return $this->hasManyThrough('\App\Model\S3File', '\App\Model\RfiFile', 'rfi_id', 'file_id');
+        return $this->hasManyThrough('\App\Models\S3File', '\App\Models\RfiFile', 'rfi_id', 'file_id');
     }
 }

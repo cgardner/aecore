@@ -25,7 +25,7 @@
                         <h1><i class="fa fa-plus-circle text-success"></i> Create a New RFI</h1>
                     </div>
                     
-                    {!! Form::open(array('url'=>'rfis', 'method'=>'post', 'class'=>'form-horizontal')) !!}
+                    {!! Form::open(array('url' => route('rfis.store'), 'method' => 'post', 'class' => 'form-horizontal')) !!}
                     
                         <!-- Subject -->
                         <div class="form-group">
@@ -69,7 +69,7 @@
                                     </div>
 
                                 </div>
-                                {!! Form::hidden('assign_to', null, array('required'=>'true' )) !!}
+                                {!! Form::hidden('assigned_user_id', null, array('required'=>'true', 'id' => 'assign_to')) !!}
                             </div>
                             <div class="col-sm-4 col-md-5">
                                 <div class="checkbox">
@@ -87,7 +87,7 @@
                                 <span class="text-danger">{!! $errors->first('date_due') !!}</span>
                                 <div class="input-group">
                                     <span class="input-group-addon" id="addon-date"><i class="fa fa-calendar"></i></span>
-                                    {!! Form::text('date', null, array('id' => 'date', 'class' => 'form-control', 'placeholder' => 'Select date', 'required'=>'true', 'aria-describedby' => 'addon-date' )) !!}
+                                    {!! Form::text('due_date', null, array('id' => 'date', 'class' => 'form-control', 'placeholder' => 'Select date', 'required'=>'true', 'aria-describedby' => 'addon-date' )) !!}
                                 </div>
                             </div>
                         </div>
@@ -97,9 +97,9 @@
                             {!! Form::label('priority', 'Priority', array('class' => 'col-sm-2 control-label')) !!}
                             <div class="col-sm-6 col-md-5">
                                 <label class="radio-inline text-muted no-padding"><span id="priorityFlame" class="glyphicon glyphicon-fire text-warning" title="Set priority."></span></label>
-                                <label class="radio-inline text-danger" style="margin-left:10px;"><input type="radio" name="priority" value="3" onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-danger');"> High</label>
-                                <label class="radio-inline text-warning"><input type="radio" name="priority" value="2" checked onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-warning');"> Medium</label>
-                                <label class="radio-inline text-info"><input type="radio" name="priority" value="1" onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-info');"> Low</label>
+                                <label class="radio-inline text-danger" style="margin-left:10px;"><input type="radio" name="priority" value="{!! \App\Models\Rfi::PRIORITY_HIGH !!}" onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-danger');"> High</label>
+                                <label class="radio-inline text-warning"><input type="radio" name="priority" value="{!! \App\Models\Rfi::PRIORITY_MEDIUM !!}" checked onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-warning');"> Medium</label>
+                                <label class="radio-inline text-info"><input type="radio" name="priority" value="{!! \App\Models\Rfi::PRIORITY_LOW !!}" onChange="$('#priorityFlame').attr('class', 'glyphicon glyphicon-fire text-info');"> Low</label>
                             </div>
                         </div>
 
@@ -107,15 +107,15 @@
                             <!-- Cost Impact Select -->
                             {!! Form::label('cost_impact', 'Cost impact', array('class' => 'col-sm-2 control-label')) !!}
                             <div class="col-sm-10 col-md-5">
-                                <label class="radio-inline"><input type="radio" name="cost_impact" value="Yes" onChange="$('#cost').show();$('#cost_impact_qty').val('');$('#cost_impact_qty').focus();"> Yes</label>
-                                <label class="radio-inline"><input type="radio" name="cost_impact" value="No" onChange="$('#cost').hide();$('#cost_impact_qty').val('');" checked> No</label>
-                                <label class="radio-inline"><input type="radio" name="cost_impact" value="TBD" onChange="$('#cost').show();$('#cost_impact_qty').val('TBD');"> TBD</label>
+                                <label class="radio-inline"><input type="radio" name="cost_impact" value="{!! \App\Models\Rfi::COST_IMPACT_YES !!}" onChange="$('#cost').show();$('#cost_impact_qty').val('');$('#cost_impact_qty').focus();"> Yes</label>
+                                <label class="radio-inline"><input type="radio" name="cost_impact" value="{!! \App\Models\Rfi::COST_IMPACT_NO !!}" onChange="$('#cost').hide();$('#cost_impact_qty').val('');" checked> No</label>
+                                <label class="radio-inline"><input type="radio" name="cost_impact" value="{!! \App\Models\Rfi::COST_IMPACT_TBD !!}" onChange="$('#cost').show();$('#cost_impact_qty').val('TBD');"> TBD</label>
                                 
                                 <!-- Cost Impact -->                        
                                 <div id="cost" style="display:none;margin-top:15px;">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-usd"></span></span>
-                                        {!! Form::text('cost_impact_qty', null, array('id' => 'cost_impact_qty', 'class' => 'form-control', 'placeholder' => 'Estimated cost...' )) !!}
+                                        {!! Form::text('cost_impact_amount', null, array('id' => 'cost_impact_qty', 'class' => 'form-control', 'placeholder' => 'Estimated cost...' )) !!}
                                     </div>
                                     <div class="checkbox">
                                         <label>
@@ -130,15 +130,15 @@
                             <!-- Schedule Impact Select -->
                             {!! Form::label('schedule_impact', 'Schedule impact', array('class' => 'col-sm-2 control-label')) !!}
                             <div class="col-sm-10 col-md-5">
-                                <label class="radio-inline"><input type="radio" name="schedule_impact" value="Yes" onChange="$('#schedule').show();$('#schedule_impact_qty').val('');$('#schedule_impact_qty').focus();"> Yes</label>
-                                <label class="radio-inline"><input type="radio" name="schedule_impact" value="No" onChange="$('#schedule').hide();$('#schedule_impact_qty').val('');" checked> No</label>
-                                <label class="radio-inline"><input type="radio" name="schedule_impact" value="TBD" onChange="$('#schedule').show();$('#schedule_impact_qty').val('TBD');"> TBD</label>
+                                <label class="radio-inline"><input type="radio" name="schedule_impact" value="{!! \App\Models\Rfi::SCHEDULE_IMPACT_YES !!}" onChange="$('#schedule').show();$('#schedule_impact_qty').val('');$('#schedule_impact_qty').focus();"> Yes</label>
+                                <label class="radio-inline"><input type="radio" name="schedule_impact" value="{!! \App\Models\Rfi::SCHEDULE_IMPACT_NO !!}" onChange="$('#schedule').hide();$('#schedule_impact_qty').val('');" checked> No</label>
+                                <label class="radio-inline"><input type="radio" name="schedule_impact" value="{!! \App\Models\Rfi::SCHEDULE_IMPACT_TBD !!}" onChange="$('#schedule').show();$('#schedule_impact_qty').val('TBD');"> TBD</label>
                                 
                                 <!-- Schedule Impact -->
                                 <div id="schedule" style="display:none;margin-top:15px;">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                        {!! Form::text('schedule_impact_qty', null, array('id' => 'schedule_impact_qty', 'class' => 'form-control', 'placeholder' => 'Estimated days...' )) !!}
+                                        {!! Form::text('schedule_impact_days', null, array('id' => 'schedule_impact_qty', 'class' => 'form-control', 'placeholder' => 'Estimated days...' )) !!}
                                     </div>
                                 </div>
                             </div>
@@ -179,7 +179,6 @@
                                                 'queueID'           : 'queue',
                                                 'uploadScript'      : '/attachment/upload',
                                                 'onUploadComplete'  : function(file, data) {
-                                                    console.log(data);
                                                     $("#file_id_list").append('<input type="hidden" id="file_id_' + data + '" name="file_id[]" value="' + data + '"/>');
                                                 }
                                             });
@@ -200,12 +199,13 @@
                                 {!! Form::textarea('question', null, array('class' => 'form-control', 'rows' => '5', 'placeholder' => 'Define your problem & suggest a solution...', 'required'=>'true' )) !!}
                             </div>
                         </div>
-                        
+
+                        {!! Form::hidden('draft', null, ['id' => 'draft_flag']) !!}
                         <!-- Buttons -->
                         <div class="form-group no-margin">
                             <div class="col-sm-10 col-sm-offset-2">
-                                {!! Form::submit('Submit', array('class' => 'btn btn-success')) !!}            
-                                {!! link_to('rfis', 'Save Draft', array('class' => 'btn btn-info btn-spacer-left')) !!}
+                                {!! Form::submit('Submit', array('class' => 'btn btn-success')) !!}
+                                {!! link_to(route('rfis.store'), 'Save Draft', array('class' => 'btn btn-info btn-spacer-left')) !!}
                                 {!! link_to('rfis', 'Cancel', array('class' => 'btn btn-default btn-spacer-left')) !!}
                             </div>
                         </div>

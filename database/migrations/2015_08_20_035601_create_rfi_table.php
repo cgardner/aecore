@@ -19,19 +19,23 @@ class CreateRfiTable extends Migration
                 $table->bigInteger('id', true, true);
                 $table->bigInteger('project_id', false, true);
                 $table->bigInteger('assigned_user_id', false, true);
+                $table->string('subject');
                 $table->date('due_date');
                 $table->enum('priority', ['HIGH', 'MEDIUM', 'LOW']);
                 $table->enum('cost_impact', ['YES', 'NO', 'TBD']);
-                $table->float('cost_impact_amount');
-                $table->enum('schedule_impact', ['HIGH', 'MEDIUM', 'LOW']);
-                $table->integer('schedule_impact_days');
+                $table->float('cost_impact_amount')
+                    ->nullable();
+                $table->enum('schedule_impact', ['YES', 'NO', 'TBD']);
+                $table->integer('schedule_impact_days')
+                    ->nullable();
                 $table->string('references');
                 $table->string('origin');
                 $table->string('question');
                 $table->boolean('draft');
                 $table->bigInteger('created_by', false, true);
                 $table->bigInteger('updated_by', false, true);
-                $table->bigInteger('deleted_by', false, true);
+                $table->bigInteger('deleted_by', false, true)
+                    ->nullable();
                 $table->timestamps();
                 $table->softDeletes();
 
