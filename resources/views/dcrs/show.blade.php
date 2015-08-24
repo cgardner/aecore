@@ -31,12 +31,47 @@
                 </div>
             </div>
 
+            <!-- Work Today -->
+            <div class="form-group">
+                {!! Form::label('work', 'Work Today', array('class' => 'col-sm-2 control-label')) !!}
+                <div class="col-sm-10">
+                    <table class="table table-hover table-condensed table-sortable no-margin">
+                        <thead>
+                            <th>Company</th>
+                            <th>Crew</th>
+                            <th class="tablet-hide">Hours</th>
+                            <th>Work Performed</th>
+                        </thead>
+                        <tbody id="work-table">
+                            @foreach($dcrWorks as $dcrWork)
+                                <tr>
+                                    <td>{!! $dcrWork->crew_company !!}</td>
+                                    <td>{!! $dcrWork->crew_size !!}</td>
+                                    <td>{!! $dcrWork->crew_hours !!}</td>
+                                    <td>{!! $dcrWork->crew_work !!}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
             <!-- Equipment -->
             <div class="form-group">
                 {!! Form::label('equipment', 'Equipment', array('class' => 'col-sm-3 col-md-2 control-label')) !!}
                 <div class="col-sm-9 col-md-10">
                     @foreach($dcrEquipments as $dcrEquipment)
                         <p class="form-control-static">{!! '('.$dcrEquipment->equipment_qty.') ' . $dcrEquipment->equipment_type !!}</p>
+                    @endforeach  
+                </div>
+            </div>
+
+            <!-- Inspection -->
+            <div class="form-group">
+                {!! Form::label('inspection', 'Inspections', array('class' => 'col-sm-3 col-md-2 control-label')) !!}
+                <div class="col-sm-9 col-md-10">
+                    @foreach($dcrInspections as $dcrInspection)
+                        <p class="form-control-static">{!! $dcrInspection->inspection_agency . ' - ' . $dcrInspection->inspection_type . ' (' . $dcrInspection->inspection_status . ')' !!}</p>
                     @endforeach  
                 </div>
             </div>

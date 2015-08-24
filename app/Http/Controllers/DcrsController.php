@@ -2,12 +2,16 @@
 
 use App\Http\Requests;
 use App\Repositories\DcrRepository;
+use App\Repositories\DcrWorkRepository;
 use App\Repositories\DcrEquipmentRepository;
+use App\Repositories\DcrInspectionRepository;
 use App\Repositories\ProjectUserRepository;
 use Session;
 
 // Models
+use App\Models\Dcrwork;
 use App\Models\Dcrequipment;
+use App\Models\Dcrinspection;
 
 class DcrsController extends Controller
 {
@@ -15,6 +19,21 @@ class DcrsController extends Controller
      * @var DcrRepository
      */
     private $dcrRepository;
+    
+    /**
+     * @var DcrWorkRepository
+     */
+    private $dcrWorkRepository;
+    
+    /**
+     * @var DcrInspectionRepository
+     */
+    private $dcrInspectionRepository;
+    
+    /**
+     * @var DcrEquipmentRepository
+     */
+    private $dcrEquipmentRepository;
     
     /**
      * @var ProjectUserRepository
@@ -27,7 +46,9 @@ class DcrsController extends Controller
      */
     public function __construct(
                             DcrRepository $dcrRepository,
+                            DcrWorkRepository $dcrWorkRepository,
                             DcrEquipmentRepository $dcrEquipmentRepository,
+                            DcrInspectionRepository $dcrInspectionRepository,
                             ProjectUserRepository $projectUserRepository
                         )
     {
@@ -35,7 +56,9 @@ class DcrsController extends Controller
         $this->middleware('project.permissions');
 
         $this->dcrRepository = $dcrRepository;
+        $this->dcrWorkRepository = $dcrWorkRepository;
         $this->dcrEquipmentRepository = $dcrEquipmentRepository;
+        $this->dcrInspectionRepository = $dcrInspectionRepository;
         $this->projectUserRepository = $projectUserRepository;
     }
     
@@ -69,8 +92,14 @@ class DcrsController extends Controller
                 ->where('status', '=', 'active')
                 ->first();
         
+        $dcrWorks = $this->dcrWorkRepository
+                ->findDcrWork($dcrId);
+        
         $dcrEquipments = $this->dcrEquipmentRepository
                 ->findDcrEquipment($dcrId);
+        
+        $dcrInspections = $this->dcrInspectionRepository
+                ->findDcrInspections($dcrId);
         
         if(count($dcr) > 0) {
             
@@ -92,10 +121,12 @@ class DcrsController extends Controller
             
             return view('dcrs.show')
                 ->with([
-                    'dcr'           => $dcr,
-                    'dcrEquipments' => $dcrEquipments,
-                    'dcr_next'      => $dcr_next,
-                    'dcr_previous'  => $dcr_previous
+                    'dcr'               => $dcr,
+                    'dcrWorks'          => $dcrWorks,
+                    'dcrEquipments'     => $dcrEquipments,
+                    'dcrInspections'    => $dcrInspections,
+                    'dcr_next'          => $dcr_next,
+                    'dcr_previous'      => $dcr_previous
                 ]);
         } else {
             //Access denied or not found
@@ -148,6 +179,30 @@ class DcrsController extends Controller
             $dcr = $this->dcrRepository
                 ->create($input);
             
+            // Manpower
+            if (count(\Request::get('crew_company')) > 0) {
+                for ($i = 0; $i < count(\Request::get('crew_company')); $i++) {
+                    Dcrwork::create([
+                        'dcr_id'        => $dcr->id,
+                        'crew_company'  => \Request::get('crew_company')[$i],
+                        'crew_size'     => \Request::get('crew_size')[$i],
+                        'crew_hours'    => \Request::get('crew_hours')[$i],
+                        'crew_work'     => \Request::get('crew_work')[$i]
+                    ]);
+                }
+            }
+            
+            // Equipment
+            if (count(\Request::get('equipment_type')) > 0) {
+                for ($i = 0; $i < count(\Request::get('equipment_type')); $i++) {
+                    Dcrequipment::create([
+                        'dcr_id'            => $dcr->id,
+                        'equipment_type'    => \Request::get('equipment_type')[$i],
+                        'equipment_qty'     => \Request::get('equipment_qty')[$i]
+                    ]);
+                }
+            }
+            
             // Equipment
             if (count(\Request::get('equipment_type')) > 0) {
                 for ($i = 0; $i < count(\Request::get('equipment_type')); $i++) {
@@ -159,6 +214,24 @@ class DcrsController extends Controller
                         'dcr_id'            => $dcr->id,
                         'equipment_type'    => $eqp_type,
                         'equipment_qty'     => $eqp_qty
+                      ]);
+                }
+            }
+            
+            // Inspections
+            if (count(\Request::get('inspection_agency')) > 0) {
+                for ($i = 0; $i < count(\Request::get('inspection_agency')); $i++) {
+                    
+                    $inspection_agency = \Request::get('inspection_agency')[$i];
+                    $inspection_type = \Request::get('inspection_type')[$i];
+                    $inspection_status = \Request::get('inspection_status')[$i];
+                    
+            
+                    Dcrinspection::create([
+                        'dcr_id'            => $dcr->id,
+                        'inspection_agency' => $inspection_agency,
+                        'inspection_type'   => $inspection_type,
+                        'inspection_status' => $inspection_status
                       ]);
                 }
             }
