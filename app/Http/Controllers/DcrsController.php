@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Repositories\DcrRepository;
+use App\Repositories\DcrEquipmentRepository;
 use App\Repositories\ProjectUserRepository;
 use Session;
 
@@ -24,12 +25,17 @@ class DcrsController extends Controller
      * Create a new controller instance.
      * @param ProjectUserRepository $projectUserRepository
      */
-    public function __construct(DcrRepository $dcrRepository, ProjectUserRepository $projectUserRepository)
+    public function __construct(
+                            DcrRepository $dcrRepository,
+                            DcrEquipmentRepository $dcrEquipmentRepository,
+                            ProjectUserRepository $projectUserRepository
+                        )
     {
         $this->middleware('auth');
         $this->middleware('project.permissions');
 
         $this->dcrRepository = $dcrRepository;
+        $this->dcrEquipmentRepository = $dcrEquipmentRepository;
         $this->projectUserRepository = $projectUserRepository;
     }
     
@@ -63,12 +69,15 @@ class DcrsController extends Controller
                 ->where('status', '=', 'active')
                 ->first();
         
+        $dcrEquipments = $this->dcrEquipmentRepository
+                ->findDcrEquipment($dcrId);
+        
         if(count($dcr) > 0) {
             
             // Previous DCR info
             $dcr_previous = $this->dcrRepository
                 ->find($dcrId)
-                ->where('id', '<', $dcrId)
+                ->where('id', \DB::raw("(select max(id) from dcrs where id < $dcrId )"))
                 ->where('project_id', '=', \Session::get('project')->id)
                 ->where('status', '=', 'active')
                 ->first();
@@ -83,9 +92,10 @@ class DcrsController extends Controller
             
             return view('dcrs.show')
                 ->with([
-                    'dcr'=> $dcr,
-                    'dcr_next'=> $dcr_next,
-                    'dcr_previous'=> $dcr_previous
+                    'dcr'           => $dcr,
+                    'dcrEquipments' => $dcrEquipments,
+                    'dcr_next'      => $dcr_next,
+                    'dcr_previous'  => $dcr_previous
                 ]);
         } else {
             //Access denied or not found
@@ -133,6 +143,7 @@ class DcrsController extends Controller
      */
     private function saveDcr(array $input)
     {
+        
         if (!\Request::has('id')) {
             $dcr = $this->dcrRepository
                 ->create($input);
@@ -175,5 +186,5 @@ class DcrsController extends Controller
             return $dcr;
         }
         
-    }    
+    } 
 }

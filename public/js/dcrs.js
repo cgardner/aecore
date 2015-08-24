@@ -63,7 +63,7 @@ function addEquipment() {
     div1.innerHTML = '<div class="col-sm-10 col-sm-offset-2" style="margin-top:10px;">\n\
                         <div class="row">\n\
                             <div class="col-sm-6">\n\
-                                <input type="text" class="form-control" id="equipment-input-' + i + '" name="equipment[]" placeholder="Type of equipment" required="true" />\n\
+                                <input type="text" class="form-control" id="equipment-input-' + i + '" name="equipment_type[]" placeholder="Type of equipment" required="true" />\n\
                             </div>\n\
                             <div class="col-sm-3 mobile-margin-end">\n\
                                 <div class="input-group">\n\

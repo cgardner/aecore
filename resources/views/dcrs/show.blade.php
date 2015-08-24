@@ -22,7 +22,7 @@
                     <p class="form-control-static">{!! date('l M d, Y', strtotime($dcr->date)) !!}</p>
                 </div>
             </div>
-
+            
             <!-- Weather -->
             <div class="form-group">
                 {!! Form::label('weather', 'Weather', array('class' => 'col-sm-3 col-md-2 control-label')) !!}
@@ -31,6 +31,16 @@
                 </div>
             </div>
 
+            <!-- Equipment -->
+            <div class="form-group">
+                {!! Form::label('equipment', 'Equipment', array('class' => 'col-sm-3 col-md-2 control-label')) !!}
+                <div class="col-sm-9 col-md-10">
+                    @foreach($dcrEquipments as $dcrEquipment)
+                        <p class="form-control-static">{!! '('.$dcrEquipment->equipment_qty.') ' . $dcrEquipment->equipment_type !!}</p>
+                    @endforeach  
+                </div>
+            </div>
+            
             <!-- Comments -->
             <div class="form-group">
                 {!! Form::label('comments', 'Comments', array('class' => 'col-sm-3 col-md-2 control-label')) !!}

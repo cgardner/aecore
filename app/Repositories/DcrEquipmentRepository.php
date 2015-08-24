@@ -1,37 +1,37 @@
 <?php
 namespace App\Repositories;
 
-use App\Models\Dcr;
+use App\Models\Dcrequipment;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
-class DcrRepository extends AbstractRepository
+class DcrEquipmentRepository extends AbstractRepository
 {
     /**
      * @var Dcr
      */
     protected $model;
 
-    function __construct(Dcr $model)
+    function __construct(Dcrequipment $model)
     {
         $this->model = $model;
     }
 
     /**
-     * Find DCRs for active project & company
-     * @param integer $projectId
+     * Find equipemnt for active DCR
+     * @param integer $dcrId
      * @return \Illuminate\Database\Eloquent\Model[]
      * @codeCoverageIgnore
      */
-    public function findDcrsForUser($projectId)
+    
+    public function findDcrEquipment($dcrId)
     {
         $query = $this->model
             ->newQuery()
-            ->where('project_id', '=', $projectId)
-            ->where('company_id', '=', \Auth::User()->company->id)
+            ->where('dcr_id', '=', $dcrId)
             ->where('status', '!=', 'disabled')
-            ->orderBy('date', 'desc');
+            ->orderBy('equipment_qty', 'desc');
         return $query->getModels();
-    } 
+    }
     
 }
