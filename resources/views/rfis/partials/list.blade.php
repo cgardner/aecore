@@ -12,7 +12,7 @@
     <tbody>
         @foreach($rfis as $rfi)
         <tr class="pointer" data-rfi-id="{{ $rfi->id }}">
-            <td>{!! link_to_route('rfis.show', $rfi->id, ['rfis' => $rfi->id]) !!}</td>
+            <td>{!! link_to_route('rfis.show', $rfi->rfi_id, ['rfis' => $rfi->id]) !!}</td>
             <td>{!! link_to_route('rfis.show', $rfi->subject, ['rfis' => $rfi->id]) !!}</td>
             <td>
                 <a href="{{ route('rfis.show', ['rfis' => $rfi->id]) }}">

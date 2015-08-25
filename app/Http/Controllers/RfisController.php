@@ -82,12 +82,18 @@ class RfisController extends Controller
         }
         $userId = $this->fetchUserId();
 
+        $project = Session::get('project');
+
         $input['cost_impact_amount'] = filter_var($input['cost_impact_amount'], FILTER_SANITIZE_NUMBER_FLOAT);
         if (isset($input['cost_impact_amount']) && empty($input['cost_impact_amount'])) {
             unset($input['cost_impact_amount']);
         }
         $input['schedule_impact_days'] = filter_var($input['schedule_impact_days'], FILTER_SANITIZE_NUMBER_INT);
-        $input['project_id'] = \Session::get('project')->id;
+        if (isset($input['schedule_impact_days']) && empty($input['schedule_impact_days'])) {
+            unset($input['schedule_impact_days']);
+        }
+
+        $input['project_id'] = $project->id;
         $input['draft'] = boolval($input['draft']);
 
         // Store the RFI as a draft and attach any files
@@ -96,6 +102,7 @@ class RfisController extends Controller
 
         $rfi->created_by = $userId;
         $rfi->updated_by = $userId;
+        $rfi->rfi_id = $this->rfiRepository->findNextRfiId($project->id);
 
         $rfi->save();
 

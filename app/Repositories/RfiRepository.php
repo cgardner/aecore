@@ -14,11 +14,31 @@ class RfiRepository extends AbstractRepository
         $this->model = $model;
     }
 
+    /**
+     * Find all Active Projects for a project.
+     *
+     * @param $projectId
+     * @return \Illuminate\Database\Eloquent\Model[]
+     */
     public function findActiveByProjectId($projectId)
     {
         return $this->model
             ->newQuery()
             ->where('project_id', '=', $projectId)
             ->getModels();
+    }
+
+    /**
+     * Find the next RFI Id for the project.
+     * @param $projectId Integer
+     */
+    public function findNextRfiId($projectId)
+    {
+        $rfiId = $this->model
+            ->newQuery()
+            ->where('project_id', '=', $projectId)
+            ->max('rfi_id');
+
+        return $rfiId + 1;
     }
 }

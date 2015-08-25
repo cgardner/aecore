@@ -4,7 +4,7 @@
     <div class="page-wrapper">
         <div class="pagehead">
             <div class="container-fluid">
-                <h1>RFI # {{ $rfi->id }} - {{ $rfi->subject }}</h1>
+                <h1>RFI # {{ $rfi->rfi_id }} - {{ $rfi->subject }}</h1>
             </div>
         </div>
         <div class="container-fluid">

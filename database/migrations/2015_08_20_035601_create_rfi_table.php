@@ -17,6 +17,7 @@ class CreateRfiTable extends Migration
             'rfis',
             function (Blueprint $table) {
                 $table->bigInteger('id', true, true);
+                $table->integer('rfi_id', false, true);
                 $table->bigInteger('project_id', false, true);
                 $table->bigInteger('assigned_user_id', false, true);
                 $table->string('subject');
@@ -60,6 +61,8 @@ class CreateRfiTable extends Migration
                     ->references('id')
                     ->on('users')
                     ->onDelete('cascade');
+
+                $table->unique(['rfi_id', 'project_id']);
             }
         );
     }
