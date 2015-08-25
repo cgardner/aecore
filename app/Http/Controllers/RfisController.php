@@ -102,6 +102,15 @@ class RfisController extends Controller
         return redirect(route('rfis.show', ['rfis' => $rfi->id]));
     }
 
+    public function show($id)
+    {
+        $rfi = $this->rfiRepository
+            ->find($id);
+
+        return view('rfis.show')
+            ->with('rfi', $rfi);
+    }
+
     /**
      * @return integer
      */
