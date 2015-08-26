@@ -389,7 +389,7 @@ class TasksController extends Controller {
                   'date_due' => $date_due
                 ]);
       // Add task comment
-      $comment_text = '<span class="glyphicon glyphicon-calendar small"></span> changed date due to <strong>' . $request->get('data') . '</strong>';
+      $comment_text = '<i class="fa fa-calendar small"></i> changed date due to <strong>' . $request->get('data') . '</strong>';
       $this->taskComment($task->id, 'activity', $comment_text);
     }
 	}

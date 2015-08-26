@@ -236,10 +236,10 @@ fieldset[disabled] .btn-link-light {
     display:block;
 }
 .avatar_navbar {
-    width:28px;
-    height:28px;
-    margin:-4px 5px 0 0;
-    border-radius:14px;
+    width:30px;
+    height:30px;
+    margin:-6px 5px 0 0;
+    border-radius:15px;
     float:left;
 }
 .avatar_company {
@@ -781,6 +781,7 @@ a.task_project:hover {
     margin:9px 0 0 23px;
     color:#3D474E;
     font-size:1.1em;
+    font-family:Lato, arial, helvetic, sans-serif;
 }
 .task-info-feed {
     padding:0 15px 15px 15px;
