@@ -20,8 +20,8 @@
             @foreach($dcrs as $dcr)
             <tr class="pointer" onClick="document.location='{!! '/dcrs/'.$dcr->id !!}'">
                 <td>{!! date('D M d, Y', strtotime($dcr->date)) !!}</td>
-                <td>{!! $dcr->weather . ' ' . $dcr->temperature . '&deg; ' . $dcr->temperature_type[0] !!}</td>
-                <td class="tablet-hide"></td>
+                <td><i class="wi wi-{!! str_replace(' ', '', $dcr->weather) !!}"></i> {!! $dcr->weather . ' ' . $dcr->temperature . '&deg; ' . $dcr->temperature_type[0] !!}</td>
+                <td class="tablet-hide">{!! $dcr->crew !!}</td>
                 <td class="mobile-hide"></td>
             </tr>
             @endforeach

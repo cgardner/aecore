@@ -36,7 +36,7 @@ class Dcr extends Model
      */
     public function dcrwork()
     {
-        return $this->belongsTo('App\Models\Dcrwork');
+        return $this->hasMany('App\Models\Dcrwork');
     }
 
     /**
@@ -45,7 +45,7 @@ class Dcr extends Model
      */
     public function dcrequipment()
     {
-        return $this->belongsTo('App\Models\Dcrequipment');
+        return $this->hasMany('App\Models\Dcrequipment');
     }
 
     /**
@@ -54,15 +54,23 @@ class Dcr extends Model
      */
     public function dcrinspection()
     {
-        return $this->belongsTo('App\Models\Dcrinspection');
+        return $this->hasMany('App\Models\Dcrinspection');
     }
 
     /**
      * Relationship with the Dcrattachment model.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function dcrattachment()
+
+    
+    public function s3files()
     {
-        return $this->belongsTo('App\Models\Dcrattachment');
+        return $this->hasManyThrough('App\Models\S3file', 'App\Models\Dcrattachment', 'file_id', 'id');
     }
+    public function dcrattachment()
+    {        
+        return $this->hasMany('App\Models\Dcrattachment');
+    } 
+    
+   
 }

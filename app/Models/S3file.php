@@ -13,4 +13,9 @@
       return $this->belongsTo('App\Models\User');
     }
   
-  }
+    public function dcrattachment()
+    {        
+        return $this->belongsTo('App\Models\Dcrattachment');
+    }
+ 
+}

@@ -30,7 +30,8 @@ class DcrRepository extends AbstractRepository
             ->where('project_id', '=', $projectId)
             ->where('company_id', '=', \Auth::User()->company->id)
             ->where('status', '!=', 'disabled')
-            ->orderBy('date', 'desc');
+            ->orderBy('date', 'desc')
+            ->orderBy('created_at', 'desc');
         return $query->getModels();
     } 
     

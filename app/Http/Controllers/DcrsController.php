@@ -5,39 +5,36 @@ use App\Repositories\DcrRepository;
 use App\Repositories\DcrWorkRepository;
 use App\Repositories\DcrEquipmentRepository;
 use App\Repositories\DcrInspectionRepository;
+use App\Repositories\DcrAttachmentRepository;
 use App\Repositories\ProjectUserRepository;
+use App\Repositories\SlackIntegrationRepository;
 use Session;
 
 // Models
+use App\Models\S3file;
 use App\Models\Dcrwork;
 use App\Models\Dcrequipment;
 use App\Models\Dcrinspection;
+use App\Models\DcrAttachment;
 
 class DcrsController extends Controller
 {
-    /**
-     * @var DcrRepository
-     */
+    /** @var DcrRepository */
     private $dcrRepository;
     
-    /**
-     * @var DcrWorkRepository
-     */
+    /** @var DcrWorkRepository */
     private $dcrWorkRepository;
     
-    /**
-     * @var DcrInspectionRepository
-     */
+    /** @var DcrInspectionRepository */
     private $dcrInspectionRepository;
     
-    /**
-     * @var DcrEquipmentRepository
-     */
+    /** @var DcrEquipmentRepository */
     private $dcrEquipmentRepository;
     
-    /**
-     * @var ProjectUserRepository
-     */
+    /** @var DcrAttachmentRepository */
+    private $dcrAttachmentRepository;
+    
+    /** @var ProjectUserRepository */
     private $projectUserRepository;
     
     /**
@@ -49,7 +46,9 @@ class DcrsController extends Controller
                             DcrWorkRepository $dcrWorkRepository,
                             DcrEquipmentRepository $dcrEquipmentRepository,
                             DcrInspectionRepository $dcrInspectionRepository,
-                            ProjectUserRepository $projectUserRepository
+                            DcrAttachmentRepository $dcrAttachmentRepository,
+                            ProjectUserRepository $projectUserRepository,
+                            SlackIntegrationRepository $slackIntegrationRepository
                         )
     {
         $this->middleware('auth');
@@ -59,7 +58,9 @@ class DcrsController extends Controller
         $this->dcrWorkRepository = $dcrWorkRepository;
         $this->dcrEquipmentRepository = $dcrEquipmentRepository;
         $this->dcrInspectionRepository = $dcrInspectionRepository;
+        $this->dcrAttachmentRepository = $dcrAttachmentRepository;
         $this->projectUserRepository = $projectUserRepository;
+        $this->slackIntegrationRepository = $slackIntegrationRepository;
     }
     
     /**
@@ -74,6 +75,12 @@ class DcrsController extends Controller
         // Get projects for current user
         $dcrs = $this->dcrRepository
             ->findDcrsForUser($project->id);
+        
+        foreach($dcrs as $dcr) {
+            // Count workers
+            $dcr->crew = $this->dcrWorkRepository
+                    ->sumDcrWork($dcr->id);
+        }
         
         return view('dcrs.index')
             ->with([
@@ -91,15 +98,6 @@ class DcrsController extends Controller
                 ->where('project_id', '=', \Session::get('project')->id)
                 ->where('status', '=', 'active')
                 ->first();
-        
-        $dcrWorks = $this->dcrWorkRepository
-                ->findDcrWork($dcrId);
-        
-        $dcrEquipments = $this->dcrEquipmentRepository
-                ->findDcrEquipment($dcrId);
-        
-        $dcrInspections = $this->dcrInspectionRepository
-                ->findDcrInspections($dcrId);
         
         if(count($dcr) > 0) {
             
@@ -119,14 +117,86 @@ class DcrsController extends Controller
                 ->where('status', '=', 'active')
                 ->first();
             
+            $dcrWorks = $this->dcrWorkRepository
+                    ->findDcrWork($dcrId);
+
+            $dcrEquipments = $this->dcrEquipmentRepository
+                    ->findDcrEquipment($dcrId);
+
+            $dcrInspections = $this->dcrInspectionRepository
+                    ->findDcrInspections($dcrId);
+
+            $dcrAttachments = $this->dcrAttachmentRepository
+                    ->findDcrAttachments($dcrId);
+            
+            
             return view('dcrs.show')
                 ->with([
                     'dcr'               => $dcr,
                     'dcrWorks'          => $dcrWorks,
                     'dcrEquipments'     => $dcrEquipments,
                     'dcrInspections'    => $dcrInspections,
+                    'dcrAttachments'    => $dcrAttachments,
                     'dcr_next'          => $dcr_next,
-                    'dcr_previous'      => $dcr_previous
+                    'dcr_previous'      => $dcr_previous,
+                    'functionscontroller'   => new FunctionsController
+                ]);
+        } else {
+            //Access denied or not found
+            return redirect('dcrs');
+        }
+    }
+    
+    public function edit($dcrId)
+    {
+        $dcr = $this->dcrRepository
+                ->find($dcrId)
+                ->where('id', '=', $dcrId)
+                ->where('project_id', '=', \Session::get('project')->id)
+                ->where('status', '=', 'active')
+                ->first();
+        
+        if(count($dcr) > 0) {
+            
+            // Previous DCR info
+            $dcr_previous = $this->dcrRepository
+                ->find($dcrId)
+                ->where('id', \DB::raw("(select max(id) from dcrs where id < $dcrId )"))
+                ->where('project_id', '=', \Session::get('project')->id)
+                ->where('status', '=', 'active')
+                ->first();
+            
+            // Next DCR info
+            $dcr_next = $this->dcrRepository
+                ->find($dcrId)
+                ->where('id', '>', $dcrId)
+                ->where('project_id', '=', \Session::get('project')->id)
+                ->where('status', '=', 'active')
+                ->first();
+            
+            $dcrWorks = $this->dcrWorkRepository
+                    ->findDcrWork($dcrId);
+
+            $dcrEquipments = $this->dcrEquipmentRepository
+                    ->findDcrEquipment($dcrId);
+
+            $dcrInspections = $this->dcrInspectionRepository
+                    ->findDcrInspections($dcrId);
+
+            $dcrAttachments = $this->dcrAttachmentRepository
+                    ->findDcrAttachments($dcrId);
+            
+            
+            return view('dcrs.edit')
+                ->with([
+                    'dcr'               => $dcr,
+                    'dcrWorks'          => $dcrWorks,
+                    'dcrEquipments'     => $dcrEquipments,
+                    'dcrInspections'    => $dcrInspections,
+                    'dcrAttachments'    => $dcrAttachments,
+                    'dcr_next'          => $dcr_next,
+                    'dcr_previous'      => $dcr_previous,
+                    'functionscontroller'   => new FunctionsController
                 ]);
         } else {
             //Access denied or not found
@@ -135,7 +205,7 @@ class DcrsController extends Controller
     }
     
     /**
-     * Display the form to create a new RFI
+     * Display the form to create a new DCR
      *
      * @return View
      */    
@@ -143,9 +213,9 @@ class DcrsController extends Controller
     {
         return view('dcrs.create');
     }
-    
+        
     /**
-     * Display the form to create a new RFI
+     * Display the form to save a DCR
      *
      * @return View
      */    
@@ -163,7 +233,22 @@ class DcrsController extends Controller
         
         $this->saveDcr($input);
         
-        return redirect('dcrs');
+        //Send to Slack
+        $slack = $this->slackIntegrationRepository
+            ->findSlackProject($project->id);
+
+        if(count($slack) > 0) {
+            $this->slackIntegrationRepository
+                ->sendSlackNotification( $slack->webhook, $slack->channel, $slack->username,
+                    ':notebook: ' . \Auth::User()->name . ' saved a Daily Report dated ' . $input['date']
+                );
+        }
+            
+        if (!\Request::has('dcr_id')) {
+            return redirect('dcrs');
+        } else {
+            return redirect('dcrs/' . $input['dcr_id']);
+        }
     }
     
     /**
@@ -175,13 +260,14 @@ class DcrsController extends Controller
     private function saveDcr(array $input)
     {
         
-        if (!\Request::has('id')) {
+        if (!\Request::has('dcr_id')) {
             $dcr = $this->dcrRepository
                 ->create($input);
             
             // Manpower
-            if (count(\Request::get('crew_company')) > 0) {
-                for ($i = 0; $i < count(\Request::get('crew_company')); $i++) {
+            if (\Request::get('crew_company')[0] != "") {
+                for ($i = 0; $i < count(\Request::get('crew_company')); $i++)
+                {
                     Dcrwork::create([
                         'dcr_id'        => $dcr->id,
                         'crew_company'  => \Request::get('crew_company')[$i],
@@ -193,8 +279,9 @@ class DcrsController extends Controller
             }
             
             // Equipment
-            if (count(\Request::get('equipment_type')) > 0) {
-                for ($i = 0; $i < count(\Request::get('equipment_type')); $i++) {
+            if (\Request::get('equipment_type')[0] != "") {
+                for ($i = 0; $i < count(\Request::get('equipment_type')); $i++) 
+                {
                     Dcrequipment::create([
                         'dcr_id'            => $dcr->id,
                         'equipment_type'    => \Request::get('equipment_type')[$i],
@@ -203,60 +290,40 @@ class DcrsController extends Controller
                 }
             }
             
-            // Equipment
-            if (count(\Request::get('equipment_type')) > 0) {
-                for ($i = 0; $i < count(\Request::get('equipment_type')); $i++) {
-                    
-                    $eqp_type = \Request::get('equipment_type')[$i];
-                    $eqp_qty = \Request::get('equipment_qty')[$i];
-            
-                    Dcrequipment::create([
-                        'dcr_id'            => $dcr->id,
-                        'equipment_type'    => $eqp_type,
-                        'equipment_qty'     => $eqp_qty
-                      ]);
-                }
-            }
-            
-            // Inspections
-            if (count(\Request::get('inspection_agency')) > 0) {
-                for ($i = 0; $i < count(\Request::get('inspection_agency')); $i++) {
-                    
-                    $inspection_agency = \Request::get('inspection_agency')[$i];
-                    $inspection_type = \Request::get('inspection_type')[$i];
-                    $inspection_status = \Request::get('inspection_status')[$i];
-                    
-            
+            // Inspections            
+            if (\Request::get('inspection_agency')[0] != "") {
+                for ($i = 0; $i < count(\Request::get('inspection_agency')); $i++)
+                {
                     Dcrinspection::create([
                         'dcr_id'            => $dcr->id,
-                        'inspection_agency' => $inspection_agency,
-                        'inspection_type'   => $inspection_type,
-                        'inspection_status' => $inspection_status
-                      ]);
+                        'inspection_agency' => \Request::get('inspection_agency')[$i],
+                        'inspection_type'   => \Request::get('inspection_type')[$i],
+                        'inspection_status' => \Request::get('inspection_status')[$i]
+                    ]);
                 }
             }
             
-        
-//        //Send to Slack
-//        $slack = $this->slackIntegrationRepository
-//            ->findSlackProject($project->id);
-//        
-//        if(count($slack) > 0) {
-//            $this->slackIntegrationRepository
-//                ->sendSlackNotification( $slack->webhook, $slack->channel, $slack->username,
-//                    ':pencil: ' . Auth::User()->name . ' edited project *#' . $project->number . ' ' . $project->name . '*'
-//                );
-//        }
+            // Attachments
+            if (\Request::get('file_id')[0] != "") {
+                for ($i = 0; $i < count(\Request::get('inspection_agency')); $i++)
+                {
+                    Dcrattachment::create([
+                        'dcr_id'    => $dcr->id,
+                        's3file_id' => \Request::get('file_id')[$i]
+                    ]);
+                }
+            }
             
             return $dcr;
+            
         } else {
-
+            
             $dcr = $this->dcrRepository
-                ->find(\Request::get('id'));
+                ->find(\Request::get('dcr_id'));
             $dcr->fill($input);
             $dcr->save();
             
-            return $dcr;
+            
         }
         
     } 

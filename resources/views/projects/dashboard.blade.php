@@ -5,7 +5,7 @@
         <div class="pagehead">
             <div class="container-fluid">
                 @if(Session::get('projectUser')->access == \App\Models\Projectuser::ACCESS_ADMIN)
-                    <a href="{!! URL::route('projects.edit', ['project' => $project->id]) !!}" class="btn btn-sm btn-default pull-right btn-spacer-left"><i class="fa fa-pencil-square-o fa-fw"></i> Edit Project</a>
+                    <a href="{!! URL::route('projects.edit', ['project' => $project->id]) !!}" class="btn btn-default pull-right btn-spacer-left"><i class="fa fa-pencil-square-o fa-fw"></i> Edit Project</a>
                 @endif
                 <h1>{!! '#' . $project->number . ' ' . $project->name !!}</h1>
                 <p class="text-muted no-margin">Your project at a glance.</p>
@@ -59,7 +59,7 @@
 
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <span class="glyphicon glyphicon-cloud"></span><span class="btn-spacer-left">Weather</span>
+                            <i class="wi wi-day-cloudy-gusts"></i><span class="btn-spacer-left">Weather</span>
                         </div>
                         <div class="panel-body">
                             <iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat={!! $location->latitude() !!}&lon={!! $location->longitude() !!}&name={!! $project->city !!}"> </iframe>
