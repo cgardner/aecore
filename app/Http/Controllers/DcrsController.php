@@ -231,23 +231,36 @@ class DcrsController extends Controller
         $user = \Auth::User();
         $input['company_id'] = $user->company_id;
         
-        $this->saveDcr($input);
+        $dcr = $this->dcrRepository
+                ->find(\Request::get('dcr_id'))
+                ->where('id', '=', \Request::get('dcr_id'))
+                ->where('project_id', '=', \Session::get('project')->id)
+                ->where('status', '=', 'active')
+                ->first();
         
-        //Send to Slack
-        $slack = $this->slackIntegrationRepository
-            ->findSlackProject($project->id);
-
-        if(count($slack) > 0) {
-            $this->slackIntegrationRepository
-                ->sendSlackNotification( $slack->webhook, $slack->channel, $slack->username,
-                    ':notebook: ' . \Auth::User()->name . ' saved a Daily Report dated ' . $input['date']
-                );
-        }
+        if(count($dcr) > 0) {
             
-        if (!\Request::has('dcr_id')) {
-            return redirect('dcrs');
+            $this->saveDcr($input);
+
+            //Send to Slack
+            $slack = $this->slackIntegrationRepository
+                ->findSlackProject($project->id);
+
+            if(count($slack) > 0) {
+                $this->slackIntegrationRepository
+                    ->sendSlackNotification( $slack->webhook, $slack->channel, $slack->username,
+                        ':notebook: ' . \Auth::User()->name . ' saved a Daily Report dated ' . $input['date']
+                    );
+            }
+
+            if (!\Request::has('dcr_id')) {
+                return redirect('dcrs');
+            } else {
+                return redirect('dcrs/' . $input['dcr_id']);
+            }
         } else {
-            return redirect('dcrs/' . $input['dcr_id']);
+            //Access denied or not found
+            return redirect('dcrs');
         }
     }
     
@@ -259,72 +272,74 @@ class DcrsController extends Controller
      */
     private function saveDcr(array $input)
     {
-        
-        if (!\Request::has('dcr_id')) {
-            $dcr = $this->dcrRepository
-                ->create($input);
-            
-            // Manpower
-            if (\Request::get('crew_company')[0] != "") {
-                for ($i = 0; $i < count(\Request::get('crew_company')); $i++)
-                {
-                    Dcrwork::create([
-                        'dcr_id'        => $dcr->id,
-                        'crew_company'  => \Request::get('crew_company')[$i],
-                        'crew_size'     => \Request::get('crew_size')[$i],
-                        'crew_hours'    => \Request::get('crew_hours')[$i],
-                        'crew_work'     => \Request::get('crew_work')[$i]
-                    ]);
-                }
-            }
-            
-            // Equipment
-            if (\Request::get('equipment_type')[0] != "") {
-                for ($i = 0; $i < count(\Request::get('equipment_type')); $i++) 
-                {
-                    Dcrequipment::create([
-                        'dcr_id'            => $dcr->id,
-                        'equipment_type'    => \Request::get('equipment_type')[$i],
-                        'equipment_qty'     => \Request::get('equipment_qty')[$i]
-                    ]);
-                }
-            }
-            
-            // Inspections            
-            if (\Request::get('inspection_agency')[0] != "") {
-                for ($i = 0; $i < count(\Request::get('inspection_agency')); $i++)
-                {
-                    Dcrinspection::create([
-                        'dcr_id'            => $dcr->id,
-                        'inspection_agency' => \Request::get('inspection_agency')[$i],
-                        'inspection_type'   => \Request::get('inspection_type')[$i],
-                        'inspection_status' => \Request::get('inspection_status')[$i]
-                    ]);
-                }
-            }
-            
-            // Attachments
-            if (\Request::get('file_id')[0] != "") {
-                for ($i = 0; $i < count(\Request::get('inspection_agency')); $i++)
-                {
-                    Dcrattachment::create([
-                        'dcr_id'    => $dcr->id,
-                        's3file_id' => \Request::get('file_id')[$i]
-                    ]);
-                }
-            }
-            
-            return $dcr;
-            
-        } else {
-            
-            $dcr = $this->dcrRepository
-                ->find(\Request::get('dcr_id'));
-            $dcr->fill($input);
-            $dcr->save();
-            
-            
+        // Update general DCR info
+        $dcr = $this->dcrRepository
+            ->UpdateOrCreate(['id' => \Request::get('dcr_id')], $input);
+           
+        // Set manpower, equipment, inspections and attachments to disabled
+        // Resets with each form input update below, allows us not to have to consider deletions in form
+        if (\Request::has('dcr_id')) {
+            Dcrwork::where('dcr_id', $dcr->id)->update([ 'status' => 'disabled' ]);
+            Dcrequipment::where('dcr_id', $dcr->id)->update([ 'status' => 'disabled' ]);
+            Dcrinspection::where('dcr_id', $dcr->id)->update([ 'status' => 'disabled' ]);
+            Dcrattachment::where('dcr_id', $dcr->id)->update([ 'status' => 'disabled' ]);
         }
+
+        // Update manpower
+        if (\Request::get('crew_company')[0] != "") {
+            for ($i = 0; $i < count(\Request::get('crew_company')); $i++)
+            {
+                Dcrwork::UpdateOrCreate(['id' => \Request::get('crew_id')[$i]], [
+                    'dcr_id'        => $dcr->id,
+                    'crew_company'  => \Request::get('crew_company')[$i],
+                    'crew_size'     => \Request::get('crew_size')[$i],
+                    'crew_hours'    => \Request::get('crew_hours')[$i],
+                    'crew_work'     => \Request::get('crew_work')[$i],
+                    'status'        => 'active'
+                ]);
+            }
+        }
+
+        // Equipment
+        if (\Request::get('equipment_type')[0] != "") {
+            for ($i = 0; $i < count(\Request::get('equipment_type')); $i++) 
+            {
+                Dcrequipment::UpdateOrCreate(['id' => \Request::get('equipment_id')[$i]], [
+                    'dcr_id'            => $dcr->id,
+                    'equipment_type'    => \Request::get('equipment_type')[$i],
+                    'equipment_qty'     => \Request::get('equipment_qty')[$i],
+                    'status'            => 'active'
+                ]);
+            }
+        }
+            
+        // Inspections            
+        if (\Request::get('inspection_agency')[0] != "") {
+            for ($i = 0; $i < count(\Request::get('inspection_agency')); $i++)
+            {
+                Dcrinspection::UpdateOrCreate(['id' => \Request::get('inspection_id')[$i]],[
+                    'dcr_id'            => $dcr->id,
+                    'inspection_agency' => \Request::get('inspection_agency')[$i],
+                    'inspection_type'   => \Request::get('inspection_type')[$i],
+                    'inspection_status' => \Request::get('inspection_status')[$i],
+                    'status'            => 'active'
+                ]);
+            }
+        }
+
+        // Attachments
+        if (\Request::get('file_id')[0] != "") {
+            for ($i = 0; $i < count(\Request::get('file_id')); $i++)
+            {                
+                Dcrattachment::UpdateOrCreate(['id' => \Request::get('attachment_id')[$i]],[
+                    'dcr_id'    => $dcr->id,
+                    's3file_id' => \Request::get('file_id')[$i],
+                    'status'    => 'active'
+                ]);
+            }
+        }
+            
+        return $dcr;
         
     } 
 }

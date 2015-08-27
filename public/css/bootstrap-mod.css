@@ -7,6 +7,9 @@ body {
 .bold { font-weight:bold; }
 .pointer { cursor:pointer; }
 .btn-spacer-left { margin-left:8px; }
+.input-spacer-bottom { margin-bottom:10px; }
+.input-spacer-bottom:last-child { margin-bottom:0px; }
+
 .center {
     margin-left:auto;
     margin-right:auto;

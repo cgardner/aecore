@@ -60,7 +60,7 @@ function addEquipment() {
     var delButton = '<span class="btn btn-danger input-group-addon" onClick="delLine(\'equipment-wrapper\', '+ i +');" title="Remove equipment."><i class="fa fa-trash-o"></i></span>';
     
     // add inputs    
-    div1.innerHTML = '<div class="col-sm-10 col-sm-offset-2" style="margin-top:10px;">\n\
+    div1.innerHTML = '<div class="col-sm-12" style="margin-bottom:8px;">\n\
                         <div class="row">\n\
                             <div class="col-sm-6">\n\
                                 <input type="text" class="form-control" id="equipment-input-' + i + '" name="equipment_type[]" placeholder="Type of equipment" required="true" />\n\
@@ -88,7 +88,7 @@ function addInspection() {
     var delButton = '<span class="btn btn-danger input-group-addon" onClick="delLine(\'inspection-wrapper\', '+ i +');" title="Remove inspection."><i class="fa fa-trash-o"></i></span>';
     
     // add inputs    
-    div1.innerHTML = '<div class="col-sm-10 col-sm-offset-2" style="margin-top:10px;">\n\
+    div1.innerHTML = '<div class="col-sm-12" style="margin-bottom:8px;">\n\
                         <div class="row">\n\
                             <div class="col-sm-6">\n\
                                 <input type="text" class="form-control" id="inspection-agency-input-' + i + '" name="inspection_agency[]" placeholder="Inspection agency" required="true" />\n\

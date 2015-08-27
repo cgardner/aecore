@@ -108,8 +108,8 @@
                         
                         <div class="form-group">
                             {!! Form::label('equipment', 'Equipment', array('class' => 'col-sm-2 control-label')) !!}
-                            <div id="equipment-wrapper">
-                                <div class="col-sm-10">
+                            <div id="equipment-wrapper" class="col-sm-offset-2">
+                                <div class="col-sm-12" style="margin-bottom:8px;">
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control" name="equipment_type[]" placeholder="Type of equipment" value="" />
@@ -120,15 +120,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-10 col-sm-offset-2" style="margin-top:5px;">
+                            <div class="col-sm-10 col-sm-offset-2">
                                 <span class="btn-link-light" onClick="addEquipment();"><i class="fa fa-plus-circle"></i> Add Equipment</span>
                             </div>
                         </div>
                         
                         <div class="form-group">
                             {!! Form::label('inspection_agency', 'Inspections', array('class' => 'col-sm-2 control-label')) !!}
-                            <div id="inspection-wrapper">
-                                <div class="col-sm-10">
+                            <div id="inspection-wrapper" class="col-sm-offset-2">
+                                <div class="col-sm-12" style="margin-bottom:8px;">
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control" name="inspection_agency[]" placeholder="Inspection agency" value="" />
@@ -145,7 +145,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-10 col-sm-offset-2" style="margin-top:5px;">
+                            <div class="col-sm-10 col-sm-offset-2">
                                 <span class="btn-link-light" onClick="addInspection();"><span class="glyphicon glyphicon-plus-sign"></span> Add Inspection</span>
                             </div>
                         </div>
