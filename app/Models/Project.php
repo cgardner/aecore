@@ -131,4 +131,14 @@ class Project extends Model
     {
         return new DateTime($dateTime, new DateTimeZone(Auth::user()->timezone));
     }
+
+    /**
+     * RFI Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rfis()
+    {
+        return $this->hasMany('\App\Models\Rfi');
+    }
 }

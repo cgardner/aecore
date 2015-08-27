@@ -93,7 +93,29 @@
                             <span class="glyphicon glyphicon-question-sign"></span><span class="btn-spacer-left">Requests for Information</span>
                         </div>
                         <div class="panel-body">
-                            <h4>In Progress</h4>
+                            <table class="table">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>Subject</th>
+                                    <th>Assigned To</th>
+                                    <th>Due Date</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    @foreach($project->rfis as $rfi)
+                                        <tr>
+                                            <td>{{ $rfi->rfi_id }}</td>
+                                            <td>{{ $rfi->subject }}</td>
+                                            <td>
+                                                <img src="{{ $rfi->assignedTo->gravatar }}" class="avatar_sm img-circle"/>
+                                                {{ $rfi->assignedTo->name }}
+                                            </td>
+                                            <td>{{ $rfi->due_date }}</td>
+                                            <td>{!! link_to_route('rfis.show', 'View', ['rfis' => $rfi->id], ['class' => 'btn btn-default btn-sm']) !!}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>{{-- /.panel --}}
 
