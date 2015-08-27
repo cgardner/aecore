@@ -78,4 +78,14 @@ class Rfi extends Model
     {
         return $this->hasManyThrough('\App\Models\S3File', '\App\Models\RfiFile', 'rfi_id', 'file_id');
     }
+
+    /**
+     * RFI Comment Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('\App\Models\RfiComment');
+    }
 }

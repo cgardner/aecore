@@ -22,7 +22,7 @@ body {
     width:100%;
 }
 
-//Correcting inline form margin issues when scaling to mobile
+/* Correcting inline form margin issues when scaling to mobile */
 .mobile-margin { padding:0; }
 .mobile-margin-end { padding-left:0; }
 @media(max-width: 768px) {
@@ -915,3 +915,7 @@ a.task_project:hover {
 /* Must be last to override all css! */
 .no-padding { padding:0; }
 .no-margin { margin:0; }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Open Sans, Arial, sans-serif
+}
