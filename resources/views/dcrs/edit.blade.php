@@ -43,7 +43,7 @@
                             {!! Form::label('weather', 'Weather', array('class' => 'col-sm-2 control-label')) !!}
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <span class="input-group-addon" id="addon-weather"><i class="wi wi-{!! str_replace(' ', '', $dcr->weather) !!}"></i></span>
+                                    <span class="input-group-addon" id="addon-weather"><i id="weather-icon" class="wi wi-{!! str_replace(' ', '', $dcr->weather) !!}"></i></span>
                                     {!! Form::select('weather', array(
                                             'Clear' => 'Clear',
                                             'Partly Cloudy' => 'Partly Cloudy',

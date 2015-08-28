@@ -43,7 +43,7 @@
                             {!! Form::label('weather', 'Weather', array('class' => 'col-sm-2 control-label')) !!}
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <span class="input-group-addon" id="addon-date"><i id="weather-icon" class="wi wi-day-sunny"></i></span>
+                                    <span class="input-group-addon" id="addon-weather"><i id="weather-icon" class="wi wi-day-sunny"></i></span>
                                     {!! Form::select('weather', array(
                                             'Clear'     => 'Clear',
                                             'Partly Cloudy' => 'Partly Cloudy',
@@ -51,7 +51,7 @@
                                             'Rain'   => 'Rain',
                                             'Snow'   => 'Snow',
                                             'Wind'     => 'Wind'
-                                        ), null, array('onChange'=>'$(\'#weather-icon\').attr("class", "wi wi-" + this.value.replace(/\s/g, \'\'))', 'class' => 'form-control mobile-margin', 'required' => 'true'))
+                                        ), null, array('onChange'=>'$(\'#weather-icon\').attr("class", "wi wi-" + this.value.replace(/\s/g, \'\'))', 'class' => 'form-control', 'required' => 'true'))
                                     !!}
                                 </div>
                             </div>
@@ -76,6 +76,7 @@
                                         <th>Crew</th>
                                         <th class="tablet-hide">Hours</th>
                                         <th>Work Performed</th>
+                                        <th></th>
                                     </thead>
                                     <tbody id="work-table">
                                     </tbody>
