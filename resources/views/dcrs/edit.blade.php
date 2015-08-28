@@ -265,7 +265,7 @@
                                                 'onUploadComplete'  : function(file, data) {
                                                     console.log(data);
                                                     $("#file_id_list").append('<input type="hidden" id="file_id_' + data + '" name="file_id[]" value="' + data + '"/>');
-                                                    $("#file_id_list").append('<input type="hidden" id="file_id_' + data + '" name="attachment_id[]" value=""/>');
+                                                    $("#file_id_list").append('<input type="hidden" id="file_id_' + data + '" name="attachment_id[]" value="0"/>');
                                                 }
                                             });
                                         });
