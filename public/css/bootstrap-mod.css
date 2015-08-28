@@ -2,6 +2,7 @@
 body {
     padding-top:51px;
     font-family:Lato, arial, helvetic, sans-serif;
+    overflow:hidden;
 }
 
 .bold { font-weight:bold; }
@@ -294,8 +295,32 @@ table {
     overflow-y:auto;
     background:#FFF;
 }
+.page-wrapper-short {
+    position:absolute;
+    top:50px;
+    right:0;
+    bottom:250px;
+    left:250px;
+    overflow-y:auto;
+    background:#FFF;
+}
+.page-wrapper-footer {
+    position:absolute;
+    height:250px;
+    right:0;
+    bottom:0;
+    left:250px;
+    background:#FFF;
+    border-top:1px solid #c9d1d6;
+}
 @media(max-width:768px) {
     .page-wrapper {
+        left:0;
+    }
+    .page-wrapper-short {
+        left:0;
+    }
+    .page-wrapper-footer {
         left:0;
     }
 }

@@ -11,19 +11,20 @@
     <table class="table table-hover table-sortable no-margin">
         <thead>
             <th>Date</th>
-            <th class="tablet-hide">Weather</th>
+            <th>Weather</th>
             <th class="tablet-hide">Crew Size</th>
-            <th class="tablet-hide"></th>
-            <th class="mobile-hide"></th>
+            <th class="tablet-hide">Comments</th>
+            <th class="mobile-hide">Critical Issues</th>
         </thead>
         <tbody>
             @foreach($dcrs as $dcr)
-            <tr class="pointer" onClick="document.location='{!! '/dcrs/'.$dcr->id !!}'">
-                <td>{!! date('D M d, Y', strtotime($dcr->date)) !!}</td>
-                <td><i class="wi wi-{!! str_replace(' ', '', $dcr->weather) !!}"></i> {!! $dcr->weather . ' ' . $dcr->temperature . '&deg; ' . $dcr->temperature_type[0] !!}</td>
-                <td class="tablet-hide">{!! $dcr->crew !!}</td>
-                <td class="mobile-hide"></td>
-            </tr>
+                <tr class="pointer" onClick="document.location='{!! '/dcrs/'.$dcr->id !!}'">
+                    <td style="width:15%;">{!! date('D M d, Y', strtotime($dcr->date)) !!}</td>
+                    <td style="width:15%;"><i class="wi wi-{!! str_replace(' ', '', $dcr->weather) !!}"></i> {!! $dcr->weather . ' ' . $dcr->temperature . '&deg; ' . $dcr->temperature_type[0] !!}</td>
+                    <td style="width:15%;" class="tablet-hide">{!! $dcr->crew !!}</td>
+                    <td class="tablet-hide">{!! $dcr->comments !!}</td>
+                    <td class="mobile-hide">{!! $dcr->issues !!}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>

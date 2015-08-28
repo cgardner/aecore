@@ -13,6 +13,8 @@
     <script type="text/javascript" src="{!! asset('/js/uploadifive/jquery.uploadifive.min.js') !!}"></script>
     <script type="text/javascript" src="{!! asset('/js/jquery.quicksearch.js') !!}"></script>
     <script type="text/javascript" src="{!! asset('/js/functions.js') !!}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script type="text/javascript" src="{!! asset('/js/morris.js-0.5.1/morris.js') !!}"></script>
     <script type="text/javascript">
         $(function(){
             $('body').on('hidden.bs.modal', '.modal', function () {
@@ -33,4 +35,5 @@
     <link rel="stylesheet" type="text/css" href="{!! asset('/css/bootstrap-mod.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('/js/jquery-ui/css/jquery-ui.css') !!}">
     <link rel="stylesheet" type="text/css" href="{!! asset('/js/uploadifive/uploadifive.css') !!}">
+    <link rel="stylesheet" type="text/css" href="{!! asset('/js/morris.js-0.5.1/morris.css') !!}">
 </head>
