@@ -70,10 +70,10 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
     //Route::get('pdf/log/{view}', 'PdfsController@pdfModal');
     //Route::get('pdf/{type}', 'PdfsController@pdf');
     
-    // PDFs
     Route::get('pdf/tasks', array('uses' => 'PdfController@pdfTaskList'));
     Route::get('pdf/team', array('uses' => 'PdfController@pdfTeam'));
-    Route::get('pdf/drawinglog', array('uses' => 'PdfController@pdfDrawingLog'));
+    Route::get('pdf/dcr', array('uses' => 'PdfController@pdfDcr'));
+    //Route::get('pdf/drawinglog', array('uses' => 'PdfController@pdfDrawingLog'));
     
     /* Integrations */
     Route::get('integrations/slack/{projectId}', 'IntegrationsController@slackModal');

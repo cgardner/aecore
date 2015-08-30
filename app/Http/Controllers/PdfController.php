@@ -9,6 +9,7 @@
     use App\Models\User;
     use App\Models\Useravatar;
     use App\Models\Companylogo;
+    use App\Models\Task;
       
   use Carbon;
   use DateTime;
@@ -19,45 +20,50 @@
   use Response;
   use TCPDF;
   
-  
-  
+    
 class MYPDF extends TCPDF {
     
-  //Page header
-  public function Header() {
+    //Page header
+    public function Header() {
       
-      global $page_title;
-      global $page_subtitle;
+        global $page_title;
+        global $page_subtitle;
             
-      // Company logo
-      $logo = new companylogo();
-      $image_file = $logo->getCompanyLogo(\Auth::User()->company_id);
-      list($width, $height) = getimagesize($image_file);
-      if($width > ($height*3)) { $img_ht = "0.5"; } elseif($width > ($height*2)) { $img_ht = "0.65"; } else { $img_ht = "0.75"; }
+        //Company logo
+        $logo = new companylogo();
+        $image_file = $logo->getCompanyLogo(\Auth::User()->company_id);
+        list($width, $height) = getimagesize($image_file);
+        if ($width > ($height*3)) { 
+            $img_ht = "0.5";
+        } elseif($width > ($height*2)) { 
+            $img_ht = "0.65";
+        } else { 
+            $img_ht = "0.75";
+        }
 
-      $this->Image($image_file, '', '', '', $img_ht, '', '', 'T', false, 300, '', false, false, 0, false, false, false);
-      // Set font
-      $this->SetFont('helvetica', 'B', 20);
-      // Title
-      $this->SetFillColor(240,50,20);
-      //Cell($w,$h = 0,$txt = '',$border = 0,$ln = 0,$align = '',$fill = false,$link = '',$stretch = 0,$ignore_min_height = false,$calign = 'T',$valign = 'M')
-      $this->Cell(0, 0, $page_title, 0, false, 'R', false, '', 0, false, 'T', 'T');
-      $this->Ln();
-      $this->SetFont('helvetica', 'R', 12);
-      $this->Cell(0, 0, $page_subtitle, 0, false, 'R', false, '', 0, false, 'T', 'T');
-      $this->Ln();
-  }
+        $this->Image($image_file, '', '', '', $img_ht, '', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        // Set font
+        $this->SetFont('helvetica', 'B', 20);
+        // Title
+        $this->SetFillColor(240,50,20);
+        //Cell($w,$h = 0,$txt = '',$border = 0,$ln = 0,$align = '',$fill = false,$link = '',$stretch = 0,$ignore_min_height = false,$calign = 'T',$valign = 'M')
+        $this->Cell(0, 0, $page_title, 0, false, 'R', false, '', 0, false, 'T', 'T');
+        $this->Ln();
+        $this->SetFont('helvetica', 'R', 12);
+        $this->Cell(0, 0, $page_subtitle, 0, false, 'R', false, '', 0, false, 'T', 'T');
+        $this->Ln();
+    }
 
-  // Page footer
-  public function Footer() {
-      // Position at 15 mm from bottom
-      $this->SetY(-0.5);
-      // Set font
-      $this->SetFont('helvetica', 'I', 8);
-      // Page number
-      $this->Cell(3, 0.3, Session::get('company_name'), 0, false, 'L', false, '', 0, false, 'T', 'M');
-      $this->Cell(0, 0.3, 'Page ' . $this->PageNo() . ' of ' . $this->getNumPages(), 0, false, 'R', false, '', 0, false, 'T', 'M');
-  }
+    // Page footer
+    public function Footer() {
+        // Position at 15 mm from bottom
+        $this->SetY(-0.5);
+        // Set font
+        $this->SetFont('helvetica', 'I', 8);
+        // Page number
+        $this->Cell(3, 0.3, Session::get('company_name'), 0, false, 'L', false, '', 0, false, 'T', 'M');
+        $this->Cell(0, 0.3, 'Page ' . $this->PageNo() . ' of ' . $this->getNumPages(), 0, false, 'R', false, '', 0, false, 'T', 'M');
+    }
 }
 
 class PdfController extends Controller {
@@ -113,7 +119,6 @@ class PdfController extends Controller {
         
         return $pdf;
     }
-
 
     public function pdfTeam() {
 
@@ -173,64 +178,55 @@ class PdfController extends Controller {
 
     public function pdfTaskList() {
 
+        $pdf = $this->pdfDefaults();
+
+        $project = \Session::get('project');
+
         global $page_title;
         $page_title = 'My Tasks';
 
         global $page_subtitle;
         $page_subtitle = Timezone::convertFromUTC(Carbon::now(), \Auth::user()->timezone, 'F d, Y');
-
         $file_name = Timezone::convertFromUTC(Carbon::now(), \Auth::user()->timezone, 'Y-m-d') . ' Task List';
-
-        $pdf = new MYPDF('P', 'in', 'LETTER', true, 'UTF-8', false);
-
-        // set document information
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor(\Auth::User()->name);
         $pdf->SetTitle($file_name);
 
-        // Extend page margin based on logo size
-        $logo = new companylogo();
-        $image_file = $logo->getCompanyLogo(\Auth::User()->company_id);
-        list($width, $height) = getimagesize($image_file);
-        if($width > ($height*3)) { $img_ht = "0.5"; } elseif($width > ($height*2)) { $img_ht = "0.65"; } else { $img_ht = "0.75"; }
+        $pdf->SetFont('helvetica', 'R', 12);
 
-        // set margins
-        $pdf->SetMargins(PDF_MARGIN_LEFT, 0.75+$img_ht, PDF_MARGIN_RIGHT);
-        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+        $filter = 'open';
 
-        //set auto page breaks
-        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-        $listcode = null;
-        $filter = 'active';
-
-        $tasks= DB::table('tasks')
-                ->select(['tasks.task', 'tasks.status', 'tasks.due_at', 'tasks.code', 'tasks.priority', DB::raw('tasks.due_at IS NULL AS due_atNull')])
-                ->leftjoin('tasklist_tasks', 'tasks.id', '=', 'tasklist_tasks.task_id')
-                ->leftjoin('tasklists', 'tasklist_tasks.tasklist_id', '=', 'tasklists.id')
-                ->leftjoin('tasklistrefreshdates', 'tasks.user_id', '=', 'tasklistrefreshdates.user_id')
+        // Get tasks for active list
+        $tasks = Task::leftjoin('taskdates', 'tasks.id', '=', 'taskdates.task_id')
+                ->leftjoin('taskrefreshdates', 'tasks.user_id', '=', 'taskrefreshdates.user_id')
+                ->leftjoin('tasklists', 'tasklists.id', '=', 'tasks.tasklist_id')
                 ->where('tasks.user_id', '=', \Auth::User()->id)
-                ->where(function($query) use ($listcode) {
-                  if($listcode != null) {
-                   $query->where('tasklists.listcode', '=', $listcode);
-                   $query->where('tasklist_tasks.status', '=', 'active');
-                  }
-                })
                 ->where(function($query_a) use ($filter) {
                   $query_a->where('tasks.status', '=', $filter);
                   $query_a->orwhere(function($query_b) {
                     $query_b->where('tasks.status', '=', 'complete');
-                    $query_b->where(DB::raw('date_format(tasklistrefreshdates.refresh_date, \'%Y%m%d%H%i%s\')'), '<', DB::raw('date_format(tasks.completed_at, \'%Y%m%d%H%i%s\')'));
+                    $query_b->where(\DB::raw('taskrefreshdates.date_refresh', '%Y%m%d%H%i%s'), '<', \DB::raw('taskdates.date_complete', '%Y%m%d%H%i%s'));
+                  });
+                  $query_a->orwhere(function($query_c) {
+                    $query_c->where('tasks.status', '=', 'complete');
+                    $query_c->where('taskrefreshdates.date_refresh', '=', null);
                   });
                 })
                 ->orderby('tasks.priority', 'desc')
-                ->orderBy('due_atNull')
-                ->orderby('tasks.due_at', 'asc')
-                ->groupby('tasks.id')
-                ->get();
+                ->orderBy('taskdates.date_due')
+                ->orderBy('tasks.created_at')
+                ->get([
+                    'tasks.id',
+                    'tasks.taskcode',
+                    'tasks.task',
+                    'tasks.tasklist_id',
+                    'tasks.priority',
+                    'tasks.status',
+                    'taskdates.date_due',
+                    'tasklists.list',
+                    'tasklists.listcode',
+                    'tasklists.status AS list_status',
+                    ]);
 
-        $pdf->SetFont('helvetica', 'R', 11);
+        
         $html = '<table border="0" mobilepadding="3" mobilespacing="0">';
         foreach($tasks as $task) {
           $html = $html.'
@@ -248,7 +244,7 @@ class PdfController extends Controller {
         // Output PDF document
         return Response::make($pdf->Output($file_name, 'I'), 200, array('Content-Type' => 'application/pdf'));
 
-      }
+    }
 
       public function pdfDrawingLog() {
 

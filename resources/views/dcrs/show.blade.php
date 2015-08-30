@@ -4,14 +4,11 @@
   <div class="page-wrapper">
     <div class="container-fluid">
         <div class="pagehead">
-            <a href="#" class="btn btn-default pull-right btn-spacer-left mobile-hide" title="Print report."><i class="fa fa-print"></i> Print</a>
-            <a href="#" class="btn btn-default pull-right btn-spacer-left mobile-hide" title="Email report."><i class="fa fa-envelope-o"></i> Email</a>
-            @if(@$dcr_next->id != NULL)
-                <a href="/dcrs/{!! $dcr_next->id !!}" class="btn btn-default pull-right btn-spacer-left mobile-hide">Next <i class="fa fa-arrow-circle-right"></i></a>
-            @endif
-            @if(@$dcr_previous->id != NULL)
-                <a href="/dcrs/{!! $dcr_previous->id !!}" class="btn btn-default pull-right mobile-hide"><i class="fa fa-arrow-circle-left"></i> Previous</a>
-            @endif
+            <a href="{!! URL::to('pdf/dcr') !!}" class="btn btn-default pull-right btn-spacer-left mobile-hide" target="_blank" title="Print Daily Report."><i class="fa fa-print"></i> Print</a>
+            <div class="btn-group pull-right" role="group">
+                <a href="/dcrs/{!! @$dcr_previous->id !!}" class="btn btn-default mobile-hide <?php if(@$dcr_previous->id == NULL) { echo 'disabled'; } ?>"><i class="fa fa-arrow-circle-left"></i> Previous</a>
+                <a href="/dcrs/{!! @$dcr_next->id !!}" class="btn btn-default mobile-hide <?php if(@$dcr_next->id == NULL) { echo 'disabled'; } ?>">Next <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
             <h1>Daily Construction Report</h1>
         </div>
         

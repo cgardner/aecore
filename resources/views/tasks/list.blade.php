@@ -15,6 +15,7 @@
     <!-- FILTERS -->
     <div class="pagehead">
       <div class="container-fluid">
+        <a href="{!! URL::to('pdf/tasks') !!}" class="btn btn-default btn-sm pull-right btn-spacer-left" target="_blank" title="Print to PDF."><i class="fa fa-print"></i> Print</a>
         <div class="btn-group pull-right btn-spacer-left">
           <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">{!! Session::get('filter_text') !!} <span class="caret"></span></button>
           <ul class="dropdown-menu" role="menu">

@@ -5,7 +5,7 @@
         <div class="pagehead">
             <div class="container-fluid">
                 @if(Session::get('projectUser')->access == \App\Models\Projectuser::ACCESS_ADMIN)
-                    <a href="{!! URL::route('projects.edit', ['project' => $project->id]) !!}" class="btn btn-default pull-right btn-spacer-left"><i class="fa fa-pencil-square-o fa-fw"></i> Edit Project</a>
+                    <a href="{!! URL::route('projects.edit', ['project' => $project->id]) !!}" class="btn btn-default btn-sm pull-right btn-spacer-left"><i class="fa fa-pencil-square-o fa-fw"></i> Edit Project</a>
                 @endif
                 <h1>{!! '#' . $project->number . ' ' . $project->name !!}</h1>
                 <p class="text-muted no-margin">Your project at a glance.</p>
