@@ -85,7 +85,10 @@
                                                 <td>{!! $dcrWork->crew_size !!}</td>
                                                 <td>{!! $dcrWork->crew_hours !!}</td>
                                                 <td>{!! $dcrWork->crew_work !!}</td>
-                                                <td><span class="btn-link-light pull-right" style="font-size:1.1em;padding-top:2px;" onClick="$('#work-row-az{!! $dcrWork->id !!}').remove();" title="Remove company."><i class="fa fa-trash-o"></i></span></td>
+                                                <td>
+                                                    <span class="btn-link-light pull-right btn-spacer-left" style="font-size:1.1em;padding-top:1px;" onClick="$('#work-row-az{!! $dcrWork->id !!}').remove();" title="Remove"><i class="fa fa-trash-o"></i></span>
+                                                    <a class="btn-link-light pull-right" style="font-size:1.1em;padding-top:2px;" href="/dcrs/editwork/{!! $dcrWork->id !!}" data-target="#modal" data-toggle="modal" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                                                </td>
                                                 {!! Form::hidden('crew_id[]', $dcrWork->id, array('required'=>'true' )) !!}
                                                 {!! Form::hidden('crew_company[]', $dcrWork->crew_company, array('required'=>'true' )) !!}
                                                 {!! Form::hidden('crew_size[]', $dcrWork->crew_size, array('required'=>'true' )) !!}

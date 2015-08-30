@@ -24,7 +24,7 @@ class DcrWorkRepository extends AbstractRepository
      * @codeCoverageIgnore
      */
     
-    public function findDcrWork($dcrId)
+    public function findDcrWorks($dcrId)
     {
         $query = $this->model
             ->newQuery()

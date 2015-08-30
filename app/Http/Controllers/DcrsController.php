@@ -118,10 +118,10 @@ class DcrsController extends Controller
                 ->first();
             
             $dcrWorks = $this->dcrWorkRepository
-                    ->findDcrWork($dcrId);
+                    ->findDcrWorks($dcrId);
 
             $dcrEquipments = $this->dcrEquipmentRepository
-                    ->findDcrEquipment($dcrId);
+                    ->findDcrEquipments($dcrId);
 
             $dcrInspections = $this->dcrInspectionRepository
                     ->findDcrInspections($dcrId);
@@ -175,10 +175,10 @@ class DcrsController extends Controller
                 ->first();
             
             $dcrWorks = $this->dcrWorkRepository
-                    ->findDcrWork($dcrId);
+                    ->findDcrWorks($dcrId);
 
             $dcrEquipments = $this->dcrEquipmentRepository
-                    ->findDcrEquipment($dcrId);
+                    ->findDcrEquipments($dcrId);
 
             $dcrInspections = $this->dcrInspectionRepository
                     ->findDcrInspections($dcrId);
@@ -202,6 +202,20 @@ class DcrsController extends Controller
             //Access denied or not found
             return redirect('dcrs');
         }
+    }
+    
+    /**
+     * Open collaborator modals
+     */
+    public function editWorkModal($id)
+    {
+        $dcrWork = $this->dcrWorkRepository
+                    ->find($id);
+        
+        return view('dcrs.modals.editWork')
+            ->with([
+                'dcrWork' => $dcrWork
+            ]);
     }
     
     /**

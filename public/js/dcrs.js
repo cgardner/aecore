@@ -29,6 +29,7 @@ function addWork() {
                             <td class="tablet-hide">' + $('#crew_hours_input').val() + '</td>\n\
                             <td>' + $('#crew_work_input').val() + '</td>\n\
                             <td>' + delButton + '</td>\n\
+                            <input type="hidden" name="crew_id[]" value="0" required="true"/>\n\
                             <input type="hidden" name="crew_company[]" value="' + $('#crew_company_input').val() + '" required="true"/>\n\
                             <input type="hidden" name="crew_size[]" value="' + $('#crew_size_input').val() + '" required="true"/>\n\
                             <input type="hidden" name="crew_hours[]" value="' + $('#crew_hours_input').val() + '" required="true"/>\n\
@@ -47,6 +48,39 @@ function addWork() {
         $('#crew_company_input').focus();
     } else {
         $('#workError').show();
+    }
+}
+
+function editWork(id) {
+    // add inputs
+    if(
+        $('#crew_company_input_edit').val() != "" &&
+        $('#crew_size_input_edit').val() != "" &&
+        $('#crew_hours_input_edit').val() != "" &&
+        $('#crew_work_input_edit').val() != ""
+    ) {
+        i++;
+        // delete form elements
+        var delButton = '<span class="btn-link-light pull-right" style="font-size:1.1em;padding-top:2px;" onClick="$(\'#work-row-edit-' + i +'\').remove();" title="Remove company."><i class="fa fa-trash-o"></i></span>';
+    
+        // Add row to table
+        var addRow = '<tr id="work-row-edit-' + i + '">\n\
+                            <td style="width:25%;">' + $('#crew_company_input_edit').val() + '</td>\n\
+                            <td>' + $('#crew_size_input_edit').val() + '</td>\n\
+                            <td class="tablet-hide">' + $('#crew_hours_input_edit').val() + '</td>\n\
+                            <td>' + $('#crew_work_input_edit').val() + '</td>\n\
+                            <td>' + delButton + '</td>\n\
+                            <input type="hidden" name="crew_id[]" value="' + $('#crew_id_input_edit').val() + '" required="true"/>\n\
+                            <input type="hidden" name="crew_company[]" value="' + $('#crew_company_input_edit').val() + '" required="true"/>\n\
+                            <input type="hidden" name="crew_size[]" value="' + $('#crew_size_input_edit').val() + '" required="true"/>\n\
+                            <input type="hidden" name="crew_hours[]" value="' + $('#crew_hours_input_edit').val() + '" required="true"/>\n\
+                            <input type="hidden" name="crew_work[]" value="' + $('#crew_work_input_edit').val() + '" required="true"/>\n\
+                        </tr>';
+
+        $('#work-row-az'+id).replaceWith(addRow);
+        $(".modal").modal("hide");
+    } else {
+        $('#workError_edit').show();
     }
 }
 

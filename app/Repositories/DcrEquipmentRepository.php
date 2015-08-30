@@ -24,7 +24,7 @@ class DcrEquipmentRepository extends AbstractRepository
      * @codeCoverageIgnore
      */
     
-    public function findDcrEquipment($dcrId)
+    public function findDcrEquipments($dcrId)
     {
         $query = $this->model
             ->newQuery()
