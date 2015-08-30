@@ -148,6 +148,7 @@ return [
 
         // Added services
         'Aws\Laravel\AwsServiceProvider',
+        'Elibyy\TCPDF\ServiceProvider',
         'Fenos\Notifynder\NotifynderServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         'Intervention\Image\ImageServiceProvider',
@@ -215,7 +216,7 @@ return [
         'Html'      => 'Illuminate\Html\HtmlFacade',
         'Geocode'   => 'Jcf\Geocode\Facades\Geocode',
         'Image'     => 'Intervention\Image\Facades\Image',
-        'Notifynder'    => 'Fenos\Notifynder\Facades\Notifynder',
+        'Notifynder'=> 'Fenos\Notifynder\Facades\Notifynder',
         'Slack'     => 'Maknz\Slack\Facades\Slack',
       
 	],

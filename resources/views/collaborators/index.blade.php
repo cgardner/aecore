@@ -6,10 +6,9 @@
             <div class="container-fluid">
                 <a class="btn btn-default btn-sm pull-right btn-spacer-left" href="/collaborators/help"
                    data-target="#modal" data-toggle="modal" title="How does this work?">Help</a>
+                <a href="{!! URL::to('pdf/team') !!}" class="btn btn-default btn-sm pull-right btn-spacer-left" target="_blank" title="Print to PDF."><span class="glyphicon glyphicon-print"></span> Directory</a>
                 <a class="btn btn-warning btn-sm pull-right btn-spacer-left" href="/collaborators/invite"
-                   data-target="#modal" data-toggle="modal" title="Invite a person to Aecore."><span
-                            class="glyphicon glyphicon-bullhorn" style="margin-right:2px;top:2px;"></span> Invite to
-                    Aecore</a>
+                   data-target="#modal" data-toggle="modal" title="Invite a person to Aecore."><span class="glyphicon glyphicon-bullhorn" style="margin-right:2px;top:2px;"></span> Invite to Aecore</a>
                 @if($projectUser->access == \App\Models\Projectuser::ACCESS_ADMIN)
                     <a class="btn btn-success btn-sm pull-right" href="/collaborators/add" data-target="#modal"
                        data-toggle="modal"><span class="glyphicon glyphicon-plus"></span> Add Collaborators</a>

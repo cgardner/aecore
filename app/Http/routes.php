@@ -63,11 +63,17 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
     Route::resource('rfis', 'RfisController');
     
     /* DCR's */
+    Route::get('dcrs/editwork/{id}', 'DcrsController@editWorkModal');
     Route::resource('dcrs', 'DcrsController');
             
     /* PDF's */
-    Route::get('pdf/log/{view}', 'PdfsController@pdfModal');
-    Route::get('pdf/{type}', 'PdfsController@pdf');
+    //Route::get('pdf/log/{view}', 'PdfsController@pdfModal');
+    //Route::get('pdf/{type}', 'PdfsController@pdf');
+    
+    // PDFs
+    Route::get('pdf/tasks', array('uses' => 'PdfController@pdfTaskList'));
+    Route::get('pdf/team', array('uses' => 'PdfController@pdfTeam'));
+    Route::get('pdf/drawinglog', array('uses' => 'PdfController@pdfDrawingLog'));
     
     /* Integrations */
     Route::get('integrations/slack/{projectId}', 'IntegrationsController@slackModal');
@@ -92,43 +98,43 @@ Route::group(['middleware'=>'userstatus'], function(){
     Route::post('notifications/read/all', 'NotificationsController@readAll');
     Route::post('notifications/read/{id}', 'NotificationsController@readNotification');
   
-  /* Tasks */
-  Route::post('tasks/create', 'TasksController@createTask');
-  Route::post('tasks/update', 'TasksController@updateTask');
-  Route::get('tasks/refresh', 'TasksController@refreshList');
-  Route::post('tasks/comment', 'TasksController@postTaskComment');
-  Route::get('tasks/priority/{priority}/{taskcode}', 'TasksController@priorityChange');
-  Route::get('tasks/{listcode?}', 'TasksController@index');
-  Route::get('tasks/following/{usercode}', array('uses' => 'TasksController@indexFollowing'));
+    /* Tasks */
+    Route::post('tasks/create', 'TasksController@createTask');
+    Route::post('tasks/update', 'TasksController@updateTask');
+    Route::get('tasks/refresh', 'TasksController@refreshList');
+    Route::post('tasks/comment', 'TasksController@postTaskComment');
+    Route::get('tasks/priority/{priority}/{taskcode}', 'TasksController@priorityChange');
+    Route::get('tasks/{listcode?}', 'TasksController@index');
+    Route::get('tasks/following/{usercode}', array('uses' => 'TasksController@indexFollowing'));
   
-  /* Task details */
-  Route::get('tasks/details/{taskcode}', array('uses' => 'TasksController@showTask'));
-  Route::post('tasks/follower', 'TasksController@updateFollower');
-  Route::post('tasks/attachment/{action}/{code}', array('uses' => 'TasksController@TaskAttachment'));
-  
-  /* Task Lists */
-  Route::post('tasks/list/create', 'TasksController@createList');
-  Route::post('tasks/list/remove', 'TasksController@removeList');    
-  
-  /* Personal Settings */
-  Route::get('settings/{view}', 'SettingsController@show');
-  Route::post('settings/avatar/upload/{type}', array('uses' => 'UploadsController@uploadAvatar'));
-  Route::post('settings/profile/update', 'SettingsController@updateProfile');
-  Route::post('settings/account/change-password', array('uses' => 'SettingsController@changePassword'));
-  Route::post('settings/account/delete', array('uses' => 'SettingsController@deleteAccount'));
-  Route::get('settings/avatar/crop/{type}', function() {
-    return view('settings.modals.crop')->with('type', $type);
-  });
-  Route::post('settings/avatar/crop/{type}', array('uses' => 'UploadsController@cropAvatar'));
-  Route::post('settings/company/join', 'SettingsController@joinCompany');
-  Route::post('settings/company/leave', 'SettingsController@leaveCompany');
-    
-  /* Autocomplete */
-  Route::post('autocomplete/companies', 'AutocompleteController@findCompanies');
-  Route::post('autocomplete/users', 'AutocompleteController@findUsers');
-  Route::post('autocomplete/tasklists', 'AutocompleteController@findTasklists');
-  
-  /* Updloads */
-  Route::post('attachment/upload', array('uses' => 'UploadsController@uploadFile'));
+    /* Task details */
+    Route::get('tasks/details/{taskcode}', array('uses' => 'TasksController@showTask'));
+    Route::post('tasks/follower', 'TasksController@updateFollower');
+    Route::post('tasks/attachment/{action}/{code}', array('uses' => 'TasksController@TaskAttachment'));
+
+    /* Task Lists */
+    Route::post('tasks/list/create', 'TasksController@createList');
+    Route::post('tasks/list/remove', 'TasksController@removeList');    
+
+    /* Personal Settings */
+    Route::get('settings/{view}', 'SettingsController@show');
+    Route::post('settings/avatar/upload/{type}', array('uses' => 'UploadsController@uploadAvatar'));
+    Route::post('settings/profile/update', 'SettingsController@updateProfile');
+    Route::post('settings/account/change-password', array('uses' => 'SettingsController@changePassword'));
+    Route::post('settings/account/delete', array('uses' => 'SettingsController@deleteAccount'));
+    Route::get('settings/avatar/crop/{type}', function() {
+      return view('settings.modals.crop')->with('type', $type);
+    });
+    Route::post('settings/avatar/crop/{type}', array('uses' => 'UploadsController@cropAvatar'));
+    Route::post('settings/company/join', 'SettingsController@joinCompany');
+    Route::post('settings/company/leave', 'SettingsController@leaveCompany');
+
+    /* Autocomplete */
+    Route::post('autocomplete/companies', 'AutocompleteController@findCompanies');
+    Route::post('autocomplete/users', 'AutocompleteController@findUsers');
+    Route::post('autocomplete/tasklists', 'AutocompleteController@findTasklists');
+
+    /* Updloads */
+    Route::post('attachment/upload', array('uses' => 'UploadsController@uploadFile'));
   
 });
