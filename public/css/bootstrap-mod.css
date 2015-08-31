@@ -2,7 +2,7 @@
 body {
     padding-top:51px;
     font-family:Lato, arial, helvetic, sans-serif;
-    overflow:hidden;
+    overflow-x:hidden;
 }
 
 .bold { font-weight:bold; }

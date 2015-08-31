@@ -53,8 +53,8 @@
         email:      '{!! \Auth::User()->email !!}',
         name:       '{!! \Auth::User()->name !!}', // User�s real name
         account: {
-            id:           '{!! \Auth::User()->company->id !!}',
-            name:         '{!! \Auth::User()->company->name !!}',
+            id:           '{!! @\Auth::User()->company->id !!}',
+            name:         '{!! @\Auth::User()->company->name !!}',
         }
     }]);
 
