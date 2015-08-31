@@ -1,3 +1,4 @@
+@if (count($rfis))
 <table class="table table-hover table-sortable no-margin">
     <thead>
         <th>RFI #</th>
@@ -9,25 +10,30 @@
         <th class="mobile-hide">Status</th>
     </thead>
     <tbody>
-        <tr class="pointer">
-            <td>1</td>
-            <td>This is a sample subject line for an RFI.</td>
-            <td><img src="{{ Auth::User()->gravatar }}" class="avatar_xs"/> John Smith</td>
-            <td class="tablet-hide">W&W RFI-004</td>
-            <td class="tablet-hide">06/20/2015</td>
-            <td class="mobile-hide">06/24/2015</td>
-            <td class="mobile-hide">Open</td>
+        @foreach($rfis as $rfi)
+        <tr class="pointer" data-rfi-id="{{ $rfi->id }}">
+            <td>{!! link_to_route('rfis.show', $rfi->rfi_id, ['rfis' => $rfi->id]) !!}</td>
+            <td>{!! link_to_route('rfis.show', $rfi->subject, ['rfis' => $rfi->id]) !!}</td>
+            <td>
+                <a href="{{ route('rfis.show', ['rfis' => $rfi->id]) }}">
+                    <img src="{{ $rfi->assignedTo->gravatar }}" class="avatar_xs"/> {{ $rfi->assignedTo->name }}
+                </a>
+            </td>
+            <td class="tablet-hide">{!! link_to_route('rfis.show', $rfi->references, ['rfis' => $rfi->id]) !!}</td>
+            <td class="tablet-hide">{!! link_to_route('rfis.show', $rfi->created_at, ['rfis' => $rfi->id]) !!}</td>
+            <td class="mobile-hide">{!! link_to_route('rfis.show', $rfi->due_date, ['rfis' => $rfi->id]) !!}</td>
+            <td class="mobile-hide">{!! link_to_route('rfis.show', is_null($rfi->deleted_at) ? 'Open' : 'Closed', ['rfis' => $rfi->id]) !!}</td>
         </tr>
+        @endforeach
     </tbody>
 </table>
-
-<!-- ELSE -->
-
+@else
 <div class="alert alert-info">
-    <p class="bold"><span class="glyphicon glyphicon-warning-sign"></span> No {filter} RFIs were found.</p>
+    <p class="bold"><span class="glyphicon glyphicon-warning-sign"></span> No RFIs were found.</p>
     <p>Try changing your filter
         @if($projectUser->access != \App\Models\Projectuser::ACCESS_LIMITED)
-            or <a href="/rfis/create" class="bold">Create a New RFI</a> to get started.
+            or {!! link_to_route('rfis.create', 'Create a new RFI', [], ['class' => 'bold']) !!} to get started.
         @endif
     </p>
 </div>
+@endif

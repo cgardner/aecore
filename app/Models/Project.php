@@ -129,6 +129,16 @@ class Project extends Model
     
     private function createDateTime($dateTime)
     {
-        return new DateTime($dateTime, new DateTimeZone(Auth::user()->timezone));
+        return new \DateTime($dateTime, new \DateTimeZone(\Auth::user()->timezone));
+    }
+
+    /**
+     * RFI Relationship
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rfis()
+    {
+        return $this->hasMany('\App\Models\Rfi');
     }
 }
