@@ -56,7 +56,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-3 col-md-2 mobile-margin-end">
-                                {!! Form::text('temperature', $dcr->temperature, array('class' => 'form-control mobile-margin', 'placeholder' => 'Temp', 'required'=>'true' )) !!}
+                                {!! Form::text('temperature', $dcr->temperature, array('class' => 'form-control', 'placeholder' => 'Temp', 'required'=>'true' )) !!}
                             </div>
                             <div class="col-sm-2 mobile-margin-end">
                                 {!! Form::select('temperature_type', array(

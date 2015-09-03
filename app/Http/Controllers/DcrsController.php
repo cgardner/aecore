@@ -243,38 +243,25 @@ class DcrsController extends Controller
               
         /** Get active use info */
         $user = \Auth::User();
-        $input['company_id'] = $user->company_id;
-        
-        $dcr = $this->dcrRepository
-                ->find(\Request::get('dcr_id'))
-                ->where('id', '=', \Request::get('dcr_id'))
-                ->where('project_id', '=', \Session::get('project')->id)
-                ->where('status', '=', 'active')
-                ->first();
-        
-        if(count($dcr) > 0) {
+        $input['company_id'] = $user->company_id;        
             
-            $this->saveDcr($input);
+        $this->saveDcr($input);
 
-            //Send to Slack
-            $slack = $this->slackIntegrationRepository
-                ->findSlackProject($project->id);
+        //Send to Slack
+        $slack = $this->slackIntegrationRepository
+            ->findSlackProject($project->id);
 
-            if(count($slack) > 0) {
-                $this->slackIntegrationRepository
-                    ->sendSlackNotification( $slack->webhook, $slack->channel, $slack->username,
-                        ':notebook: ' . \Auth::User()->name . ' saved a Daily Report dated ' . $input['date']
-                    );
-            }
+        if(count($slack) > 0) {
+            $this->slackIntegrationRepository
+                ->sendSlackNotification( $slack->webhook, $slack->channel, $slack->username,
+                    ':notebook: ' . \Auth::User()->name . ' saved a Daily Report dated ' . $input['date']
+                );
+        }
 
-            if (!\Request::has('dcr_id')) {
-                return redirect('dcrs');
-            } else {
-                return redirect('dcrs/' . $input['dcr_id']);
-            }
-        } else {
-            //Access denied or not found
+        if (!\Request::has('dcr_id')) {
             return redirect('dcrs');
+        } else {
+            return redirect('dcrs/' . $input['dcr_id']);
         }
     }
     
