@@ -25,11 +25,15 @@ function showTask(taskcode) {
     type:'GET',
     url: '/tasks/details/' + taskcode,
     success: function(response) {
-      $('#task-details').html(response);
-      if($('#task-details').css('display') == 'none'){
-        $('#task-list').css('right', '460px');
-        $('#task-details').show();
-      }
+        
+        $('#task-details').hide().html(response).fadeIn('medium')
+        $('#task-list').animate({"right" : "460px"}, 150);
+        
+        // Scroll to bottom of comments
+        var comments = $('#task-comments');
+        comments.scrollTop(
+            comments[0].scrollHeight
+        );
     }
   });
 }
@@ -44,11 +48,11 @@ function updateTask(taskcode, action, data) {
   if(action == 'open') {
     $('#task-text-' + taskcode).removeClass('strike');
     $('#task-checkbox-' + taskcode).toggleClass('taskline-checkbox taskline-checkbox-complete');
-    $('#task-checkbox-' + taskcode).attr('onClick', 'updateTask(\'' + taskcode + '\', \'complete\');');
+    $('#task-checkbox-' + taskcode).attr('onClick', 'updateTask(\'' + taskcode + '\', \'complete\');tglClearBtn(\'up\');');
     if($('#task-details').css('display') == 'block'){
       $('#task-checkbox-info-' + taskcode).toggleClass('taskline-checkbox taskline-checkbox-complete');
-      $('#task-checkbox-info-' + taskcode).attr('onClick', 'updateTask(\'' +  taskcode + '\', \'complete\');');
-    }  
+      $('#task-checkbox-info-' + taskcode).attr('onClick', 'updateTask(\'' +  taskcode + '\', \'complete\');tglClearBtn(\'up\');');
+    }
     var type = 'status';
     var data = 'open';
   }
@@ -56,10 +60,10 @@ function updateTask(taskcode, action, data) {
   if(action == 'complete') {
     $('#task-text-' + taskcode).addClass('strike');
     $('#task-checkbox-' + taskcode).toggleClass('taskline-checkbox taskline-checkbox-complete');
-    $('#task-checkbox-' + taskcode).attr('onClick', 'updateTask(\'' + taskcode + '\', \'open\');');
+    $('#task-checkbox-' + taskcode).attr('onClick', 'updateTask(\'' + taskcode + '\', \'open\');tglClearBtn(\'down\');');
     if($('#task-details').css('display') == 'block'){
       $('#task-checkbox-info-' + taskcode).toggleClass('taskline-checkbox taskline-checkbox-complete');
-      $('#task-checkbox-info-' + taskcode).attr('onClick', 'updateTask(\'' + taskcode + '\', \'open\');');
+      $('#task-checkbox-info-' + taskcode).attr('onClick', 'updateTask(\'' + taskcode + '\', \'open\');tglClearBtn(\'down\');');
     }
     var type = 'status';
     var data = 'complete';
@@ -184,4 +188,23 @@ function removeTaskAttachment(taskcode, file_id) {
       $('#attachment-' + file_id).remove();
     }
   });
+}
+
+function tglClearBtn(direction) {
+        
+    var clrCount = $('#completed_count').val();
+
+    if(direction == 'up') {
+        var newCount = parseInt(clrCount) + 1;
+        $('#completed_count').val(newCount);
+    } else {
+        var newCount = parseInt(clrCount) - 1;
+        $('#completed_count').val(newCount);
+    }
+
+    if($('#completed_count').val() > 0) {
+        $('#clearBtn').show();
+    } else {
+        $('#clearBtn').hide();
+    }
 }

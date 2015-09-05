@@ -17,14 +17,7 @@
   });
     
   $(document).ready(function(){
-  
-    // Scroll to bottom of comments
-    $(function () {
-        var comments = $('#task-comments');
-        var height = comments[0].scrollHeight;
-        comments.scrollTop(height);
-    });
-    
+      
     //Find assign users
     var NoResultsLabel = "No results found.";
     $('#term').autocomplete({
@@ -191,9 +184,9 @@
   
   <div class="form-group">
     @if($taskdata->status == 'complete')
-      <span class="taskline-checkbox-complete no-margin" id="task-checkbox-info-{!! $taskdata->taskcode !!}" title="Reopen this task." onClick="updateTask('{!! $taskdata->taskcode !!}', 'open');"></span>
+      <span class="taskline-checkbox-complete no-margin" id="task-checkbox-info-{!! $taskdata->taskcode !!}" title="Reopen this task." onClick="updateTask('{!! $taskdata->taskcode !!}', 'open');tglClearBtn('down');"></span>
     @else
-      <span class="taskline-checkbox no-margin" id="task-checkbox-info-{!! $taskdata->taskcode !!}" title="Mark as complete." onClick="updateTask('{!! $taskdata->taskcode !!}', 'complete');"></span>  
+      <span class="taskline-checkbox no-margin" id="task-checkbox-info-{!! $taskdata->taskcode !!}" title="Mark as complete." onClick="updateTask('{!! $taskdata->taskcode !!}', 'complete');tglClearBtn('up');"></span>  
     @endif
     <h1 id="task-text-info">{!! $taskdata->task !!}</h1>
   </div>

@@ -612,6 +612,7 @@ ul.sidebar-nav li a .glyphicon {
     left:0;
     background:#FFF;
     overflow-y:auto;
+    z-index:75;
 }
 @media(min-width:768px) {
     .task-list-wrapper {
@@ -806,7 +807,7 @@ a.task_project:hover {
     overflow:hidden;
     background:#FFF;
     border-left:1px solid #ddd;
-    display:none;
+    z-index:65;
 }
 .task-info-wrapper h1 {
     margin:9px 0 0 23px;

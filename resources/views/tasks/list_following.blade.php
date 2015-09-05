@@ -23,9 +23,9 @@
     @foreach($tasks as $task)
     <div class="taskline col-md-12" id="taskline-{!! $task->taskcode !!}">
       @if($task->status == 'complete')
-        <span class="taskline-checkbox-complete" id="task-checkbox-{!! $task->taskcode !!}" title="Reopen this task." onClick="updateTask('<?php echo $task->taskcode; ?>', 'open');"></span>
+        <span class="taskline-checkbox-complete" id="task-checkbox-{!! $task->taskcode !!}" title="Reopen this task." onClick="updateTask('<?php echo $task->taskcode; ?>', 'open');tglClearBtn('down');"></span>
       @else
-        <span class="taskline-checkbox" id="task-checkbox-{!! $task->taskcode !!}" title="Complete this task." onClick="updateTask('<?php echo $task->taskcode; ?>', 'complete');"></span>
+        <span class="taskline-checkbox" id="task-checkbox-{!! $task->taskcode !!}" title="Complete this task." onClick="updateTask('<?php echo $task->taskcode; ?>', 'complete');tglClearBtn('up');"></span>
       @endif
       <div class="btn-group task-btn-group">
         <button data-toggle="dropdown" class="btn btn-{!! $task->priority !!} dropdown-toggle task-priority-tag" title="Change task priority." type="button"><span class="caret" style="margin-top:-7px;"></span></button>
@@ -42,7 +42,7 @@
         @if($task->date_due != "")
           <span id="task-date-{!! $task->taskcode !!}" class="task_tags task_date">{!! $task->date_due !!}</span>
         @endif
-        <input type="text" class="form-control taskline-input <?php if($task->status == 'complete') { echo 'strike'; } ?>" id="task-text-{!! $task->taskcode !!}" value="{!! htmlspecialchars($task->task) !!}" onFocus="$('div').removeClass('taskline-active');$('#taskline-<?php echo $task->taskcode; ?>').addClass('taskline-active');showTask('<?php echo $task->taskcode; ?>');" onBlur="updateTask('<?php echo $task->taskcode; ?>', 'task');" onkeyup="$('#task-text-info').html(this.value);"/>
+        <input type="text" class="form-control taskline-input <?php if($task->status == 'complete') { echo 'strike'; } ?>" id="task-text-{!! $task->taskcode !!}" value="{!! htmlspecialchars($task->task) !!}" onFocus="$('#taskline-<?php echo $task->taskcode; ?>').addClass('taskline-active');showTask('<?php echo $task->taskcode; ?>');" onBlur="updateTask('<?php echo $task->taskcode; ?>', 'task');$('div').removeClass('taskline-active');" onkeyup="$('#task-text-info').html(this.value);"/>
       </div>
     </div>
     @endforeach

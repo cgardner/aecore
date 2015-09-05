@@ -2,12 +2,23 @@
 @section('content')
 
 <script type="text/javascript">
-  $(function(){
-    $('input[type=text][name=task]').tooltip({
-      placement: "bottom",
-      trigger: "focus"
-    });    
-  });
+    $(function(){
+        $('input[type=text][name=task]').tooltip({
+            placement: "bottom",
+            trigger: "focus"
+        });
+        
+        $('#task-list').click( function() {
+            $('#task-list').animate({'right':'0'}, 150);
+        });
+        $("#task-list input").click(function(e) {
+            e.stopPropagation();
+        });
+        
+        <?php if($completed_count == 0){ ?>
+            $('#clearBtn').hide();            
+        <?php } ?>
+    });
 </script>
 
   @include('tasks.nav')
@@ -17,7 +28,7 @@
       <div class="container-fluid">
         <a href="{!! URL::to('pdf/tasks') !!}" class="btn btn-default btn-sm pull-right btn-spacer-left" target="_blank" title="Print to PDF."><i class="fa fa-print"></i> Print</a>
         <div class="btn-group pull-right btn-spacer-left">
-          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">{!! Session::get('filter_text') !!} <span class="caret"></span></button>
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-filter"></i> {!! Session::get('filter_text') !!} <span class="caret"></span></button>
           <ul class="dropdown-menu" role="menu">
             @if(Session::get('filter_text') == "Open Tasks")
               <li><a href="{!! '/tasks/' . Session::get('listcode') . '?filter=complete' !!}">Completed Tasks</a>
@@ -26,9 +37,10 @@
             @endif
           </ul>
         </div>
-        @if($completed_count > 0 && Session::get('filter_text') != "Completed Tasks")
-          <a href="/tasks/refresh" class="btn btn-sm btn-default pull-right btn-spacer-left" title="Refresh list to clear completed tasks."><span class="glyphicon glyphicon-refresh"></span> Clear Completed</a>
+        @if(Session::get('filter_text') != "Completed Tasks")
+            <a href="/tasks/refresh" id="clearBtn" class="btn btn-sm btn-warning pull-right btn-spacer-left" title="Refresh list to clear completed tasks."><span class="glyphicon glyphicon-refresh"></span> Clear Completed</a>
         @endif
+        {!! Form::hidden('completed_count', $completed_count, array('id' => 'completed_count')) !!}
         <h1>{!! $listname !!}</h1>
       </div>
     </div>
@@ -55,9 +67,9 @@
     @foreach($mytasks as $mytask)
     <div class="taskline col-md-12" id="taskline-{!! $mytask->taskcode !!}">
       @if($mytask->status == 'complete')
-        <span class="taskline-checkbox-complete" id="task-checkbox-{!! $mytask->taskcode !!}" title="Reopen this task." onClick="updateTask('<?php echo $mytask->taskcode; ?>', 'open');"></span>
+        <span class="taskline-checkbox-complete" id="task-checkbox-{!! $mytask->taskcode !!}" title="Reopen this task." onClick="updateTask('<?php echo $mytask->taskcode; ?>', 'open');tglClearBtn('down');"></span>
       @else
-        <span class="taskline-checkbox" id="task-checkbox-{!! $mytask->taskcode !!}" title="Complete this task." onClick="updateTask('<?php echo $mytask->taskcode; ?>', 'complete');"></span>
+        <span class="taskline-checkbox" id="task-checkbox-{!! $mytask->taskcode !!}" title="Complete this task." onClick="updateTask('<?php echo $mytask->taskcode; ?>', 'complete');tglClearBtn('up');"></span>
       @endif
       <div class="btn-group task-btn-group">
         <button data-toggle="dropdown" class="btn btn-{!! $mytask->priority !!} dropdown-toggle task-priority-tag" title="Change task priority." type="button"><span class="caret" style="margin-top:-7px;"></span></button>
@@ -74,7 +86,7 @@
         @if($mytask->date_due != "")
           <span id="task-date-{!! $mytask->taskcode !!}" class="task_tags task_date">{!! $mytask->date_due !!}</span>
         @endif
-        <input type="text" class="form-control taskline-input <?php if($mytask->status == 'complete') { echo 'strike'; } ?>" id="task-text-{!! $mytask->taskcode !!}" value="{!! htmlspecialchars($mytask->task) !!}" onFocus="$('div').removeClass('taskline-active');$('#taskline-<?php echo $mytask->taskcode; ?>').addClass('taskline-active');showTask('<?php echo $mytask->taskcode; ?>');" onBlur="updateTask('<?php echo $mytask->taskcode; ?>', 'task');" onkeyup="$('#task-text-info').html(this.value);"/>
+        <input type="text" class="form-control taskline-input <?php if($mytask->status == 'complete') { echo 'strike'; } ?>" id="task-text-{!! $mytask->taskcode !!}" value="{!! htmlspecialchars($mytask->task) !!}" onFocus="$('#taskline-<?php echo $mytask->taskcode; ?>').addClass('taskline-active');showTask('<?php echo $mytask->taskcode; ?>');" onBlur="updateTask('<?php echo $mytask->taskcode; ?>', 'task');$('div').removeClass('taskline-active');" onkeyup="$('#task-text-info').html(this.value);"/>
       </div>
     </div>
     @endforeach
