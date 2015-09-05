@@ -48,11 +48,11 @@ class TasksController extends Controller {
     $allowed = array('open', 'complete');
     $filter = in_array(Input::get('filter'), $allowed) ? Input::get('filter') : 'open'; // if user type in the url a column that doesnt exist app will default to open
     if($filter == 'open') {
-      Session::put('filter_text', 'Open Tasks');
+        Session::put('filter_text', 'Open Tasks');
     } elseif($filter == 'complete') {
-      Session::put('filter_text', 'Completed Tasks');
+        Session::put('filter_text', 'Completed Tasks');
     } else {
-      Session::put('filter_text', 'Open Tasks');
+        Session::put('filter_text', 'Open Tasks');
     }
     
     // Get user's lists
@@ -92,6 +92,13 @@ class TasksController extends Controller {
       Session::put('listcode', $listcode);
     }
     
+    // Order by
+    if($filter == 'complete') {
+        $orderBy = 'taskdates.date_complete DESC';
+    } else {
+        $orderBy = 'tasks.priority DESC, taskdates.date_due ASC, tasks.created_at ASC';
+    }
+            
     // Get tasks for active list
     $mytasks = Task::leftjoin('taskdates', 'tasks.id', '=', 'taskdates.task_id')
             ->leftjoin('taskrefreshdates', 'tasks.user_id', '=', 'taskrefreshdates.user_id')
@@ -109,13 +116,13 @@ class TasksController extends Controller {
                 $query_b->where(\DB::raw('taskrefreshdates.date_refresh', '%Y%m%d%H%i%s'), '<', \DB::raw('taskdates.date_complete', '%Y%m%d%H%i%s'));
               });
               $query_a->orwhere(function($query_c) {
-                $query_c->where('tasks.status', '=', 'complete');
-                $query_c->where('taskrefreshdates.date_refresh', '=', null);
+                    $query_c->where('tasks.status', '=', 'complete');
+                    $query_c->where('taskrefreshdates.date_refresh', '=', null);
               });
             })
-            ->orderby('tasks.priority', 'desc')
-            ->orderBy('taskdates.date_due')
-            ->orderBy('tasks.created_at')
+            ->orderByRaw($orderBy)
+            
+            
             ->get([
                 'tasks.id',
                 'tasks.taskcode',
@@ -124,6 +131,7 @@ class TasksController extends Controller {
                 'tasks.priority',
                 'tasks.status',
                 'taskdates.date_due',
+                'taskdates.date_complete',
                 'tasklists.list',
                 'tasklists.listcode',
                 'tasklists.status AS list_status',

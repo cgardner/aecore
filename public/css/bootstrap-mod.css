@@ -637,7 +637,7 @@ ul.sidebar-nav li a .glyphicon {
     background:#F4F7F9;
 }
 .taskline-active {
-    background:#F4F7F9;
+    font-weight: bold;
 }
 .taskline-active:hover {
     background:#F4F7F9;

@@ -2,16 +2,27 @@
 @section('content')
 
 <script type="text/javascript">
-  $(function(){
-    $('input[type=text][name=task]').tooltip({
-      placement: "bottom",
-      trigger: "focus"
-    });    
-  });
+    $(function(){
+        $('input[type=text][name=task]').tooltip({
+            placement: "bottom",
+            trigger: "focus"
+        });
+        
+        // Clear info pane
+        $('.hideinfo').on('click', function(e) {
+            if(e.target != this) 
+            return;
+            $('#task-list').animate({'right':'0'}, 150);
+        });
+        
+        <?php if($completed_count == 0){ ?>
+            $('#clearBtn').hide();            
+        <?php } ?>
+    });
 </script>
 
   @include('tasks.nav')
-  <div class="task-list-wrapper" id="task-list">
+  <div class="task-list-wrapper hideinfo" id="task-list">
     <!-- FILTERS -->
     <div class="pagehead">
       <div class="container-fluid">

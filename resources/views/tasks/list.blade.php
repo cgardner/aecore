@@ -8,11 +8,11 @@
             trigger: "focus"
         });
         
-        $('#task-list').click( function() {
+        // Clear info pane
+        $('.hideinfo').on('click', function(e) {
+            if(e.target != this) 
+            return;
             $('#task-list').animate({'right':'0'}, 150);
-        });
-        $("#task-list input").click(function(e) {
-            e.stopPropagation();
         });
         
         <?php if($completed_count == 0){ ?>
@@ -22,7 +22,7 @@
 </script>
 
   @include('tasks.nav')
-  <div class="task-list-wrapper" id="task-list">
+  <div class="task-list-wrapper hideinfo" id="task-list">
     <!-- FILTERS -->
     <div class="pagehead">
       <div class="container-fluid">
@@ -46,49 +46,59 @@
     </div>
     
     <div class="container-fluid">
-      <!-- NEW TASK INPUT -->
-      {!! Form::open(array('url' => '/tasks/create', 'method' => 'post', 'class' => 'form-horizontal')) !!}
-      <div class="form-group" style="margin-bottom:15px;">
-        <div class="col-md-12">
-          {!! Form::text('task', null, array('class' => 'form-control', 'placeholder' => 'Add a task...', 'autocomplete'=>'off', 'required'=>'true', 'autofocus'=>'true', 'title'=>'Press Enter to submit.')) !!}
-        </div>
-      </div>
-      {!! Form::close() !!}
+        <!-- NEW TASK INPUT -->
+        {!! Form::open(array('url' => '/tasks/create', 'method' => 'post', 'class' => 'form-horizontal')) !!}
+            <div class="form-group" style="margin-bottom:15px;">
+                <div class="col-md-12">
+                    {!! Form::text('task', null, array('class' => 'form-control hideinfo', 'placeholder' => 'Add a task...', 'autocomplete'=>'off', 'required'=>'true', 'autofocus'=>'true', 'title'=>'Press Enter to submit.')) !!}
+                </div>
+            </div>
+        {!! Form::close() !!}
 
-      @if(count($mytasks) == 0)
-        <div class="alert alert-info">
-          <p><span class="glyphicon glyphicon-exclamation-sign"></span> <strong>No {!! Session::get('filter_text') !!} found in "{!! $listname !!}".</strong></p>
-          <p>Enter a task above to get started.</p>
-        </div>
-      @endif
+        @if(count($mytasks) == 0)
+            <div class="alert alert-info">
+                <p><span class="glyphicon glyphicon-exclamation-sign"></span> <strong>No {!! Session::get('filter_text') !!} found in "{!! $listname !!}".</strong></p>
+                <p>Enter a task above to get started.</p>
+            </div>
+        @endif
     </div>
     
     <!-- USER TASK LIST -->
+    <?php $last = ''; ?>
     @foreach($mytasks as $mytask)
-    <div class="taskline col-md-12" id="taskline-{!! $mytask->taskcode !!}">
-      @if($mytask->status == 'complete')
-        <span class="taskline-checkbox-complete" id="task-checkbox-{!! $mytask->taskcode !!}" title="Reopen this task." onClick="updateTask('<?php echo $mytask->taskcode; ?>', 'open');tglClearBtn('down');"></span>
-      @else
-        <span class="taskline-checkbox" id="task-checkbox-{!! $mytask->taskcode !!}" title="Complete this task." onClick="updateTask('<?php echo $mytask->taskcode; ?>', 'complete');tglClearBtn('up');"></span>
-      @endif
-      <div class="btn-group task-btn-group">
-        <button data-toggle="dropdown" class="btn btn-{!! $mytask->priority !!} dropdown-toggle task-priority-tag" title="Change task priority." type="button"><span class="caret" style="margin-top:-7px;"></span></button>
-        <ul class="dropdown-menu task-priority-list">
-          <li><a href="{!! URL::to('tasks/priority/3/' . $mytask->taskcode) !!}"><span class="label label-danger">High Priority</span></a></li>
-          <li><a href="{!! URL::to('tasks/priority/2/' . $mytask->taskcode) !!}"><span class="label label-warning">Medium Priority</span></a></li>
-          <li><a href="{!! URL::to('tasks/priority/1/' . $mytask->taskcode) !!}"><span class="label label-info">Low Priority</span></a></li>
-        </ul>
-      </div>
-      <div class="taskline-input-wrapper">
-        @if($mytask->list != "")
-          <a href="{!! URL::to('tasks/' . $mytask->listcode) !!}" id="list-tag-{!! $mytask->taskcode !!}" class="task_tags task_project">{!! $mytask->list !!}</a>
+        @if(Session::get('filter_text') == "Completed Tasks")
+            <?php
+                $current = Timezone::convertFromUTC($mytask->date_complete, Auth::user()->timezone, 'F d, Y');
+                if ($last != $current) {
+                    echo '<div class="col-md-12 text-muted bold" style="margin-top:8px;">' . $current . '</div>';
+                    $last = $current;
+                }
+            ?>
         @endif
-        @if($mytask->date_due != "")
-          <span id="task-date-{!! $mytask->taskcode !!}" class="task_tags task_date">{!! $mytask->date_due !!}</span>
-        @endif
-        <input type="text" class="form-control taskline-input <?php if($mytask->status == 'complete') { echo 'strike'; } ?>" id="task-text-{!! $mytask->taskcode !!}" value="{!! htmlspecialchars($mytask->task) !!}" onFocus="$('#taskline-<?php echo $mytask->taskcode; ?>').addClass('taskline-active');showTask('<?php echo $mytask->taskcode; ?>');" onBlur="updateTask('<?php echo $mytask->taskcode; ?>', 'task');$('div').removeClass('taskline-active');" onkeyup="$('#task-text-info').html(this.value);"/>
-      </div>
-    </div>
+        <div class="taskline col-md-12" id="taskline-{!! $mytask->taskcode !!}">
+            @if($mytask->status == 'complete')
+                <span class="taskline-checkbox-complete" id="task-checkbox-{!! $mytask->taskcode !!}" title="Reopen this task." onClick="updateTask('<?php echo $mytask->taskcode; ?>', 'open');tglClearBtn('down');"></span>
+            @else
+                <span class="taskline-checkbox" id="task-checkbox-{!! $mytask->taskcode !!}" title="Complete this task." onClick="updateTask('<?php echo $mytask->taskcode; ?>', 'complete');tglClearBtn('up');"></span>
+            @endif
+            <div class="btn-group task-btn-group">
+                <button data-toggle="dropdown" class="btn btn-{!! $mytask->priority !!} dropdown-toggle task-priority-tag" title="Change task priority." type="button"><span class="caret" style="margin-top:-7px;"></span></button>
+                <ul class="dropdown-menu task-priority-list">
+                    <li><a href="{!! URL::to('tasks/priority/3/' . $mytask->taskcode) !!}"><span class="label label-danger">High Priority</span></a></li>
+                    <li><a href="{!! URL::to('tasks/priority/2/' . $mytask->taskcode) !!}"><span class="label label-warning">Medium Priority</span></a></li>
+                    <li><a href="{!! URL::to('tasks/priority/1/' . $mytask->taskcode) !!}"><span class="label label-info">Low Priority</span></a></li>
+                </ul>
+            </div>
+            <div class="taskline-input-wrapper">
+                @if($mytask->list != "")
+                    <a href="{!! URL::to('tasks/' . $mytask->listcode) !!}" id="list-tag-{!! $mytask->taskcode !!}" class="task_tags task_project">{!! $mytask->list !!}</a>
+                @endif
+                @if($mytask->date_due != "")
+                    <span id="task-date-{!! $mytask->taskcode !!}" class="task_tags task_date">{!! $mytask->date_due !!}</span>
+                @endif
+                <input type="text" class="form-control taskline-input <?php if($mytask->status == 'complete') { echo 'strike'; } ?>" id="task-text-{!! $mytask->taskcode !!}" value="{!! htmlspecialchars($mytask->task) !!}" onFocus="$('#taskline-<?php echo $mytask->taskcode; ?>').addClass('taskline-active');showTask('<?php echo $mytask->taskcode; ?>');" onBlur="updateTask('<?php echo $mytask->taskcode; ?>', 'task');$('div').removeClass('taskline-active');" onkeyup="$('#task-text-info').html(this.value);"/>
+            </div>
+        </div>
     @endforeach
   </div>
   <div class="task-info-wrapper" id="task-details"></div>
