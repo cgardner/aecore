@@ -734,6 +734,11 @@ ul.task-priority-list a:hover {
     z-index:15;
     vertical-align:top;
 }
+@media(max-width: 768px) {
+    .taskline-input {
+        font-size:1.1em;
+    }
+}
 .taskline-input:focus {
     border:none;
     outline:none;
