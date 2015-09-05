@@ -25,15 +25,16 @@ function showTask(taskcode) {
     type:'GET',
     url: '/tasks/details/' + taskcode,
     success: function(response) {
-        
-        $('#task-details').hide().html(response).fadeIn('medium')
-        $('#task-list').animate({"right" : "460px"}, 150);
-        
-        // Scroll to bottom of comments
-        var comments = $('#task-comments');
-        comments.scrollTop(
-            comments[0].scrollHeight
-        );
+        if(screen.width > '767') {
+            $('#task-details').hide().html(response).fadeIn('medium');
+            $('#task-list').animate({"right" : "460px"}, 150);
+                
+            // Scroll to bottom of comments
+            var comments = $('#task-comments');
+            comments.scrollTop(
+                comments[0].scrollHeight
+            );
+        }
     }
   });
 }

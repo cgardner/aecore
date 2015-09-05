@@ -809,6 +809,16 @@ a.task_project:hover {
     border-left:1px solid #ddd;
     z-index:65;
 }
+@media (max-width: 767px) {
+    .task-info-wrapper {
+        display:none;
+        visibility: hidden !important;
+    }
+    .task-list-wrapper {
+        right:0 !important;
+    }
+}
+
 .task-info-wrapper h1 {
     margin:9px 0 0 23px;
     color:#3D474E;

@@ -26,7 +26,7 @@
     <!-- FILTERS -->
     <div class="pagehead">
       <div class="container-fluid">
-        <a href="{!! URL::to('pdf/tasks') !!}" class="btn btn-default btn-sm pull-right btn-spacer-left" target="_blank" title="Print to PDF."><i class="fa fa-print"></i> Print</a>
+        <a href="{!! URL::to('pdf/tasks') !!}" class="btn btn-default btn-sm pull-right btn-spacer-left mobile-hide" target="_blank" title="Print to PDF."><i class="fa fa-print"></i> Print</a>
         <div class="btn-group pull-right btn-spacer-left">
             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-filter"></i> {!! Session::get('filter_text') !!} <span class="caret"></span></button>
           <ul class="dropdown-menu" role="menu">
@@ -38,7 +38,7 @@
           </ul>
         </div>
         @if(Session::get('filter_text') != "Completed Tasks")
-            <a href="/tasks/refresh" id="clearBtn" class="btn btn-sm btn-warning pull-right btn-spacer-left" title="Refresh list to clear completed tasks."><span class="glyphicon glyphicon-refresh"></span> Clear Completed</a>
+            <a href="/tasks/refresh" id="clearBtn" class="btn btn-sm btn-warning mobile-hide pull-right btn-spacer-left" title="Refresh list to clear completed tasks."><span class="glyphicon glyphicon-refresh"></span> Clear Completed</a>
         @endif
         {!! Form::hidden('completed_count', $completed_count, array('id' => 'completed_count')) !!}
         <h1>{!! $listname !!}</h1>
@@ -91,10 +91,10 @@
             </div>
             <div class="taskline-input-wrapper">
                 @if($mytask->list != "")
-                    <a href="{!! URL::to('tasks/' . $mytask->listcode) !!}" id="list-tag-{!! $mytask->taskcode !!}" class="task_tags task_project">{!! $mytask->list !!}</a>
+                    <a href="{!! URL::to('tasks/' . $mytask->listcode) !!}" id="list-tag-{!! $mytask->taskcode !!}" class="task_tags task_project mobile-hide">{!! $mytask->list !!}</a>
                 @endif
                 @if($mytask->date_due != "")
-                    <span id="task-date-{!! $mytask->taskcode !!}" class="task_tags task_date">{!! $mytask->date_due !!}</span>
+                    <span id="task-date-{!! $mytask->taskcode !!}" class="task_tags task_date mobile-hide">{!! $mytask->date_due !!}</span>
                 @endif
                 <input type="text" class="form-control taskline-input <?php if($mytask->status == 'complete') { echo 'strike'; } ?>" id="task-text-{!! $mytask->taskcode !!}" value="{!! htmlspecialchars($mytask->task) !!}" onFocus="$('#taskline-<?php echo $mytask->taskcode; ?>').addClass('taskline-active');showTask('<?php echo $mytask->taskcode; ?>');" onBlur="updateTask('<?php echo $mytask->taskcode; ?>', 'task');$('div').removeClass('taskline-active');" onkeyup="$('#task-text-info').html(this.value);"/>
             </div>
