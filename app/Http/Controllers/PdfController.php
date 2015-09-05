@@ -210,6 +210,7 @@ class PdfController extends Controller {
                     $query_c->where('taskrefreshdates.date_refresh', '=', null);
                   });
                 })
+                ->orderby('tasklists.list', 'asc')
                 ->orderby('tasks.priority', 'desc')
                 ->orderBy('taskdates.date_due')
                 ->orderBy('tasks.created_at')
@@ -227,14 +228,31 @@ class PdfController extends Controller {
                     ]);
 
         
-        $html = '<table border="0" mobilepadding="3" mobilespacing="0">';
+        $html = '<table border="0" cellpadding="1" mobilepadding="3" mobilespacing="0">';
+        $last = '';
         foreach($tasks as $task) {
-          $html = $html.'
-            <tr>
-              <td style="width:12px;"><img src="' . URL::asset('css/img/sprites/checkbox.png') . '"/></td>
-              <td style="width:5px;"></td>
-              <td style="width:515px;">' . $task->task . '</td>
-            </tr>';
+            
+            $current = $task->list;
+            if ($last != $current) {
+                if($current != "") {
+                    $html = $html . '
+                        <tr>
+                            <td colspan="3"></td>
+                        </tr>';
+                }
+                $html = $html . '
+                    <tr>
+                        <td colspan="3" style="font-weight:bold;">' . $current . '</td>
+                    </tr>';
+                $last = $current;
+            }
+        
+            $html = $html.'
+                <tr>
+                  <td style="width:14px;"><img src="' . URL::asset('css/img/sprites/checkbox.png') . '"/></td>
+                  <td style="width:5px;"></td>
+                  <td style="width:520px;">' . $task->task . '</td>
+                </tr>';
         }
         $html = $html.'</table>';
 
