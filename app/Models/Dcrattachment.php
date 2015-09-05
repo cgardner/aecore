@@ -24,7 +24,7 @@ class Dcrattachment extends Model
     }
     public function s3file()
     {
-        return $this->belongsTo('App\Models\s3file');
+        return $this->belongsTo('App\Models\S3file');
     }
     
 }

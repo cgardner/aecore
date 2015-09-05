@@ -11,7 +11,6 @@ use App\Repositories\SlackIntegrationRepository;
 use Session;
 
 // Models
-use App\Models\S3file;
 use App\Models\Dcrwork;
 use App\Models\Dcrequipment;
 use App\Models\Dcrinspection;

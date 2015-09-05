@@ -106,9 +106,10 @@ class ProjectsController extends Controller
         $input['size'] = filter_var(Request::get('size'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $input['company_id'] = $user->company_id;
 
-        $this->saveProject($input);
+        $project = $this->saveProject($input);
         
-        return new RedirectResponse(route('projects.index'));
+        return redirect('projects/'.$project->id);
+        //return new RedirectResponse(route('projects'));
     }
 
     /**

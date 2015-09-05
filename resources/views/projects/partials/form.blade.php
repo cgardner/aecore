@@ -166,16 +166,23 @@
                     </div>
                 </div>
 
-                <div class="form-group no-margin">
+                <div class="form-group">
                     {!! Form::label('zip_code', 'Zip Code', array('class' => 'col-sm-2 control-label')) !!}
                     <div class="col-sm-6 col-md-5">
                         <span class="text-danger">{!! $errors->first('zipcode') !!}</span>
                         {!! Form::text('zip_code', null, array('class' => 'form-control', 'placeholder' => 'Zip Code' )) !!}
                     </div>
                 </div>
+                
+                <div class="form-group no-margin">
+                    <div class="col-sm-offset-2 col-sm-6 col-md-4 col-lg-3">
+                        @yield('form-buttons')
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!--
         <div class="panel panel-default">
             <div class="panel-heading">Project Settings</div>
             <div class="panel-body">
@@ -190,12 +197,10 @@
                     </div>
                 </div>
                 
-                <div class="form-group no-margin">
-                    <div class="col-sm-offset-2 col-sm-6 col-md-4 col-lg-3">
-                        @yield('form-buttons')
-                    </div>
-                </div>
+                
             </div>
         </div>
+        -->
+        {!! Form::hidden('submittal_code', 'csicode') !!}
   {!! Form::close() !!}
 @endsection
