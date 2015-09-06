@@ -4,6 +4,9 @@
     <div class="page-wrapper">
         <div class="pagehead">
             <div class="container-fluid">
+                <div class="pull-right">
+                    {!! link_to_route('rfis.edit', 'Edit', ['rfis' => $rfi->id], ['class' => 'btn btn-default']) !!}
+                </div>
                 <h1>RFI # {{ $rfi->rfi_id }} - {{ $rfi->subject }}</h1>
             </div>
         </div>
@@ -71,7 +74,7 @@
                     <ul class="media-list">
                         @foreach($rfi->comments as $comment)
                             <li class="media">
-                                <div class="media-left">
+                                <div class="media-left pull-left">
                                     <a href="#">
                                         <img src="{{ $comment->user->gravatar }}&s=50" alt="{{ $comment->user->name }}" class="media-object img-circle"/>
                                     </a>

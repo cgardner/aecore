@@ -8,6 +8,7 @@
         <th class="tablet-hide">Date Initiated</th>
         <th class="mobile-hide">Date Due</th>
         <th class="mobile-hide">Status</th>
+        <th>Actions</th>
     </thead>
     <tbody>
         @foreach($rfis as $rfi)
@@ -15,14 +16,18 @@
             <td>{!! link_to_route('rfis.show', $rfi->rfi_id, ['rfis' => $rfi->id]) !!}</td>
             <td>{!! link_to_route('rfis.show', $rfi->subject, ['rfis' => $rfi->id]) !!}</td>
             <td>
-                <a href="{{ route('rfis.show', ['rfis' => $rfi->id]) }}">
-                    <img src="{{ $rfi->assignedTo->gravatar }}" class="avatar_xs"/> {{ $rfi->assignedTo->name }}
-                </a>
+                <img src="{{ $rfi->assignedTo->gravatar }}" class="avatar_xs"/> {{ $rfi->assignedTo->name }}
             </td>
-            <td class="tablet-hide">{!! link_to_route('rfis.show', $rfi->references, ['rfis' => $rfi->id]) !!}</td>
-            <td class="tablet-hide">{!! link_to_route('rfis.show', $rfi->created_at, ['rfis' => $rfi->id]) !!}</td>
-            <td class="mobile-hide">{!! link_to_route('rfis.show', $rfi->due_date, ['rfis' => $rfi->id]) !!}</td>
-            <td class="mobile-hide">{!! link_to_route('rfis.show', is_null($rfi->deleted_at) ? 'Open' : 'Closed', ['rfis' => $rfi->id]) !!}</td>
+            <td class="tablet-hide">{{ $rfi->references }}</td>
+            <td class="tablet-hide">{{ $rfi->created_at }}</td>
+            <td class="mobile-hide">{{ $rfi->due_date }}</td>
+            <td class="mobile-hide">{{ is_null($rfi->deleted_at) ? 'Open' : 'Closed' }}</td>
+            <td>
+                <div class="btn-group">
+                    {!! link_to_route('rfis.show', 'View', ['rfis' => $rfi->id], ['class' => 'btn btn-primary btn-sm']) !!}
+                    {!! link_to_route('rfis.edit', 'Edit', ['rfis' => $rfi->id], ['class' => 'btn btn-default btn-sm']) !!}
+                </div>
+            </td>
         </tr>
         @endforeach
     </tbody>

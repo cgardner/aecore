@@ -7,7 +7,7 @@ class RfiRepository extends AbstractRepository
 {
     /**
      * ProjectUserRepository constructor.
-     * @param Rfi|Projectuser $model
+     * @param Rfi $model
      */
     public function __construct(Rfi $model)
     {
