@@ -80,7 +80,8 @@ class RfisController extends Controller
         if (count($input) == 0) {
             return redirect(route('rfis.create'));
         }
-        $userId = $this->fetchUserId();
+
+        $user = $this->fetchUser();
 
         $project = Session::get('project');
 
@@ -100,8 +101,9 @@ class RfisController extends Controller
         $rfi = $this->rfiRepository
             ->fill($input);
 
-        $rfi->created_by = $userId;
-        $rfi->updated_by = $userId;
+        $rfi->created_by = $user->id;
+        $rfi->updated_by = $user->id;
+        $rfi->company_id = $user->company_id;
         $rfi->rfi_id = $this->rfiRepository->findNextRfiId($project->id);
 
         $rfi->save();
@@ -119,10 +121,12 @@ class RfisController extends Controller
     }
 
     /**
-     * @return integer
+     * Get the user object for the logged in user.
+     *
+     * @return \App\Models\User
      */
-    private function fetchUserId()
+    private function fetchUser()
     {
-        return \Auth::User()->id;
+        return \Auth::User();
     }
 }

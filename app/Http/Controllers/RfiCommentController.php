@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Models\RfiComment;
 use App\Repositories\RfiCommentRepository;
+use Auth;
 use Illuminate\Http\Request;
 
 class RfiCommentController extends Controller

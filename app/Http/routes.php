@@ -31,7 +31,7 @@ Route::get('help/slack', function() { return view('help.slack'); });
 */
 
 // User must be linked to a company
-Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], function(){
+Route::group(['middleware' => ['auth', 'userstatus', 'companycheck']], function () {
 
     /* Company Settings */
     Route::group(['middleware'=>'admincheck'], function(){
@@ -50,11 +50,8 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
         Route::post('settings/company/costcodes/delete', 'SettingsController@deleteCostcode');
         Route::post('settings/company/costcodes/upload', 'SettingsController@uploadCostcode');
     });
-  
-    /* Projects */
-    Route::resource('projects', 'ProjectsController');
-    Route::get('dashboard', 'DashboardController@showDashboard');
 
+<<<<<<< HEAD
     /* Collaborators */
     Route::get('collaborators/{type}', 'CollaboratorsController@collabModal');
     Route::resource('collaborators', 'CollaboratorsController');
@@ -67,6 +64,27 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
     Route::get('dcrs/editwork/{rId}', 'DcrsController@editWorkModal');
     Route::resource('dcrs', 'DcrsController');
             
+=======
+    Route::group(['middleware' => 'project.permissions'], function() {
+
+        /* Projects */
+        Route::resource('projects', 'ProjectsController');
+        Route::get('dashboard', 'DashboardController@showDashboard');
+
+        /* Collaborators */
+        Route::get('collaborators/{type}', 'CollaboratorsController@collabModal');
+        Route::resource('collaborators', 'CollaboratorsController');
+
+        /* RFI's */
+        Route::resource('rfis', 'RfisController');
+        Route::resource('rfis.comments', 'RfiCommentController');
+
+        /* DCR's */
+        Route::get('dcrs/editwork/{id}', 'DcrsController@editWorkModal');
+        Route::resource('dcrs', 'DcrsController');
+    });
+
+>>>>>>> pr/26
     /* PDF's */
     //Route::get('pdf/log/{view}', 'PdfsController@pdfModal');
     //Route::get('pdf/{type}', 'PdfsController@pdf');
