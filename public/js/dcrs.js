@@ -1,3 +1,13 @@
+function randomString() {
+	var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+	var string_length = 10;
+	var randomstring = '';
+	for (var i=0; i<string_length; i++) {
+		var rnum = Math.floor(Math.random() * chars.length);
+		randomstring += chars.substring(rnum,rnum+1);
+	}
+    return randomstring;
+}
 
 // Remove added lines
 function delLine(parent_elem, child_elem) {
@@ -18,22 +28,24 @@ function addWork() {
         $('#crew_hours_input').val() != "" &&
         $('#crew_work_input').val() != ""
     ) {
-        i++;
+        var rId = randomString();
+        
         // delete form elements
-        var delButton = '<span class="btn-link-light pull-right" style="font-size:1.1em;padding-top:2px;" onClick="$(\'#work-row-' + i +'\').remove();" title="Remove company."><i class="fa fa-trash-o"></i></span>';
+        var delButton = '<span class="btn-link-light pull-right btn-spacer-left" style="font-size:1.1em;padding-top:2px;" onClick="$(\'#work-row-' + rId +'\').remove();" title="Remove company."><i class="fa fa-trash-o"></i></span>\n\
+                        <a class="btn-link-light pull-right" style="font-size:1.1em;padding-top:2px;" href="/dcrs/editwork/' + rId +'" data-target="#modal" data-toggle="modal" title="Edit"><i class="fa fa-pencil-square-o"></i></a>';
     
         // Add row to table
-        var addRow = '<tr id="work-row-' + i + '">\n\
+        var addRow = '<tr id="work-row-' + rId + '">\n\
                             <td style="width:25%;">' + $('#crew_company_input').val() + '</td>\n\
                             <td>' + $('#crew_size_input').val() + '</td>\n\
                             <td class="tablet-hide">' + $('#crew_hours_input').val() + '</td>\n\
                             <td>' + $('#crew_work_input').val() + '</td>\n\
                             <td>' + delButton + '</td>\n\
-                            <input type="hidden" name="crew_id[]" value="0" required="true"/>\n\
-                            <input type="hidden" name="crew_company[]" value="' + $('#crew_company_input').val() + '" required="true"/>\n\
-                            <input type="hidden" name="crew_size[]" value="' + $('#crew_size_input').val() + '" required="true"/>\n\
-                            <input type="hidden" name="crew_hours[]" value="' + $('#crew_hours_input').val() + '" required="true"/>\n\
-                            <input type="hidden" name="crew_work[]" value="' + $('#crew_work_input').val() + '" required="true"/>\n\
+                            <input type="hidden" id="crew_id_' + rId +'" name="crew_id[]" value="0" required="true"/>\n\
+                            <input type="hidden" id="crew_company_' + rId +'" name="crew_company[]" value="' + $('#crew_company_input').val() + '" required="true"/>\n\
+                            <input type="hidden" id="crew_size_' + rId +'" name="crew_size[]" value="' + $('#crew_size_input').val() + '" required="true"/>\n\
+                            <input type="hidden" id="crew_hours_' + rId +'" name="crew_hours[]" value="' + $('#crew_hours_input').val() + '" required="true"/>\n\
+                            <input type="hidden" id="crew_work_' + rId +'" name="crew_work[]" value="' + $('#crew_work_input').val() + '" required="true"/>\n\
                         </tr>';
 
         $('#work-table').append(addRow);
@@ -51,7 +63,7 @@ function addWork() {
     }
 }
 
-function editWork(id) {
+function editWork(rIdOld) {
     // add inputs
     if(
         $('#crew_company_input_edit').val() != "" &&
@@ -59,26 +71,30 @@ function editWork(id) {
         $('#crew_hours_input_edit').val() != "" &&
         $('#crew_work_input_edit').val() != ""
     ) {
-        i++;
-        // delete form elements
-        var delButton = '<span class="btn-link-light pull-right" style="font-size:1.1em;padding-top:2px;" onClick="$(\'#work-row-edit-' + i +'\').remove();" title="Remove company."><i class="fa fa-trash-o"></i></span>';
+
+        var rId = randomString();
+         
+        // edit & delete buttons
+        var Buttons = '<span class="btn-link-light pull-right btn-spacer-left" style="font-size:1.1em;padding-top:2px;" onClick="$(\'#work-row-' + rId +'\').remove();" title="Remove company."><i class="fa fa-trash-o"></i></span>\n\
+                       <a class="btn-link-light pull-right" style="font-size:1.1em;padding-top:2px;" href="/dcrs/editwork/' + rId +'" data-target="#modal" data-toggle="modal" title="Edit"><i class="fa fa-pencil-square-o"></i></a>';
     
         // Add row to table
-        var addRow = '<tr id="work-row-edit-' + i + '">\n\
+        var addRow = '<tr id="work-row-' + rId + '">\n\
                             <td style="width:25%;">' + $('#crew_company_input_edit').val() + '</td>\n\
                             <td>' + $('#crew_size_input_edit').val() + '</td>\n\
                             <td class="tablet-hide">' + $('#crew_hours_input_edit').val() + '</td>\n\
                             <td>' + $('#crew_work_input_edit').val() + '</td>\n\
-                            <td>' + delButton + '</td>\n\
-                            <input type="hidden" name="crew_id[]" value="' + $('#crew_id_input_edit').val() + '" required="true"/>\n\
-                            <input type="hidden" name="crew_company[]" value="' + $('#crew_company_input_edit').val() + '" required="true"/>\n\
-                            <input type="hidden" name="crew_size[]" value="' + $('#crew_size_input_edit').val() + '" required="true"/>\n\
-                            <input type="hidden" name="crew_hours[]" value="' + $('#crew_hours_input_edit').val() + '" required="true"/>\n\
-                            <input type="hidden" name="crew_work[]" value="' + $('#crew_work_input_edit').val() + '" required="true"/>\n\
+                            <td>' + Buttons + '</td>\n\
+                            <input type="hidden" id="crew_id_' + rId +'" name="crew_id[]" value="' + $('#crew_id_input_edit').val() + '" required="true"/>\n\
+                            <input type="hidden" id="crew_company_' + rId +'" name="crew_company[]" value="' + $('#crew_company_input_edit').val() + '" required="true"/>\n\
+                            <input type="hidden" id="crew_size_' + rId +'" name="crew_size[]" value="' + $('#crew_size_input_edit').val() + '" required="true"/>\n\
+                            <input type="hidden" id="crew_hours_' + rId +'" name="crew_hours[]" value="' + $('#crew_hours_input_edit').val() + '" required="true"/>\n\
+                            <input type="hidden" id="crew_work_' + rId +'" name="crew_work[]" value="' + $('#crew_work_input_edit').val() + '" required="true"/>\n\
                         </tr>';
-
-        $('#work-row-az'+id).replaceWith(addRow);
+        
+        $('#work-row-' + rIdOld).replaceWith(addRow);
         $(".modal").modal("hide");
+  
     } else {
         $('#workError_edit').show();
     }

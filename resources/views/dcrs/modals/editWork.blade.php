@@ -53,6 +53,12 @@
                 .append('<a>' + item.logo + '<span class="bold" style="margin:0;">' + item.label + '</span><br><span class="light" style="margin:0;">' + item.location + '</span></a>' )
                 .appendTo(ul);
         };
+        
+        $('#crew_company_input_edit').val($('#crew_company_{!! $rId !!}').val());
+        $('#crew_size_input_edit').val($('#crew_size_{!! $rId !!}').val());
+        $('#crew_hours_input_edit').val($('#crew_hours_{!! $rId !!}').val());
+        $('#crew_work_input_edit').val($('#crew_work_{!! $rId !!}').val());
+        $('#crew_id_input_edit').val($('#crew_id_{!! $rId !!}').val());
     });
 </script>
 
@@ -69,17 +75,17 @@
                 <div class="col-sm-12">
                     <div class="row">
                         <div class="col-sm-6">
-                            <input type="text" class="form-control" id="crew_company_input_edit" placeholder="Company" value="{!! $dcrWork->crew_company !!}" />
+                            <input type="text" class="form-control" name="crew_company" id="crew_company_input_edit" placeholder="Company" value="$('#crew_company_{!! $rId !!}').val();" />
                         </div>
                         <div class="col-sm-3 mobile-margin-end">
-                            <input type="number" class="form-control" id="crew_size_input_edit" min="0" step="1" placeholder="Crew size" value="{!! $dcrWork->crew_size !!}"/>
+                            <input type="number" class="form-control" name="crew_size" id="crew_size_input_edit" min="0" step="1" placeholder="Crew size" value="$('#crew_size_{!! $rId !!}').val();"/>
                         </div>
                         <div class="col-sm-3 mobile-margin-end">
-                            <input type="number" class="form-control" id="crew_hours_input_edit" min="0" step="0.5" placeholder="Hours" value="{!! $dcrWork->crew_hours !!}"/>
+                            <input type="number" class="form-control" name="crew_hours" id="crew_hours_input_edit" min="0" step="0.5" placeholder="Hours" value="$('#crew_hours_{!! $rId !!}').val();"/>
                         </div>
                         <div class="col-sm-12" style="margin-top:10px;">
-                            {!! Form::textarea('crew_work_input_edit', $dcrWork->crew_work, array('id' => 'crew_work_input_edit', 'class' => 'form-control', 'rows' => '4', 'placeholder' => 'Work performed today...' )) !!}
-                            {!! Form::hidden('crew_id[]', $dcrWork->id, array('id' => 'crew_id_input_edit','required'=>'true' )) !!}
+                            {!! Form::textarea('crew_work', null, array('id' => 'crew_work_input_edit', 'class' => 'form-control', 'rows' => '4', 'placeholder' => 'Work performed today...' )) !!}
+                            {!! Form::hidden('crew_id', null, array('id' => 'crew_id_input_edit','required'=>'true' )) !!}
                         </div>
                     </div>
                 </div>
@@ -87,7 +93,7 @@
         </div>
         <div class="modal-footer">
             <span class="text-danger pull-left" style="margin-top:4px;display:none;" id="workError_edit">*All fields are required.</span>
-            <span class="btn btn-success" onClick="editWork('{!! $dcrWork->id !!}');"><i class="fa fa-save"></i> Save</span>
+            <span class="btn btn-success" onClick="editWork('{!! $rId !!}');"><i class="fa fa-save"></i> Save</span>
             <button type="button" class="btn btn-default btn-spacer-left" data-dismiss="modal">Cancel</button>
         </div>
     {!! Form::close() !!}

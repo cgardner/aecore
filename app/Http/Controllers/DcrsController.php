@@ -11,6 +11,7 @@ use App\Repositories\SlackIntegrationRepository;
 use Session;
 
 // Models
+use App\Models\Dcr;
 use App\Models\Dcrwork;
 use App\Models\Dcrequipment;
 use App\Models\Dcrinspection;
@@ -89,6 +90,30 @@ class DcrsController extends Controller
             ]);
     }
     
+    /**
+     * Display the form to create a new DCR
+     *
+     * @return View
+     */    
+    public function create()
+    {
+        // Previous DCR info
+        $dcr_previous = Dcr::where('date', '<', \Timezone::convertFromUTC(\Carbon::now(), \Auth::user()->timezone, 'Y-m-d'))
+            ->where('project_id', '=', \Session::get('project')->id)
+            ->where('status', '=', 'active')
+            ->orderBy('date', 'DESC')
+            ->orderBy('created_at', 'DESC')
+            ->first();
+        
+        $dcrWorks = $this->dcrWorkRepository
+                    ->findDcrWorks($dcr_previous->id);
+        
+        return view('dcrs.create')
+            ->with([
+                'dcrWorks'  => $dcrWorks,
+            ]);
+    }
+    
     public function show($dcrId)
     {
         $dcr = $this->dcrRepository
@@ -101,19 +126,21 @@ class DcrsController extends Controller
         if(count($dcr) > 0) {
             
             // Previous DCR info
-            $dcr_previous = $this->dcrRepository
-                ->find($dcrId)
-                ->where('id', \DB::raw("(select max(id) from dcrs where id < $dcrId )"))
+            $dcr_previous = Dcr::where('date', '<', $dcr->date)
+                ->where('id', '!=', $dcr->id)
                 ->where('project_id', '=', \Session::get('project')->id)
                 ->where('status', '=', 'active')
+                ->orderBy('date', 'DESC')
+                ->orderBy('created_at', 'DESC')
                 ->first();
             
             // Next DCR info
-            $dcr_next = $this->dcrRepository
-                ->find($dcrId)
-                ->where('id', '>', $dcrId)
+            $dcr_next = Dcr::where('date', '>', $dcr->date)
+                ->where('id', '!=', $dcr->id)
                 ->where('project_id', '=', \Session::get('project')->id)
                 ->where('status', '=', 'active')
+                ->orderBy('date', 'ASC')
+                ->orderBy('created_at', 'DESC')
                 ->first();
             
             $dcrWorks = $this->dcrWorkRepository
@@ -158,19 +185,21 @@ class DcrsController extends Controller
         if(count($dcr) > 0) {
             
             // Previous DCR info
-            $dcr_previous = $this->dcrRepository
-                ->find($dcrId)
-                ->where('id', \DB::raw("(select max(id) from dcrs where id < $dcrId )"))
+            $dcr_previous = Dcr::where('date', '<', $dcr->date)
+                ->where('id', '!=', $dcr->id)
                 ->where('project_id', '=', \Session::get('project')->id)
                 ->where('status', '=', 'active')
+                ->orderBy('date', 'DESC')
+                ->orderBy('created_at', 'DESC')
                 ->first();
             
             // Next DCR info
-            $dcr_next = $this->dcrRepository
-                ->find($dcrId)
-                ->where('id', '>', $dcrId)
+            $dcr_next = Dcr::where('date', '>', $dcr->date)
+                ->where('id', '!=', $dcr->id)
                 ->where('project_id', '=', \Session::get('project')->id)
                 ->where('status', '=', 'active')
+                ->orderBy('date', 'ASC')
+                ->orderBy('created_at', 'DESC')
                 ->first();
             
             $dcrWorks = $this->dcrWorkRepository
@@ -206,25 +235,12 @@ class DcrsController extends Controller
     /**
      * Open collaborator modals
      */
-    public function editWorkModal($id)
+    public function editWorkModal($rId)
     {
-        $dcrWork = $this->dcrWorkRepository
-                    ->find($id);
-        
-        return view('dcrs.modals.editWork')
+       return view('dcrs.modals.editWork')
             ->with([
-                'dcrWork' => $dcrWork
+                'rId' => $rId
             ]);
-    }
-    
-    /**
-     * Display the form to create a new DCR
-     *
-     * @return View
-     */    
-    public function create()
-    {
-        return view('dcrs.create');
     }
         
     /**
@@ -235,15 +251,15 @@ class DcrsController extends Controller
     public function store()
     {
         $input = \Request::all();
-        
+
         /** Get active project info */
         $project = \Session::get('project');
         $input['project_id'] = $project->id;
-              
+
         /** Get active use info */
         $user = \Auth::User();
         $input['company_id'] = $user->company_id;        
-            
+
         $this->saveDcr($input);
 
         //Send to Slack
@@ -341,5 +357,5 @@ class DcrsController extends Controller
             
         return $dcr;
         
-    } 
+    }
 }

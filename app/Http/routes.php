@@ -64,7 +64,7 @@ Route::group(['middleware'=>'userstatus', 'middleware'=>'companycheck'], functio
     Route::resource('rfis.comments', 'RfiCommentController');
     
     /* DCR's */
-    Route::get('dcrs/editwork/{id}', 'DcrsController@editWorkModal');
+    Route::get('dcrs/editwork/{rId}', 'DcrsController@editWorkModal');
     Route::resource('dcrs', 'DcrsController');
             
     /* PDF's */

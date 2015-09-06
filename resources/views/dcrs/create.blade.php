@@ -79,11 +79,30 @@
                                         <th></th>
                                     </thead>
                                     <tbody id="work-table">
+                                        @foreach($dcrWorks as $dcrWork)
+                                            <?php $rId = str_random(10); ?>
+                                            <tr id="work-row-{!! $rId !!}">
+                                                <td>{!! $dcrWork->crew_company !!}</td>
+                                                <td>{!! $dcrWork->crew_size !!}</td>
+                                                <td>{!! $dcrWork->crew_hours !!}</td>
+                                                <td>{!! $dcrWork->crew_work !!}</td>
+                                                <td>
+                                                    <span class="btn-link-light pull-right btn-spacer-left" style="font-size:1.1em;padding-top:1px;" onClick="$('#work-row-{!! $rId !!}').remove();" title="Remove"><i class="fa fa-trash-o"></i></span>
+                                                    <a class="btn-link-light pull-right" style="font-size:1.1em;padding-top:2px;" href="/dcrs/editwork/{!! $rId !!}" data-target="#modal" data-toggle="modal" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                                                </td>
+                                                {!! Form::hidden('crew_id[]', '0', array('id'=>'crew_id_'.$rId, 'required'=>'true' )) !!}
+                                                {!! Form::hidden('crew_company[]', $dcrWork->crew_company, array('id'=>'crew_company_'.$rId, 'required'=>'true' )) !!}
+                                                {!! Form::hidden('crew_size[]', $dcrWork->crew_size, array('id'=>'crew_size_'.$rId, 'required'=>'true' )) !!}
+                                                {!! Form::hidden('crew_hours[]', $dcrWork->crew_hours, array('id'=>'crew_hours_'.$rId, 'required'=>'true' )) !!}
+                                                {!! Form::hidden('crew_work[]', $dcrWork->crew_work, array('id'=>'crew_work_'.$rId, 'required'=>'true' )) !!}
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         
+                        <!-- Work Today -->
                         <div class="form-group">
                             <div class="col-sm-10 col-sm-offset-2">
                                 <div class="row">
