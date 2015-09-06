@@ -81,6 +81,8 @@ class DcrsController extends Controller
             // Count workers
             $dcr->crew = $this->dcrWorkRepository
                     ->sumDcrWork($dcr->id);
+            $dcr->hours= $this->dcrWorkRepository
+                    ->sumDcrWorkHours($dcr->id);
         }
         
         return view('dcrs.index')

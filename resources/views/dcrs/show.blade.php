@@ -38,7 +38,7 @@
                             <thead>
                                 <th>Company</th>
                                 <th class="mobile-hide">Crew</th>
-                                <th class="tablet-hide">Hours</th>
+                                <th class="tablet-hide">Crew Hours</th>
                                 <th>Work Performed</th>
                             </thead>
                             <tbody id="work-table">
@@ -46,7 +46,7 @@
                                     <tr>
                                         <td style="width:20%;">{!! $dcrWork->crew_company !!}</td>
                                         <td class="mobile-hide" style="width:15%;">{!! $dcrWork->crew_size !!}</td>
-                                        <td class="tablet-hide" style="width:15%;">{!! $dcrWork->crew_hours !!}</td>
+                                        <td class="tablet-hide" style="width:15%;">{!! number_format($dcrWork->crew_hours, 1) !!}</td>
                                         <td>{!! $dcrWork->crew_work !!}</td>
                                     </tr>
                                 @endforeach

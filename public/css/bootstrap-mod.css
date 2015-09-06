@@ -314,7 +314,9 @@ table {
     bottom:0;
     left:250px;
     background:#FFF;
-    border-top:1px solid #c9d1d6;
+    border-top:2px solid #c9d1d6;
+    -webkit-box-shadow: 0 -3px 3px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 -3px 3px rgba(0, 0, 0, 0.06);
 }
 @media(max-width:768px) {
     .page-wrapper {

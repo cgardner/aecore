@@ -80,7 +80,7 @@
                                     <thead>
                                         <th>Company</th>
                                         <th>Crew</th>
-                                        <th class="tablet-hide">Hours</th>
+                                        <th class="tablet-hide">Crew Hours</th>
                                         <th>Work Performed</th>
                                         <th></th>
                                     </thead>
@@ -90,7 +90,7 @@
                                             <tr id="work-row-{!! $rId !!}">
                                                 <td>{!! $dcrWork->crew_company !!}</td>
                                                 <td>{!! $dcrWork->crew_size !!}</td>
-                                                <td>{!! $dcrWork->crew_hours !!}</td>
+                                                <td>{!! number_format($dcrWork->crew_hours, 1) !!}</td>
                                                 <td>{!! $dcrWork->crew_work !!}</td>
                                                 <td>
                                                     <span class="btn-link-light pull-right btn-spacer-left" style="font-size:1.1em;padding-top:1px;" onClick="$('#work-row-{!! $rId !!}').remove();" title="Remove"><i class="fa fa-trash-o"></i></span>
@@ -99,7 +99,7 @@
                                                 {!! Form::hidden('crew_id[]', '0', array('id'=>'crew_id_'.$rId, 'required'=>'true' )) !!}
                                                 {!! Form::hidden('crew_company[]', $dcrWork->crew_company, array('id'=>'crew_company_'.$rId, 'required'=>'true' )) !!}
                                                 {!! Form::hidden('crew_size[]', $dcrWork->crew_size, array('id'=>'crew_size_'.$rId, 'required'=>'true' )) !!}
-                                                {!! Form::hidden('crew_hours[]', $dcrWork->crew_hours, array('id'=>'crew_hours_'.$rId, 'required'=>'true' )) !!}
+                                                {!! Form::hidden('crew_hours[]', number_format($dcrWork->crew_hours, 1), array('id'=>'crew_hours_'.$rId, 'required'=>'true' )) !!}
                                                 {!! Form::hidden('crew_work[]', $dcrWork->crew_work, array('id'=>'crew_work_'.$rId, 'required'=>'true' )) !!}
                                             </tr>
                                         @endforeach
@@ -119,7 +119,7 @@
                                         <input type="number" class="form-control" id="crew_size_input" min="0" step="1" placeholder="Crew size" value=""/>
                                     </div>
                                     <div class="col-sm-3 mobile-margin-end">
-                                        <input type="number" class="form-control" id="crew_hours_input" min="0" step="0.5" placeholder="Hours" value=""/>
+                                        <input type="number" class="form-control" id="crew_hours_input" min="0" step="0.5" placeholder="Crew hours" value=""/>
                                     </div>
                                     <div class="col-sm-12" style="margin-top:10px;">
                                         {!! Form::textarea('crew_work_input', null, array('id' => 'crew_work_input', 'class' => 'form-control', 'rows' => '2', 'placeholder' => 'Work performed today...' )) !!}
