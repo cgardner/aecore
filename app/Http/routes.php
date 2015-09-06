@@ -51,20 +51,6 @@ Route::group(['middleware' => ['auth', 'userstatus', 'companycheck']], function 
         Route::post('settings/company/costcodes/upload', 'SettingsController@uploadCostcode');
     });
 
-<<<<<<< HEAD
-    /* Collaborators */
-    Route::get('collaborators/{type}', 'CollaboratorsController@collabModal');
-    Route::resource('collaborators', 'CollaboratorsController');
-    
-    /* RFI's */
-    Route::resource('rfis', 'RfisController');
-    Route::resource('rfis.comments', 'RfiCommentController');
-    
-    /* DCR's */
-    Route::get('dcrs/editwork/{rId}', 'DcrsController@editWorkModal');
-    Route::resource('dcrs', 'DcrsController');
-            
-=======
     Route::group(['middleware' => 'project.permissions'], function() {
 
         /* Projects */
@@ -84,7 +70,6 @@ Route::group(['middleware' => ['auth', 'userstatus', 'companycheck']], function 
         Route::resource('dcrs', 'DcrsController');
     });
 
->>>>>>> pr/26
     /* PDF's */
     //Route::get('pdf/log/{view}', 'PdfsController@pdfModal');
     //Route::get('pdf/{type}', 'PdfsController@pdf');
