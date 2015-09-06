@@ -6,12 +6,12 @@
     <script type="text/javascript" src="{!! asset('/js/dcrs.js') !!}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            //Date selector
+            // Date selector
             $("#date").datepicker({
                 changeMonth: true,
                 changeYear: true
             });
-            //Format crew hours
+            // Format crew hours
             $('#crew_hours_input').blur(function() {
                 $('#crew_hours_input').currency({decimals: 1});
             });
@@ -47,10 +47,11 @@
                                     {!! Form::select('weather', array(
                                             'Clear' => 'Clear',
                                             'Partly Cloudy' => 'Partly Cloudy',
-                                            'Cloudy' => 'Cloudy',
-                                            'Rain' => 'Rain',
-                                            'Snow' => 'Snow',
-                                            'Wind' => 'Wind'
+                                            'Cloudy'=> 'Cloudy',
+                                            'Rain'  => 'Rain',
+                                            'Fog'   => 'Fog',
+                                            'Snow'  => 'Snow',
+                                            'Wind'  => 'Wind'
                                         ), $dcr->weather, array('onChange'=>'$(\'#weather-icon\').attr("class", "wi wi-" + this.value.replace(/\s/g, \'\'))', 'class' => 'form-control', 'required' => 'true', 'aria-describedby' => 'addon-weather'))
                                     !!}
                                 </div>

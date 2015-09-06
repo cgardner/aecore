@@ -8,6 +8,7 @@ use App\Repositories\DcrInspectionRepository;
 use App\Repositories\DcrAttachmentRepository;
 use App\Repositories\ProjectUserRepository;
 use App\Repositories\SlackIntegrationRepository;
+use Forecast\Forecast;
 use Session;
 
 // Models
@@ -108,9 +109,50 @@ class DcrsController extends Controller
         $dcrWorks = $this->dcrWorkRepository
                     ->findDcrWorks($dcr_previous->id);
         
+        // Get the current forecast for a given latitude and longitude
+        $project = Session::get('project');
+        $location = \Geocode::make()->address($project->city . ',' . $project->state, $project->state);
+        
+        $forecastio = new Forecast(env('FORECAST_API_KEY'));
+        $forecast = $forecastio->get($location->latitude(), $location->longitude());
+        
+        switch ($forecast->daily->data[0]->icon) {
+            default:
+                $forecast->weather = 'Clear';
+            break;
+            case 'clear-day':
+            case 'clear-night':
+                $forecast->weather = 'Clear';
+            break;
+            case 'partly-cloudy-day':
+            case 'partly-cloudy-night':
+                $forecast->weather = 'Partly Cloudy';
+            break;
+            case 'cloudy':
+                $forecast->weather = 'Cloudy';
+            break;
+            case 'fog':
+                $forecast->weather = 'Fog';
+            break;
+            case 'rain':
+            case 'thunderstorm':
+                $forecast->weather = 'Rain';
+            break;
+            case 'snow':
+            case 'hail':
+            case 'sleet':
+                $forecast->weather = 'Snow';
+            break;
+            case 'wind':
+                $forecast->weather = 'Wind';
+            break;
+        }
+
         return view('dcrs.create')
             ->with([
                 'dcrWorks'  => $dcrWorks,
+                'forecast'  => $forecast,
+                'location'  => $location
             ]);
     }
     
@@ -214,7 +256,13 @@ class DcrsController extends Controller
             $dcrAttachments = $this->dcrAttachmentRepository
                     ->findDcrAttachments($dcrId);
             
+            // Get the current forecast for a given latitude and longitude
+            $project = Session::get('project');
+            $location = \Geocode::make()->address($project->city . ',' . $project->state, $project->state);
             
+            $forecastio = new Forecast(env('FORECAST_API_KEY'));
+            $forecast = $forecastio->get($location->latitude(), $location->longitude());
+        
             return view('dcrs.edit')
                 ->with([
                     'dcr'               => $dcr,
@@ -224,6 +272,8 @@ class DcrsController extends Controller
                     'dcrAttachments'    => $dcrAttachments,
                     'dcr_next'          => $dcr_next,
                     'dcr_previous'      => $dcr_previous,
+                    'forecast'          => $forecast,
+                    'location'          => $location,
                     'functionscontroller'   => new FunctionsController
                 ]);
         } else {

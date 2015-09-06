@@ -6,15 +6,20 @@
     <script type="text/javascript" src="{!! asset('/js/dcrs.js') !!}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            //Date selector
+            // Date selector
             $("#date").datepicker({
                 changeMonth: true,
                 changeYear: true
             });
-            //Format crew hours
+            
+            // Format crew hours
             $('#crew_hours_input').blur(function() {
                 $('#crew_hours_input').currency({decimals: 1});
             });
+            
+            // Set weather icon
+            var weather = "{!! $forecast->weather !!}";
+            $('#weather-icon').attr("class", "wi wi-" + weather.replace(/\s/g, ''))
         });
     </script>
     
@@ -48,15 +53,16 @@
                                             'Clear'     => 'Clear',
                                             'Partly Cloudy' => 'Partly Cloudy',
                                             'Cloudy'    => 'Cloudy',
-                                            'Rain'   => 'Rain',
-                                            'Snow'   => 'Snow',
-                                            'Wind'     => 'Wind'
-                                        ), null, array('onChange'=>'$(\'#weather-icon\').attr("class", "wi wi-" + this.value.replace(/\s/g, \'\'))', 'class' => 'form-control', 'required' => 'true'))
+                                            'Rain'      => 'Rain',
+                                            'Fog'       => 'Fog',
+                                            'Snow'      => 'Snow',
+                                            'Wind'      => 'Wind'
+                                        ), $forecast->weather, array('onChange'=>'$(\'#weather-icon\').attr("class", "wi wi-" + this.value.replace(/\s/g, \'\'))', 'class' => 'form-control', 'required' => 'true'))
                                     !!}
                                 </div>
                             </div>
                             <div class="col-sm-3 col-md-2 mobile-margin-end">
-                                {!! Form::text('temperature', null, array('class' => 'form-control', 'placeholder' => 'Temp', 'required'=>'true' )) !!}
+                                {!! Form::text('temperature', round($forecast->daily->data[0]->temperatureMax, 0), array('class' => 'form-control', 'placeholder' => 'Temp', 'required'=>'true' )) !!}
                             </div>
                             <div class="col-sm-2 mobile-margin-end">
                                 {!! Form::select('temperature_type', array(
