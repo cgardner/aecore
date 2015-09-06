@@ -23,8 +23,8 @@
                             <div class="col-sm-2"><strong>Submitted To</strong></div>
                             <div class="col-sm-4">
                                 <address>
-                                    {{ $rfi->project->name }}<br />
-                                    {{ $rfi->project->street }}<br />
+                                    {{ $rfi->project->name }}<br/>
+                                    {{ $rfi->project->street }}<br/>
                                     {{ $rfi->project->city }}, {{ $rfi->project->state }} {{ $rfi->project->zip_code }}
                                 </address>
                             </div>
@@ -66,28 +66,31 @@
                     </div>
                     Comments
                 </div>
+                <div class="panel-body">
                 @if(count($rfi->comments) > 0)
-                <ul class="list-group">
-                    @foreach($rfi->comments as $comment)
-                    <li class="list-group-item">
-                        <div class="media">
-                            <div class="media-left">
-                                <img src="" alt="" />
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">
-                                </h4>
-                            </div>
-                        </div>
-                    </li>
-                    @endforeach
-                </ul>
+                    <ul class="media-list">
+                        @foreach($rfi->comments as $comment)
+                            <li class="media">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img src="{{ $comment->user->gravatar }}&s=50" alt="{{ $comment->user->name }}" class="media-object img-circle"/>
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+                                        Created by {{ $comment->user->name }} on {{ $comment->created_at->format('M d, Y \a\t h:i a') }}
+                                    </h4>
+                                    {{ $comment->comment }}
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
                 @else
                     <div class="panel-body">
-                        No Comments yet.  <a href="#add-comment-modal" data-toggle="modal">Add the first!</a>
+                        No Comments yet. <a href="#add-comment-modal" data-toggle="modal">Add the first!</a>
                     </div>
                 @endif
-
+                </div>
             </div>
 
         </div>
@@ -96,11 +99,13 @@
 
 @section('endbody')
     @parent
-    <div class="modal fade" id="add-comment-modal" tabindex="-1" role="dialog" aria-labelledby="add-comment-modal-label">
+    <div class="modal fade" id="add-comment-modal" tabindex="-1" role="dialog"
+         aria-labelledby="add-comment-modal-label">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="add-comment-modal-label">Add a Comment</h4>
                 </div>
                 <div class="modal-body">
@@ -114,12 +119,25 @@
         </div>
     </div>
     <script>
-        $('#add-comment-save').click(function() {
-            var comment = $('#rfi-comment').val();
+        $('#add-comment-save').click(function () {
+            var commentBox = $('#rfi-comment');
+            var comment = commentBox.val();
 
             if (comment.length > 0) {
                 console.log('sending comment to the API');
-                $.ajax("{{ route('rfis.comments.index', ['rfis' => $rfi->id]) }}/" + comment);
+                $.ajax(
+                        {
+                            url: "{{ route('rfis.comments.store', ['rfis' => $rfi->id]) }}",
+                            method: 'POST',
+                            data: {
+                                comment: comment,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function () {
+                                console.log('comment added successfully');
+                                commentBox.val('');
+                            }
+                        });
             }
             $('#add-comment-modal').modal('hide');
         });
