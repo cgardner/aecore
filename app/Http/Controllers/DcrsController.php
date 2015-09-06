@@ -73,12 +73,12 @@ class DcrsController extends Controller
     {
         $project = \Session::get('project');
                 
-        // Get projects for current user
+        /** Get dcrs for current project **/
         $dcrs = $this->dcrRepository
             ->findDcrsForUser($project->id);
         
         foreach($dcrs as $dcr) {
-            // Count workers
+            /** Count crew & hours for chart **/
             $dcr->crew = $this->dcrWorkRepository
                     ->sumDcrWork($dcr->id);
             $dcr->hours= $this->dcrWorkRepository

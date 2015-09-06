@@ -5,7 +5,7 @@
         <div class="pagehead">
             <div class="container-fluid">
                 @if(Session::get('projectUser')->access == \App\Models\Projectuser::ACCESS_ADMIN)
-                    <a href="{!! URL::route('projects.edit', ['project' => $project->id]) !!}" class="btn btn-default btn-sm pull-right btn-spacer-left"><i class="fa fa-pencil-square-o fa-fw"></i> Edit Project</a>
+                    <a href="{!! URL::route('projects.edit', ['project' => $project->id]) !!}" class="btn btn-default pull-right btn-spacer-left"><i class="fa fa-pencil-square-o fa-fw"></i> Edit Project</a>
                 @endif
                 <h1>{!! '#' . $project->number . ' ' . $project->name !!}</h1>
                 <p class="text-muted no-margin">Your project at a glance.</p>
@@ -14,7 +14,8 @@
       
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-5">
+                <div class="col-md-6 col-lg-3">
+                    <!-- Project Information -->
                     <div id="project-information" class="panel panel-default">
                         <div class="panel-heading">
                             <span class="glyphicon glyphicon-globe"></span><span class="btn-spacer-left">Project Information</span>
@@ -55,17 +56,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>{{-- /.panel --}}
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="wi wi-day-cloudy-gusts"></i><span class="btn-spacer-left">Weather</span>
-                        </div>
-                        <div class="panel-body">
-                            <iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat={!! $location->latitude() !!}&lon={!! $location->longitude() !!}&name={!! $project->city !!}"> </iframe>
-                        </div>
-                    </div>{{-- /.panel --}}
+                    </div>
                     
+                    <!-- Schedule -->
                     <div id="schedule" class="panel panel-default">
                         <div class="panel-heading">
                             <span class="glyphicon glyphicon-time"></span><span class="btn-spacer-left">Schedule</span>
@@ -86,11 +79,22 @@
                                 </div>
                             </div>
                         </div>
-                    </div> {{-- /.panel --}}
-
+                    </div>
+                    
+                    <!-- RFIs -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <span class="glyphicon glyphicon-question-sign"></span><span class="btn-spacer-left">Requests for Information</span>
+                            <i class="fa fa-info-circle"></i><span class="btn-spacer-left">Requests for Information</span>
+                        </div>
+                        <div class="panel-body">
+                            replacing table below with chart
+                        </div>
+                    </div>
+                    
+                    <!-- RFIs -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-info-circle"></i><span class="btn-spacer-left">Requests for Information</span>
                         </div>
                         <div class="panel-body">
                             <table class="table">
@@ -117,18 +121,10 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>{{-- /.panel --}}
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <span class="glyphicon glyphicon-tags"></span><span class="btn-spacer-left">Submittals</span>
-                        </div>
-                        <div class="panel-body">
-                            <h4>In Progress</h4>
-                        </div>
-                    </div>{{-- /.panel --}}
+                    </div>
                 </div>
-                <div class="col-lg-7">
+                
+                <div class="col-md-6 col-lg-4 col-lg-push-5">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <span class="glyphicon glyphicon-bullhorn"></span><span class="btn-spacer-left">Activity Feed</span>
@@ -137,6 +133,76 @@
                             Activity Feed Goes Here
                         </div>
                     </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-5 col-lg-pull-4">
+                    <!-- Weather -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="wi wi-day-cloudy-gusts"></i><span class="btn-spacer-left">Weather</span>
+                        </div>
+                        <div class="panel-body" style="padding:5px 15px;">
+                            <iframe id="forecast_embed" type="text/html" frameborder="0" height="245" width="100%" src="http://forecast.io/embed/#lat={!! $location->latitude() !!}&lon={!! $location->longitude() !!}&name={!! $project->city !!}"> </iframe>
+                        </div>
+                    </div>
+                    
+                    <!-- Manpower -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-users"></i><span class="btn-spacer-left">Manpower</span>
+                        </div>
+                        <div class="panel-body" style="padding:5px;">
+                            <div style="padding:10px 10px 0 10px;">
+                                <?php
+                                    $crewHours = 0;
+                                    $manHours = 0;
+                                    foreach($dcrs as $dcr) {
+                                        $crewHours += $dcr->crewhours;
+                                        $manHours += $dcr->manhours;
+                                    }
+                                ?>
+                                <p>
+                                    <span class="bold">Total Crew Hours:</span> {!! number_format($crewHours) !!}
+                                    <span class="bold btn-spacer-left">Total Man Hours:</span> {!! number_format($manHours) !!}
+                                </p>
+                            </div>
+                            <div id="dcrChart" style="height:250px;">
+                                <script type="text/javascript">
+                                    new Morris.Line({
+                                      element: 'dcrChart',
+                                      data: [
+                                        <?php
+                                            foreach($dcrs as $dcr) {
+                                                echo '{ week: \'' . date('Y-m-d', strtotime($dcr->date))  . '\', crew: ' . $dcr->crew . ', hours: ' . $dcr->crewhours . ' },';
+                                            }
+                                        ?>
+                                      ],
+                                      // The name of the data record attribute that contains x-values.
+                                      xkey: 'week',
+                                      // A list of names of data record attributes that contain y-values.
+                                      ykeys: ['crew', 'hours'],
+                                      // Labels for the ykeys -- will be displayed when you hover over the
+                                      // chart.
+                                      labels: ['Crew', 'Crew Hrs']
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>         
+                </div>
+                
+                <!-- Submittals -->
+                <!--
+                <div class="col-md-6 col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-tags"></span><span class="btn-spacer-left">Submittals</span>
+                        </div>
+                        <div class="panel-body">
+                            <h4>In Progress</h4>
+                        </div>
+                    </div>
+                    -->
                 </div>
             </div>
         </div>

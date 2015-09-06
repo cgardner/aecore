@@ -32,6 +32,6 @@
           // chart.
           labels: ['Crew', 'Crew Hrs']
         });
-</script>
+    </script>
 
 @endsection
