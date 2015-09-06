@@ -129,7 +129,10 @@ class Project extends Model
     
     private function createDateTime($dateTime)
     {
-        return new \DateTime($dateTime, new \DateTimeZone(\Auth::user()->timezone));
+        if (Auth::guest()) {
+            return new DateTime($dateTime, new DateTimeZone('America/Los_Angeles'));
+        }
+        return new DateTime($dateTime, new DateTimeZone(Auth::user()->timezone));
     }
 
     /**

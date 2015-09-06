@@ -69,7 +69,6 @@
                 @if(count($rfi->comments) > 0)
                 <ul class="list-group">
                     @foreach($rfi->comments as $comment)
-                        <?php var_dump($comment) ?>
                     <li class="list-group-item">
                         <div class="media">
                             <div class="media-left">
@@ -105,8 +104,7 @@
                     <h4 class="modal-title" id="add-comment-modal-label">Add a Comment</h4>
                 </div>
                 <div class="modal-body">
-                            <textarea name="rfiComment" id="rfi-comment" cols="30" rows="10"
-                                      class="form-control"></textarea>
+                    <textarea name="rfiComment" id="rfi-comment" cols="30" rows="10" class="form-control"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -121,7 +119,7 @@
 
             if (comment.length > 0) {
                 console.log('sending comment to the API');
-                $.ajax({{ route('rfis.comments', ['rfis' => $rfi->id]) }})
+                $.ajax("{{ route('rfis.comments.index', ['rfis' => $rfi->id]) }}/" + comment);
             }
             $('#add-comment-modal').modal('hide');
         });
